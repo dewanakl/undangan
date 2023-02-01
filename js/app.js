@@ -104,5 +104,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     timer();
     ucapan();
-    token();
+    login();
 });
