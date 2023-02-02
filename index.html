@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <h1 class="font-estetik my-4" style="font-size: 3rem;">Wahyu & Riski</h1>
-                <h4>3 Maret 2023</h4>
+                <h4>Minggu, 3 Maret 2023</h4>
             </div>
         </section>
 
@@ -132,37 +132,49 @@
         <section style="background-color: #111111;" class="m-0 p-0" id="tanggal">
             <div class="container">
                 <div class="text-center">
-                    <h1 class="font-estetik mb-4">Waktu Menuju Acara</h1>
-                    <div class="d-flex justify-content-center px-5 mx-5">
-                        <div class="flex-fill p-2 m-1 bg-light text-dark rounded-3">
-                            <div class="d-block">
-                                <span class="d-block" id="hari">0</span>Hari
-                            </div>
+                    <h1 class="font-estetik mb-4" style="font-size: 2rem;">Waktu Menuju Acara</h1>
+                    <div class="d-flex justify-content-center border rounded-3 p-1">
+                        <div class="flex-fill p-1">
+                            <h2 class="d-inline" id="hari">0</h2><small class="ms-1 d-inline">Hari</small>
                         </div>
-                        <div class="flex-fill p-2 m-1 bg-light text-dark rounded-3">
-                            <div class="d-block">
-                                <span class="d-block" id="jam">0</span>Jam
-                            </div>
+                        <div class="flex-fill p-1">
+                            <h2 class="d-inline" id="jam">0</h2><small class="ms-1 d-inline">Jam</small>
                         </div>
-                        <div class="flex-fill p-2 m-1 bg-light text-dark rounded-3">
-                            <div class="d-block">
-                                <span class="d-block" id="menit">0</span>Menit
-                            </div>
+                        <div class="flex-fill p-1">
+                            <h2 class="d-inline" id="menit">0</h2><small class="ms-1 d-inline">Menit</small>
                         </div>
-                        <div class="flex-fill p-2 m-1 bg-light text-dark rounded-3">
-                            <div class="d-block">
-                                <span class="d-block" id="detik">0</span>Detik
-                            </div>
+                        <div class="flex-fill p-1">
+                            <h2 class="d-inline" id="detik">0</h2><small class="ms-1 d-inline">Detik</small>
                         </div>
                     </div>
 
-                    <a class="btn btn-outline-light btn-sm shadow"
+                    <a class="btn btn-outline-light btn-sm shadow m-2"
                         href="https://www.google.com/calendar/render?action=TEMPLATE&text=The%20Wedding%20of%20Roni%20and%20Aisyah&details=The%20Wedding%20of%20Roni%20and%20Aisyah|%2008%20Februari%202023%20|%20Jl.%20Bareng%20Raya%20Gg.%202C%20No.%20423%20RT%2007%20RW%2008%20Kel.%20Bareng%20Kec.%20Klojen%20Kota%20Malang%20|%2014.00%20-%2022.00%20WIB&dates=20230208T140000/20230208T220000&location=https://maps.app.goo.gl/tvjQ9JFiiEZzLoqX8?g_st=ic">
                         <i class="fa-solid fa-calendar-check me-2"></i>Save The Date</a>
+
+                    <p>Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta'ala, insyaAllah kami akan menyelenggarakan
+                        acara :</p>
+
+                    <h1 class="font-estetik" style="font-size: 2rem;">Akad</h1>
+                    <p>Pukul 10.00 WIB - Selesai</p>
+
+                    <h1 class="font-estetik" style="font-size: 2rem;">Resepsi</h1>
+                    <p>Pukul 13.00 WIB - Selesai</p>
+
+
+                    <h1 class="font-estetik" style="font-size: 2rem;">Lokasi</h1>
+                    <a class="btn btn-outline-light btn-sm shadow m-2"><i
+                            class="fa-solid fa-map-location-dot me-2"></i>Google Maps</a>
+
+
+                    <h1 class="font-estetik mt-0 mb-3">Kirimkan Hadiah</h1>
                     <div class="card mt-4">
                         <div class="card-body">
-                            <h1 class="font-estetik">Akad Nikah</h1>
-                            <p>3 Maret 2023</p>
+                            <h1>BRI</h1>
+                            <p>Wahyu</p>
+
+                            <p>22232895934895</p>
+                            <button class="btn btn-light btn-sm">Salin</button>
                         </div>
                     </div>
                 </div>
@@ -176,23 +188,27 @@
         </svg>
 
         <section class="m-0 p-0" id="ucapan">
-            <div class="container mt-0">
-                <div class="text-center">
-                    <h1 class="font-estetik mt-0 mb-3">Kirimkan Hadiah</h1>
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <h1>BRI</h1>
-                            <p>Wahyu</p>
-
-                            <p>22232895934895</p>
-                            <button class="btn btn-light btn-sm">Salin</button>
-                        </div>
+            <div class="container mb-0 pb-0 mt-4 px-3">
+                <div class="border rounded-3 p-3">
+                    <h1 class="font-estetik text-center mb-4" style="font-size: 3rem;">Ucapan</h1>
+                    <div class="mb-3">
+                        <label for="formnama" class="form-label">Nama</label>
+                        <input type="text" class="form-control shadow-sm" id="formnama" placeholder="Nama...">
                     </div>
-
-                    <h1 class="font-estetik my-4">Ucapan</h1>
+                    <div class="mb-3">
+                        <label for="formpesan" class="form-label">Ucapan</label>
+                        <textarea class="form-control shadow-sm" id="formpesan" rows="4"
+                            placeholder="Selamat..."></textarea>
+                    </div>
+                    <div class="d-grid mb-2">
+                        <button class="btn btn-primary btn-sm" onclick="kirim()" id="kirim">Kirim<i
+                                class="fa-solid fa-paper-plane ms-1"></i></button>
+                    </div>
                 </div>
-
-                <div id="daftarucapan" class="px-1"></div>
+                <!-- <div class="overflow-y-scroll"
+                    style="height: 20rem; overflow-wrap: break-word !important; overflow: overlay !important;"> -->
+                <div id="daftarucapan" class="mt-4" style="overflow-wrap: break-word !important;"></div>
+                <!-- </div> -->
             </div>
         </section>
 
