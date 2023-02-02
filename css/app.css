@@ -48,8 +48,9 @@ body {
 
 .btn-music {
     position: fixed;
-    bottom: 10vh;
+    bottom: 9vh;
     right: 2vh;
+    z-index: 1055;
 }
 
 .loading {
@@ -59,5 +60,5 @@ body {
     width: 100%;
     height: 100%;
     background-color: var(--bs-dark);
-    z-index: 1054;
+    z-index: 1055;
 }

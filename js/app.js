@@ -41,20 +41,19 @@ const play = (btn) => {
 
 const renderCard = (data) => {
     const DIV = document.createElement('div');
-    DIV.classList.add('mb-3');
+    DIV.classList.add('mb-4');
     DIV.innerHTML = `
     <div class="card-body shadow p-3 rounded-3">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="text-truncate m-0 p-0" style="max-width: 40%;">
                 <strong>${data.nama}</strong>
             </h6>
-            <small class="text-dark rounded m-0" style="background-color: var(--bs-gray-200)">
-                <i class="fa-solid fa-clock ms-1"></i>
-                <span class="ms-0 me-1 my-0 p-0">${data.created_at}</span>
+            <small class="text-light m-0 p-0">
+                ${data.created_at}
             </small>
         </div>
-        <hr class="mb-2">
-        <small class="mt-2 mb-1 mx-0 p-0">${data.komentar}</small>
+        <hr class="mt-1 mb-2">
+        <small class="text-start mt-2 mb-1 mx-0 p-0">${data.komentar}</small>
     </div>`;
     return DIV;
 };
