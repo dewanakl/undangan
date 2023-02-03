@@ -1,7 +1,18 @@
 let isPlay = true;
 let token = '';
-let audio = new Audio('assets/music/sempurna-keroncong.mp3');
-const tanggal = '2023-03-01 00:00:00';
+let audio = new Audio('assets/music/sound.mp3');
+const tanggal = '2023-03-15 10:00:00';
+
+const salin = (btn) => {
+    navigator.clipboard.writeText(btn.getAttribute('data-nomer').toString());
+    btn.innerHTML = 'Tersalin';
+    btn.disabled = true;
+
+    setTimeout(() => {
+        btn.innerHTML = 'Salin No. Rekening';
+        btn.disabled = false;
+    }, 1500);
+}
 
 const timer = () => {
     let countDownDate = new Date(tanggal).getTime();
