@@ -12,7 +12,7 @@ const salin = (btn) => {
         btn.innerHTML = 'Salin No. Rekening';
         btn.disabled = false;
     }, 1500);
-}
+};
 
 const timer = () => {
     let countDownDate = new Date(tanggal).getTime();
@@ -31,7 +31,7 @@ const timer = () => {
             document.getElementById('detik').innerText = Math.floor((distance % (1000 * 60)) / 1000);
         }
     }, 1000);
-}
+};
 
 const buka = () => {
     document.getElementById('loading').style.display = 'none';
@@ -39,7 +39,7 @@ const buka = () => {
     AOS.init();
     login();
     audio.play();
-}
+};
 
 const play = (btn) => {
     if (!isPlay) {
@@ -51,17 +51,19 @@ const play = (btn) => {
         isPlay = false;
         btn.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
     }
-}
+};
 
 const renderCard = (data) => {
     const DIV = document.createElement('div');
     DIV.classList.add('mb-3');
     DIV.innerHTML = `
-    <div class="card-body bg-light shadow p-3 m-0 rounded-3">
-        <p class="text-dark m-0 p-0">
-            <strong class="me-1">${data.nama}</strong>${data.hadir ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i>'}
-        </p>
-        <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
+    <div class="card-body bg-light shadow p-2 m-0 rounded-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
+                <strong class="me-1">${data.nama}</strong>${data.hadir ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i>'}
+            </p>
+            <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
+        </div>
         <hr class="text-dark mt-1 mb-2">
         <p class="text-dark mt-1 mb-0 mx-0 p-0">${data.komentar}</p>
     </div>`;
@@ -103,7 +105,7 @@ const login = async () => {
         })
     };
 
-    fetch('https://undangan-api-gules.vercel.app/api/login', REQ)
+    await fetch('https://undangan-api-gules.vercel.app/api/login', REQ)
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
@@ -140,6 +142,11 @@ const kirim = async () => {
         return;
     }
 
+    if (nama.length >= 35) {
+        alert('panjangan nama maksimal 35');
+        return;
+    }
+
     if (hadir == 3) {
         alert('silahkan pilih kehadiran');
         return;
@@ -171,6 +178,9 @@ const kirim = async () => {
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 201) {
+                document.getElementById('formnama').value = null;
+                document.getElementById('hadiran').value = 3;
+                document.getElementById('formpesan').value = null;
                 ucapan();
             }
 
@@ -180,9 +190,6 @@ const kirim = async () => {
         })
         .catch((err) => alert(err));
 
-    document.getElementById('formnama').value = null;
-    document.getElementById('hadiran').value = 3;
-    document.getElementById('formpesan').value = null;
     document.getElementById('kirim').disabled = false;
     document.getElementById('kirim').innerHTML = `Kirim<i class="fa-solid fa-paper-plane ms-1"></i>`;
 };
