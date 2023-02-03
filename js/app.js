@@ -24,6 +24,9 @@ const timer = () => {
 
 const buka = () => {
     document.getElementById('loading').style.display = 'none';
+    document.getElementById('tombol-musik').style.display = 'block';
+    AOS.init();
+    login();
     audio.play();
 }
 
@@ -41,18 +44,15 @@ const play = (btn) => {
 
 const renderCard = (data) => {
     const DIV = document.createElement('div');
-    //DIV.classList.add('mb-3');
-    DIV.setAttribute('data-aos', 'fade-up')
+    DIV.classList.add('mb-3');
     DIV.innerHTML = `
-    <div class="card-body bg-light shadow p-3 rounded-3 mb-3">
-        <h6 class="text-dark m-0 p-0">
-            <strong>${data.nama}</strong>
-        </h6>
-        <small class="text-dark m-0 p-0">
-            ${data.created_at}
-        </small>
+    <div class="card-body bg-light shadow p-3 m-0 rounded-3">
+        <p class="text-dark m-0 p-0">
+            <strong class="me-1">${data.nama}</strong>${data.hadir ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i>'}
+        </p>
+        <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
         <hr class="text-dark mt-1 mb-2">
-        <small class="text-dark mt-2 mb-1 mx-0 p-0">${data.komentar}</small>
+        <p class="text-dark mt-1 mb-0 mx-0 p-0">${data.komentar}</p>
     </div>`;
     return DIV;
 };
@@ -64,16 +64,22 @@ const ucapan = async () => {
     await fetch('https://undangan-api-gules.vercel.app/api/comment')
         .then((res) => res.json())
         .then((res) => {
-            UCAPAN.innerHTML = null;
-            res.data.forEach((data) => UCAPAN.appendChild(renderCard(data)));
-            if (res.data.length == 0) {
-                UCAPAN.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
+            if (res.code == 200) {
+                UCAPAN.innerHTML = null;
+                res.data.forEach((data) => UCAPAN.appendChild(renderCard(data)));
+
+                if (res.data.length == 0) {
+                    UCAPAN.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
+                }
             }
         })
         .catch((err) => alert(err));
 };
 
 const login = async () => {
+    const UCAPAN = document.getElementById('daftarucapan');
+    UCAPAN.innerHTML = `<div class="text-center"><span class="spinner-border spinner-border-sm me-1"></span>Loading...</div>`;
+
     const REQ = {
         method: 'POST',
         headers: {
@@ -89,17 +95,42 @@ const login = async () => {
     fetch('https://undangan-api-gules.vercel.app/api/login', REQ)
         .then((res) => res.json())
         .then((res) => {
-            token = res.data.token;
+            if (res.code == 200) {
+                ucapan();
+                token = res.data.token;
+            }
+
+            if (res.error) {
+                alert('Terdapat kesalahan, otomatis reload halaman');
+                window.location.reload();
+                return;
+            }
         })
-        .catch((err) => alert(err));
+        .catch(() => {
+            alert('Terdapat kesalahan, otomatis reload halaman');
+            window.location.reload();
+            return;
+        });
 };
 
 const kirim = async () => {
     let nama = document.getElementById('formnama').value;
+    let hadir = document.getElementById('hadiran').value;
     let komentar = document.getElementById('formpesan').value;
+
+    if (token.length == 0) {
+        alert('Terdapat kesalahan, otomatis reload halaman');
+        window.location.reload();
+        return;
+    }
 
     if (nama.length == 0) {
         alert('nama tidak boleh kosong');
+        return;
+    }
+
+    if (hadir == 3) {
+        alert('silahkan pilih kehadiran');
         return;
     }
 
@@ -120,7 +151,7 @@ const kirim = async () => {
         },
         body: JSON.stringify({
             nama: nama,
-            hadir: false,
+            hadir: hadir == 1,
             komentar: komentar
         })
     };
@@ -139,6 +170,7 @@ const kirim = async () => {
         .catch((err) => alert(err));
 
     document.getElementById('formnama').value = null;
+    document.getElementById('hadiran').value = 3;
     document.getElementById('formpesan').value = null;
     document.getElementById('kirim').disabled = false;
     document.getElementById('kirim').innerHTML = `Kirim<i class="fa-solid fa-paper-plane ms-1"></i>`;
@@ -147,10 +179,5 @@ const kirim = async () => {
 document.addEventListener('DOMContentLoaded', () => {
     let modal = new bootstrap.Modal('#exampleModal');
     modal.show();
-    //document.getElementById('loading').style.display = 'none';
-    AOS.init();
-
     timer();
-    ucapan();
-    login();
 });
