@@ -62,3 +62,14 @@ body {
     background-color: var(--bs-dark);
     z-index: 1055 !important;
 }
+
+.ucapan {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+.ucapan::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
