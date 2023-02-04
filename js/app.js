@@ -179,7 +179,7 @@ const kirim = async () => {
         .then((res) => {
             if (res.code == 201) {
                 document.getElementById('formnama').value = null;
-                document.getElementById('hadiran').value = 3;
+                document.getElementById('hadiran').value = 0;
                 document.getElementById('formpesan').value = null;
                 ucapan();
             }
