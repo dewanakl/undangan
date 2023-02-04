@@ -65,7 +65,7 @@ const renderCard = (data) => {
             <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
         </div>
         <hr class="text-dark mt-1 mb-2">
-        <p class="text-dark mt-1 mb-0 mx-0 p-0">${data.komentar}</p>
+        <p class="text-dark mt-1 mb-0 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
     </div>`;
     return DIV;
 };
@@ -147,7 +147,7 @@ const kirim = async () => {
         return;
     }
 
-    if (hadir == 3) {
+    if (hadir == 0) {
         alert('silahkan pilih kehadiran');
         return;
     }
