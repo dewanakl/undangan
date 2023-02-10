@@ -1,4 +1,4 @@
-# Template undangan pernikahan sederhana dengan Bootstrap, AOS, dan Fontawsome
+# Template undangan pernikahan sederhana
 
 ## Tech stack
 - Bootstrap 5.3
