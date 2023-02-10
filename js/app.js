@@ -93,8 +93,24 @@ const renderCard = (data) => {
 const ucapan = async () => {
     const UCAPAN = document.getElementById('daftarucapan');
     UCAPAN.innerHTML = `<div class="text-center"><span class="spinner-border spinner-border-sm me-1"></span>Loading...</div>`;
+    let token = localStorage.getItem('token') ?? '';
 
-    await fetch('https://undangan-api-gules.vercel.app/api/comment')
+    if (token.length == 0) {
+        alert('Terdapat kesalahan, token kosong !');
+        window.location.reload();
+        return;
+    }
+
+    const REQ = {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    };
+
+    await fetch('https://undangan-api-gules.vercel.app/api/comment', REQ)
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
@@ -205,6 +221,12 @@ const kirim = async () => {
                 document.getElementById('hadiran').value = 0;
                 document.getElementById('formpesan').value = null;
                 ucapan();
+            }
+
+            if (res.error[0] == 'Expired token') {
+                alert('Terdapat kesalahan, token expired !');
+                window.location.reload();
+                return;
             }
 
             if (res.error.length != 0) {
