@@ -223,13 +223,13 @@ const kirim = async () => {
                 ucapan();
             }
 
-            if (res.error[0] == 'Expired token') {
-                alert('Terdapat kesalahan, token expired !');
-                window.location.reload();
-                return;
-            }
-
             if (res.error.length != 0) {
+                if (res.error[0] == 'Expired token') {
+                    alert('Terdapat kesalahan, token expired !');
+                    window.location.reload();
+                    return;
+                }
+
                 alert(res.error[0]);
             }
         })
