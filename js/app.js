@@ -1,7 +1,24 @@
-let isPlay = true;
-let token = '';
-let audio = new Audio('assets/music/sound.mp3');
-const tanggal = '2023-03-15 10:00:00';
+const audio = (() => {
+    let instance;
+
+    let getInstance = function () {
+        if (!instance) {
+            let url = document.getElementById('tombol-musik').getAttribute('data-url').toString();
+            instance = new Audio(url);
+        }
+
+        return instance;
+    };
+
+    return {
+        play: function () {
+            getInstance().play();
+        },
+        pause: function () {
+            getInstance().pause();
+        }
+    };
+})();
 
 const salin = (btn) => {
     navigator.clipboard.writeText(btn.getAttribute('data-nomer').toString());
@@ -15,6 +32,7 @@ const salin = (btn) => {
 };
 
 const timer = () => {
+    let tanggal = document.getElementById('tampilan-waktu').getAttribute('data-waktu').toString();
     let countDownDate = new Date(tanggal).getTime();
     let time = null;
 
@@ -42,13 +60,15 @@ const buka = () => {
 };
 
 const play = (btn) => {
+    let isPlay = btn.getAttribute('data-status').toString() == 'true';
+
     if (!isPlay) {
+        btn.setAttribute('data-status', 'true');
         audio.play();
-        isPlay = true;
         btn.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
     } else {
+        btn.setAttribute('data-status', 'false');
         audio.pause();
-        isPlay = false;
         btn.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
     }
 };
@@ -92,6 +112,7 @@ const ucapan = async () => {
 const login = async () => {
     const UCAPAN = document.getElementById('daftarucapan');
     UCAPAN.innerHTML = `<div class="text-center"><span class="spinner-border spinner-border-sm me-1"></span>Loading...</div>`;
+    let body = document.querySelector('body');
 
     const REQ = {
         method: 'POST',
@@ -100,8 +121,8 @@ const login = async () => {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            email: 'user@example.com',
-            password: '12345678'
+            email: body.getAttribute('data-email').toString(),
+            password: body.getAttribute('data-password').toString()
         })
     };
 
@@ -109,12 +130,13 @@ const login = async () => {
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
+                localStorage.removeItem('token');
+                localStorage.setItem('token', res.data.token);
                 ucapan();
-                token = res.data.token;
             }
 
-            if (res.error) {
-                alert('Terdapat kesalahan, otomatis reload halaman');
+            if (res.error.length != 0) {
+                alert('Terdapat kesalahan, ' + res.error[0]);
                 window.location.reload();
                 return;
             }
@@ -130,6 +152,7 @@ const kirim = async () => {
     let nama = document.getElementById('formnama').value;
     let hadir = document.getElementById('hadiran').value;
     let komentar = document.getElementById('formpesan').value;
+    let token = localStorage.getItem('token');
 
     if (token.length == 0) {
         alert('Terdapat kesalahan, otomatis reload halaman');
@@ -184,8 +207,8 @@ const kirim = async () => {
                 ucapan();
             }
 
-            if (res.error) {
-                alert(Object.values(res.error)[0]);
+            if (res.error.length != 0) {
+                alert(res.error[0]);
             }
         })
         .catch((err) => alert(err));

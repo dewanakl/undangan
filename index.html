@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 
-<body>
+<body data-email="user@example.com" data-password="12345678">
     <nav class="navbar navbar-dark bg-dark navbar-expand fixed-bottom rounded-top-4 p-0" id="navbar-example2">
         <ul class="navbar-nav nav-justified w-100 align-items-center">
             <li class="nav-item">
@@ -140,7 +140,7 @@
                 <div class="text-center">
                     <h1 class="font-estetik py-3" style="font-size: 2rem;">Waktu Menuju Acara</h1>
                     <div class="border rounded-pill py-1 px-4">
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center" data-waktu="2023-03-15 10:00:00" id="tampilan-waktu">
                             <div class="col-3 p-1">
                                 <h2 class="d-inline m-0 p-0" id="hari">0</h2><small
                                     class="ms-1 me-0 my-0 p-0 d-inline">Hari</small>
@@ -308,7 +308,7 @@
     </main>
 
     <button type="button" id="tombol-musik" style="display: none;" class="btn btn-light btn-sm rounded-circle btn-music"
-        onclick="play(this)">
+        onclick="play(this)" data-status="true" data-url="assets/music/sound.mp3">
         <i class="fa-solid fa-circle-pause"></i>
     </button>
 
