@@ -152,10 +152,10 @@ const kirim = async () => {
     let nama = document.getElementById('formnama').value;
     let hadir = document.getElementById('hadiran').value;
     let komentar = document.getElementById('formpesan').value;
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('token') ?? '';
 
     if (token.length == 0) {
-        alert('Terdapat kesalahan, otomatis reload halaman');
+        alert('Terdapat kesalahan, token kosong !');
         window.location.reload();
         return;
     }
