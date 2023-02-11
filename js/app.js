@@ -42,12 +42,12 @@ const timer = () => {
         if (distance < 0) {
             clearInterval(time);
             return false;
-        } else {
-            document.getElementById('hari').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-            document.getElementById('jam').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById('menit').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById('detik').innerText = Math.floor((distance % (1000 * 60)) / 1000);
         }
+
+        document.getElementById('hari').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+        document.getElementById('jam').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById('menit').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        document.getElementById('detik').innerText = Math.floor((distance % (1000 * 60)) / 1000);
     }, 1000);
 };
 
@@ -120,6 +120,16 @@ const ucapan = async () => {
                 if (res.data.length == 0) {
                     UCAPAN.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
                 }
+            }
+
+            if (res.error.length != 0) {
+                if (res.error[0] == 'Expired token') {
+                    alert('Terdapat kesalahan, token expired !');
+                    window.location.reload();
+                    return;
+                }
+
+                alert(res.error[0]);
             }
         })
         .catch((err) => alert(err));
