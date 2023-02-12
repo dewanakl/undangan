@@ -42,8 +42,8 @@ body {
 .cropper>img {
     display: inline;
     margin: 0 auto;
-    height: 100%;
-    width: auto;
+    height: auto;
+    width: 100%;
 }
 
 .btn-music {
