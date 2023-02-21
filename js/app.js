@@ -22,11 +22,12 @@ const audio = (() => {
 
 const salin = (btn) => {
     navigator.clipboard.writeText(btn.getAttribute('data-nomer').toString());
+    let tmp = btn.innerHTML;
     btn.innerHTML = 'Tersalin';
     btn.disabled = true;
 
     setTimeout(() => {
-        btn.innerHTML = 'Salin No. Rekening';
+        btn.innerHTML = tmp;
         btn.disabled = false;
     }, 1500);
 };
@@ -56,6 +57,7 @@ const buka = () => {
     document.getElementById('tombol-musik').style.display = 'block';
     AOS.init();
     login();
+    timer();
     audio.play();
 };
 
@@ -73,6 +75,167 @@ const play = (btn) => {
     }
 };
 
+const resetForm = () => {
+    document.getElementById('kirim').style.display = 'block';
+    document.getElementById('hadiran').style.display = 'block';
+    document.getElementById('labelhadir').style.display = 'block';
+    document.getElementById('batal').style.display = 'none';
+    document.getElementById('kirimbalasan').style.display = 'none';
+    document.getElementById('idbalasan').value = null;
+    document.getElementById('balasan').innerHTML = null;
+    document.getElementById('formnama').value = null;
+    document.getElementById('hadiran').value = 0;
+    document.getElementById('formpesan').value = null;
+};
+
+const balasan = async (id) => {
+    document.getElementById('kirim').style.display = 'none';
+    document.getElementById('hadiran').style.display = 'none';
+    document.getElementById('labelhadir').style.display = 'none';
+    document.getElementById('batal').style.display = 'block';
+    document.getElementById('kirimbalasan').style.display = 'block';
+    document.getElementById('idbalasan').value = id;
+
+    const BALAS = document.getElementById('balasan');
+    BALAS.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+    let token = localStorage.getItem('token') ?? '';
+
+    if (token.length == 0) {
+        alert('Terdapat kesalahan, token kosong !');
+        window.location.reload();
+        return;
+    }
+
+    const REQ = {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    };
+
+    await fetch('https://undangan-api-gules.vercel.app/api/comment/' + id, REQ)
+        .then((res) => res.json())
+        .then((res) => {
+            if (res.code == 200) {
+                BALAS.innerHTML = `
+                <div class="card-body bg-light shadow p-2 my-2 rounded-3">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
+                            <strong>${res.data.nama}</strong>
+                        </p>
+                        <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${res.data.created_at}</small>
+                    </div>
+                    <hr class="text-dark my-1">
+                    <p class="text-dark m-0 p-0" style="white-space: pre-line">${res.data.komentar}</p>
+                </div>`;
+            }
+
+            if (res.error.length != 0) {
+                if (res.error[0] == 'Expired token') {
+                    alert('Terdapat kesalahan, token expired !');
+                    window.location.reload();
+                    return;
+                }
+
+                alert(res.error[0]);
+            }
+        })
+        .catch((err) => alert(err));
+};
+
+const kirimBalasan = async () => {
+    let nama = document.getElementById('formnama').value;
+    let komentar = document.getElementById('formpesan').value;
+    let token = localStorage.getItem('token') ?? '';
+
+    if (token.length == 0) {
+        alert('Terdapat kesalahan, token kosong !');
+        window.location.reload();
+        return;
+    }
+
+    if (nama.length == 0) {
+        alert('nama tidak boleh kosong');
+        return;
+    }
+
+    if (nama.length >= 35) {
+        alert('panjangan nama maksimal 35');
+        return;
+    }
+
+    if (komentar.length == 0) {
+        alert('pesan tidak boleh kosong');
+        return;
+    }
+
+    document.getElementById('batal').disabled = true;
+    document.getElementById('kirimbalasan').disabled = true;
+    document.getElementById('kirimbalasan').innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+
+    const REQ = {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            nama: nama,
+            id: document.getElementById('idbalasan').value,
+            komentar: komentar
+        })
+    };
+
+    await fetch('https://undangan-api-gules.vercel.app/api/comment', REQ)
+        .then((res) => res.json())
+        .then((res) => {
+            if (res.code == 201) {
+                resetForm();
+                ucapan();
+            }
+
+            if (res.error.length != 0) {
+                if (res.error[0] == 'Expired token') {
+                    alert('Terdapat kesalahan, token expired !');
+                    window.location.reload();
+                    return;
+                }
+
+                alert(res.error[0]);
+            }
+        })
+        .catch((err) => alert(err));
+
+    document.getElementById('batal').disabled = false;
+    document.getElementById('kirimbalasan').disabled = false;
+    document.getElementById('kirimbalasan').innerHTML = `Kirim<i class="fa-solid fa-paper-plane ms-1"></i>`;
+};
+
+const innerCard = (comment) => {
+    let result = '';
+
+    comment.forEach((data) => {
+        result += `
+        <div class="card-body border-start bg-light py-2 ps-2 pe-0 my-2 ms-3 me-0">
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
+                    <strong>${data.nama}</strong>
+                </p>
+                <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
+            </div>
+            <hr class="text-dark my-1">
+            <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
+            <a href="#ucapan" style="font-size: 0.8rem;" onclick="balasan('${data.uuid}')" class="btn btn-sm btn-outline-dark py-0">Balas</a>
+            ${innerCard(data.comment)}
+        </div>`;
+    });
+
+    return result;
+};
+
 const renderCard = (data) => {
     const DIV = document.createElement('div');
     DIV.classList.add('mb-3');
@@ -84,8 +247,10 @@ const renderCard = (data) => {
             </p>
             <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
         </div>
-        <hr class="text-dark mt-1 mb-2">
-        <p class="text-dark mt-1 mb-0 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
+        <hr class="text-dark my-1">
+        <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
+        <a href="#ucapan" style="font-size: 0.8rem;" onclick="balasan('${data.uuid}')" class="btn btn-sm btn-outline-dark py-0">Balas</a>
+        ${innerCard(data.comment)}
     </div>`;
     return DIV;
 };
@@ -227,9 +392,7 @@ const kirim = async () => {
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 201) {
-                document.getElementById('formnama').value = null;
-                document.getElementById('hadiran').value = 0;
-                document.getElementById('formpesan').value = null;
+                resetForm();
                 ucapan();
             }
 
@@ -251,6 +414,22 @@ const kirim = async () => {
 
 document.addEventListener('DOMContentLoaded', () => {
     let modal = new bootstrap.Modal('#exampleModal');
+    let name = (new URLSearchParams(window.location.search)).get('to') ?? '';
+
+    if (name.length == 0) {
+        document.getElementById('namatamu').remove();
+    } else {
+        name = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        let div = document.createElement('div');
+        div.classList.add('m-2');
+        div.innerHTML = `
+        <p class="mt-0 mb-1 mx-0 p-0 text-light">Kepada Yth Bapak/Ibu/Saudara/i</p>
+        <h2 class="text-light">${name}</h2>
+        `;
+
+        document.getElementById('formnama').value = name;
+        document.getElementById('namatamu').appendChild(div);
+    }
+
     modal.show();
-    timer();
 });
