@@ -52,11 +52,11 @@ const timer = () => {
     }, 1000);
 };
 
-const buka = () => {
+const buka = async () => {
     document.getElementById('loading').style.display = 'none';
     document.getElementById('tombol-musik').style.display = 'block';
     AOS.init();
-    login();
+    await login();
     timer();
     audio.play();
 };
@@ -88,16 +88,15 @@ const resetForm = () => {
     document.getElementById('formpesan').value = null;
 };
 
-const balasan = async (id) => {
-    document.getElementById('kirim').style.display = 'none';
-    document.getElementById('hadiran').style.display = 'none';
-    document.getElementById('labelhadir').style.display = 'none';
-    document.getElementById('batal').style.display = 'block';
-    document.getElementById('kirimbalasan').style.display = 'block';
-    document.getElementById('idbalasan').value = id;
+const balasan = async (button) => {
+    button.disabled = true;
+    let tmp = button.innerText;
+    button.innerText = 'Loading...';
 
     const BALAS = document.getElementById('balasan');
-    BALAS.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+    BALAS.innerHTML = null;
+
+    let id = button.getAttribute('data-uuid').toString();
     let token = localStorage.getItem('token') ?? '';
 
     if (token.length == 0) {
@@ -119,6 +118,13 @@ const balasan = async (id) => {
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
+                document.getElementById('kirim').style.display = 'none';
+                document.getElementById('hadiran').style.display = 'none';
+                document.getElementById('labelhadir').style.display = 'none';
+                document.getElementById('batal').style.display = 'block';
+                document.getElementById('kirimbalasan').style.display = 'block';
+                document.getElementById('idbalasan').value = id;
+
                 BALAS.innerHTML = `
                 <div class="card-body bg-light shadow p-2 my-2 rounded-3">
                     <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -143,12 +149,17 @@ const balasan = async (id) => {
             }
         })
         .catch((err) => alert(err));
+
+    document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
+    button.disabled = false;
+    button.innerText = tmp;
 };
 
 const kirimBalasan = async () => {
     let nama = document.getElementById('formnama').value;
     let komentar = document.getElementById('formpesan').value;
     let token = localStorage.getItem('token') ?? '';
+    let id = document.getElementById('idbalasan').value;
 
     if (token.length == 0) {
         alert('Terdapat kesalahan, token kosong !');
@@ -173,6 +184,7 @@ const kirimBalasan = async () => {
 
     document.getElementById('batal').disabled = true;
     document.getElementById('kirimbalasan').disabled = true;
+    let tmp = document.getElementById('kirimbalasan').innerHTML;
     document.getElementById('kirimbalasan').innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
     const REQ = {
@@ -184,7 +196,7 @@ const kirimBalasan = async () => {
         },
         body: JSON.stringify({
             nama: nama,
-            id: document.getElementById('idbalasan').value,
+            id: id,
             komentar: komentar
         })
     };
@@ -194,7 +206,6 @@ const kirimBalasan = async () => {
         .then((res) => {
             if (res.code == 201) {
                 resetForm();
-                ucapan();
             }
 
             if (res.error.length != 0) {
@@ -209,9 +220,12 @@ const kirimBalasan = async () => {
         })
         .catch((err) => alert(err));
 
+    await ucapan();
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+
     document.getElementById('batal').disabled = false;
     document.getElementById('kirimbalasan').disabled = false;
-    document.getElementById('kirimbalasan').innerHTML = `Kirim<i class="fa-solid fa-paper-plane ms-1"></i>`;
+    document.getElementById('kirimbalasan').innerHTML = tmp;
 };
 
 const innerCard = (comment) => {
@@ -219,7 +233,7 @@ const innerCard = (comment) => {
 
     comment.forEach((data) => {
         result += `
-        <div class="card-body border-start bg-light py-2 ps-2 pe-0 my-2 ms-3 me-0">
+        <div class="card-body border-start bg-light py-2 ps-2 pe-0 my-2 ms-3 me-0" id="${data.uuid}">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
                 <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
                     <strong>${data.nama}</strong>
@@ -228,7 +242,7 @@ const innerCard = (comment) => {
             </div>
             <hr class="text-dark my-1">
             <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
-            <a href="#ucapan" style="font-size: 0.8rem;" onclick="balasan('${data.uuid}')" class="btn btn-sm btn-outline-dark py-0">Balas</a>
+            <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark py-0">Balas</button>
             ${innerCard(data.comment)}
         </div>`;
     });
@@ -240,7 +254,7 @@ const renderCard = (data) => {
     const DIV = document.createElement('div');
     DIV.classList.add('mb-3');
     DIV.innerHTML = `
-    <div class="card-body bg-light shadow p-2 m-0 rounded-3">
+    <div class="card-body bg-light shadow p-2 m-0 rounded-3" id="${data.uuid}">
         <div class="d-flex flex-wrap justify-content-between align-items-center">
             <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
                 <strong class="me-1">${data.nama}</strong>${data.hadir ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i>'}
@@ -249,7 +263,7 @@ const renderCard = (data) => {
         </div>
         <hr class="text-dark my-1">
         <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
-        <a href="#ucapan" style="font-size: 0.8rem;" onclick="balasan('${data.uuid}')" class="btn btn-sm btn-outline-dark py-0">Balas</a>
+        <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark py-0">Balas</button>
         ${innerCard(data.comment)}
     </div>`;
     return DIV;
@@ -372,6 +386,7 @@ const kirim = async () => {
     }
 
     document.getElementById('kirim').disabled = true;
+    let tmp = document.getElementById('kirim').innerHTML;
     document.getElementById('kirim').innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
     const REQ = {
@@ -409,7 +424,7 @@ const kirim = async () => {
         .catch((err) => alert(err));
 
     document.getElementById('kirim').disabled = false;
-    document.getElementById('kirim').innerHTML = `Kirim<i class="fa-solid fa-paper-plane ms-1"></i>`;
+    document.getElementById('kirim').innerHTML = tmp;
 };
 
 document.addEventListener('DOMContentLoaded', () => {
