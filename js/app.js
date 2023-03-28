@@ -233,7 +233,7 @@ const innerCard = (comment) => {
 
     comment.forEach((data) => {
         result += `
-        <div class="card-body border-start bg-light py-2 ps-2 pe-0 my-2 ms-3 me-0" id="${data.uuid}" data-aos="fade-down">
+        <div class="card-body border-start bg-light py-2 ps-2 pe-0 my-2 ms-3 me-0" id="${data.uuid}">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
                 <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
                     <strong>${data.nama}</strong>
@@ -253,8 +253,9 @@ const innerCard = (comment) => {
 const renderCard = (data) => {
     const DIV = document.createElement('div');
     DIV.classList.add('mb-3');
+    DIV.setAttribute('data-aos', 'fade-up');
     DIV.innerHTML = `
-    <div class="card-body bg-light shadow p-2 m-0 rounded-3" id="${data.uuid}" data-aos="fade-up">
+    <div class="card-body bg-light shadow p-2 m-0 rounded-3" id="${data.uuid}">
         <div class="d-flex flex-wrap justify-content-between align-items-center">
             <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
                 <strong class="me-1">${data.nama}</strong>${data.hadir ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i>'}
