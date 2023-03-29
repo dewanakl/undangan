@@ -1,5 +1,5 @@
 const audio = (() => {
-    let instance;
+    let instance = null;
 
     let getInstance = function () {
         if (!instance) {
