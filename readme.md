@@ -1,4 +1,4 @@
-# Template undangan pernikahan sederhana
+# Template website undangan pernikahan sederhana
 
 ## Tech stack
 - Bootstrap 5.3
@@ -7,4 +7,4 @@
 - Google Fonts
 - Vanilla JS
 
-### Terima kasih banyakk
+### Terima kasih banyak teman teman
