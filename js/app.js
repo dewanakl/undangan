@@ -197,11 +197,13 @@ const kirimBalasan = async () => {
         })
     };
 
+    let isSuccess = false;
+
     await fetch(document.querySelector('body').getAttribute('data-url') + '/api/comment', REQ)
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 201) {
-                resetForm();
+                isSuccess = true;
             }
 
             if (res.error.length != 0) {
@@ -216,8 +218,11 @@ const kirimBalasan = async () => {
         })
         .catch((err) => alert(err));
 
-    await ucapan();
-    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    if (isSuccess) {
+        await ucapan();
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        resetForm();
+    }
 
     document.getElementById('batal').disabled = false;
     document.getElementById('kirimbalasan').disabled = false;
