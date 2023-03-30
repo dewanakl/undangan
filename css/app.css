@@ -1,5 +1,5 @@
 *::-webkit-scrollbar {
-    width: 14px;
+    width: 0.875rem;
 }
 
 *::-webkit-scrollbar-button {
@@ -11,8 +11,8 @@
 }
 
 *::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-    border: 4px solid transparent;
+    border-radius: 0.5rem;
+    border: 0.25rem solid transparent;
     background-clip: content-box;
     background-color: #bbbbbb;
 }
@@ -28,7 +28,7 @@ html {
 body {
     overflow: overlay;
     font-family: 'Josefin Sans', sans-serif;
-    padding: 0px !important;
+    padding: 0 !important;
 }
 
 .font-estetik {
@@ -67,13 +67,6 @@ body {
     z-index: 1055 !important;
 }
 
-.ucapan {
-    -ms-overflow-style: none !important;
-    scrollbar-width: none !important;
-}
-
-.ucapan::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
+.card-body {
+    overflow-wrap: break-word !important;
 }

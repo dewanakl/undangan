@@ -3,8 +3,7 @@ const audio = (() => {
 
     let getInstance = function () {
         if (!instance) {
-            let url = document.getElementById('tombol-musik').getAttribute('data-url').toString();
-            instance = new Audio(url);
+            instance = new Audio(document.getElementById('tombol-musik').getAttribute('data-url'));
         }
 
         return instance;
@@ -21,7 +20,7 @@ const audio = (() => {
 })();
 
 const salin = (btn) => {
-    navigator.clipboard.writeText(btn.getAttribute('data-nomer').toString());
+    navigator.clipboard.writeText(btn.getAttribute('data-nomer'));
     let tmp = btn.innerHTML;
     btn.innerHTML = 'Tersalin';
     btn.disabled = true;
@@ -33,12 +32,11 @@ const salin = (btn) => {
 };
 
 const timer = () => {
-    let tanggal = document.getElementById('tampilan-waktu').getAttribute('data-waktu').toString();
-    let countDownDate = new Date(tanggal).getTime();
+    let countDownDate = new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu')).getTime();
     let time = null;
 
     time = setInterval(() => {
-        let distance = countDownDate - (new Date().getTime());
+        let distance = countDownDate - (new Date()).getTime();
 
         if (distance < 0) {
             clearInterval(time);
@@ -62,9 +60,7 @@ const buka = async () => {
 };
 
 const play = (btn) => {
-    let isPlay = btn.getAttribute('data-status').toString() == 'true';
-
-    if (!isPlay) {
+    if (btn.getAttribute('data-status').toString() != 'true') {
         btn.setAttribute('data-status', 'true');
         audio.play();
         btn.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
@@ -114,7 +110,7 @@ const balasan = async (button) => {
         }
     };
 
-    await fetch('https://undangan-api-gules.vercel.app/api/comment/' + id, REQ)
+    await fetch(document.querySelector('body').getAttribute('data-url') + '/api/comment/' + id, REQ)
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
@@ -201,7 +197,7 @@ const kirimBalasan = async () => {
         })
     };
 
-    await fetch('https://undangan-api-gules.vercel.app/api/comment', REQ)
+    await fetch(document.querySelector('body').getAttribute('data-url') + '/api/comment', REQ)
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 201) {
@@ -290,7 +286,7 @@ const ucapan = async () => {
         }
     };
 
-    await fetch('https://undangan-api-gules.vercel.app/api/comment', REQ)
+    await fetch(document.querySelector('body').getAttribute('data-url') + '/api/comment', REQ)
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
@@ -316,8 +312,7 @@ const ucapan = async () => {
 };
 
 const login = async () => {
-    const UCAPAN = document.getElementById('daftarucapan');
-    UCAPAN.innerHTML = `<div class="text-center"><span class="spinner-border spinner-border-sm me-1"></span>Loading...</div>`;
+    document.getElementById('daftarucapan').innerHTML = `<div class="text-center"><span class="spinner-border spinner-border-sm me-1"></span>Loading...</div>`;
     let body = document.querySelector('body');
 
     const REQ = {
@@ -332,7 +327,7 @@ const login = async () => {
         })
     };
 
-    await fetch('https://undangan-api-gules.vercel.app/api/login', REQ)
+    await fetch(body.getAttribute('data-url') + '/api/login', REQ)
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
@@ -404,7 +399,7 @@ const kirim = async () => {
         })
     };
 
-    await fetch('https://undangan-api-gules.vercel.app/api/comment', REQ)
+    await fetch(document.querySelector('body').getAttribute('data-url') + '/api/comment', REQ)
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 201) {
@@ -435,8 +430,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (name.length == 0) {
         document.getElementById('namatamu').remove();
     } else {
-        name = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         let div = document.createElement('div');
+        name = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         div.classList.add('m-2');
         div.innerHTML = `
         <p class="mt-0 mb-1 mx-0 p-0 text-light">Kepada Yth Bapak/Ibu/Saudara/i</p>
