@@ -1,6 +1,6 @@
 ## Template website undangan pernikahan sederhana
 
-#### Demo: https://dewanakl.github.io/undangan/?to=Teman+teman+semua
+##### Demo: https://dewanakl.github.io/undangan/?to=Teman+teman+semua
 
 ### Tech stack
 - Bootstrap 5.3
@@ -9,4 +9,4 @@
 - Google Fonts
 - Vanilla JS
 
-#### Terima kasih banyak teman teman
+### Terima kasih banyak teman teman
