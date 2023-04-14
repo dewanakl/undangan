@@ -429,7 +429,7 @@ const kirim = async () => {
     document.getElementById('kirim').innerHTML = tmp;
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
     let modal = new bootstrap.Modal('#exampleModal');
     let name = (new URLSearchParams(window.location.search)).get('to') ?? '';
 
