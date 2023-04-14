@@ -1,7 +1,7 @@
 const audio = (() => {
-    let instance = undefined;
+    var instance = undefined;
 
-    let getInstance = function () {
+    var getInstance = function () {
         if (!instance) {
             instance = new Audio(document.getElementById('tombol-musik').getAttribute('data-url'));
         }
@@ -32,9 +32,9 @@ const salin = (btn) => {
 };
 
 const timer = () => {
-    let countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu'))).getTime();
-    let time = undefined;
-    let distance = undefined;
+    var countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu'))).getTime();
+    var time = undefined;
+    var distance = undefined;
 
     time = setInterval(() => {
         distance = countDownDate - (new Date()).getTime();
