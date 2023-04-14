@@ -32,15 +32,16 @@ const salin = (btn) => {
 };
 
 const timer = () => {
-    let countDownDate = new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu')).getTime();
+    let countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu'))).getTime();
     let time = null;
+    let distance = null;
 
     time = setInterval(() => {
-        let distance = countDownDate - (new Date()).getTime();
+        distance = countDownDate - (new Date()).getTime();
 
         if (distance < 0) {
             clearInterval(time);
-            return false;
+            return;
         }
 
         document.getElementById('hari').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
