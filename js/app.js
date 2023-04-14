@@ -1,5 +1,5 @@
 const audio = (() => {
-    let instance = null;
+    let instance = undefined;
 
     let getInstance = function () {
         if (!instance) {
@@ -33,8 +33,8 @@ const salin = (btn) => {
 
 const timer = () => {
     let countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu'))).getTime();
-    let time = null;
-    let distance = null;
+    let time = undefined;
+    let distance = undefined;
 
     time = setInterval(() => {
         distance = countDownDate - (new Date()).getTime();
