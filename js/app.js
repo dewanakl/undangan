@@ -41,6 +41,7 @@ const timer = () => {
 
         if (distance < 0) {
             clearInterval(time);
+            time = undefined;
             return;
         }
 
