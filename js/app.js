@@ -3,7 +3,9 @@ const audio = (() => {
 
     var getInstance = function () {
         if (!instance) {
-            instance = new Audio(document.getElementById('tombol-musik').getAttribute('data-url'));
+            instance = new Audio();
+            instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
+            instance.load();
         }
 
         return instance;
@@ -32,7 +34,7 @@ const salin = (btn) => {
 };
 
 const timer = () => {
-    var countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu'))).getTime();
+    var countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu').replace(' ', 'T'))).getTime();
     var time = undefined;
     var distance = undefined;
 
@@ -124,7 +126,7 @@ const balasan = async (button) => {
                 document.getElementById('idbalasan').value = id;
 
                 BALAS.innerHTML = `
-                <div class="card-body bg-light shadow p-2 my-2 rounded-3">
+                <div class="card-body bg-light shadow p-2 my-2 rounded-4">
                     <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
                             <strong>${res.data.nama}</strong>
@@ -245,7 +247,7 @@ const innerCard = (comment) => {
             </div>
             <hr class="text-dark my-1">
             <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
-            <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark py-0">Balas</button>
+            <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-4 py-0">Balas</button>
             ${innerCard(data.comment)}
         </div>`;
     });
@@ -258,7 +260,7 @@ const renderCard = (data) => {
     DIV.classList.add('mb-3');
     DIV.setAttribute('data-aos', 'fade-up');
     DIV.innerHTML = `
-    <div class="card-body bg-light shadow p-2 m-0 rounded-3" id="${data.uuid}">
+    <div class="card-body bg-light shadow p-2 m-0 rounded-4" id="${data.uuid}">
         <div class="d-flex flex-wrap justify-content-between align-items-center">
             <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
                 <strong class="me-1">${data.nama}</strong>${data.hadir ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i>'}
@@ -267,7 +269,7 @@ const renderCard = (data) => {
         </div>
         <hr class="text-dark my-1">
         <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
-        <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark py-0">Balas</button>
+        <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-4 py-0">Balas</button>
         ${innerCard(data.comment)}
     </div>`;
     return DIV;
@@ -450,4 +452,4 @@ window.addEventListener('load', () => {
     }
 
     modal.show();
-});
+}, false);
