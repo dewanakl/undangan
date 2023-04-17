@@ -4,8 +4,13 @@ const audio = (() => {
     var getInstance = function () {
         if (!instance) {
             instance = new Audio();
+            instance.autoplay = true;
             instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
             instance.load();
+            instance.currentTime = 0;
+            instance.volume = 1;
+            instance.muted = false;
+            instance.loop = true;
         }
 
         return instance;
@@ -57,10 +62,10 @@ const timer = () => {
 const buka = async () => {
     document.getElementById('loading').style.display = 'none';
     document.getElementById('tombol-musik').style.display = 'block';
+    audio.play();
     AOS.init();
     await login();
     timer();
-    audio.play();
 };
 
 const play = (btn) => {
