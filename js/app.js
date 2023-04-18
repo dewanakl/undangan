@@ -26,6 +26,15 @@ const audio = (() => {
     };
 })();
 
+const escapeHtml = (unsafe) => {
+    return unsafe
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+}
+
 const salin = (btn) => {
     navigator.clipboard.writeText(btn.getAttribute('data-nomer'));
     let tmp = btn.innerHTML;
@@ -134,12 +143,12 @@ const balasan = async (button) => {
                 <div class="card-body bg-light shadow p-2 my-2 rounded-4">
                     <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
-                            <strong>${res.data.nama}</strong>
+                            <strong>${escapeHtml(res.data.nama)}</strong>
                         </p>
                         <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${res.data.created_at}</small>
                     </div>
                     <hr class="text-dark my-1">
-                    <p class="text-dark m-0 p-0" style="white-space: pre-line">${res.data.komentar}</p>
+                    <p class="text-dark m-0 p-0" style="white-space: pre-line">${escapeHtml(res.data.komentar)}</p>
                 </div>`;
             }
 
@@ -246,12 +255,12 @@ const innerCard = (comment) => {
         <div class="card-body border-start bg-light py-2 ps-2 pe-0 my-2 ms-3 me-0" id="${data.uuid}">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
                 <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
-                    <strong>${data.nama}</strong>
+                    <strong>${escapeHtml(data.nama)}</strong>
                 </p>
                 <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
             </div>
             <hr class="text-dark my-1">
-            <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
+            <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${escapeHtml(data.komentar)}</p>
             <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-4 py-0">Balas</button>
             ${innerCard(data.comment)}
         </div>`;
@@ -268,12 +277,12 @@ const renderCard = (data) => {
     <div class="card-body bg-light shadow p-2 m-0 rounded-4" id="${data.uuid}">
         <div class="d-flex flex-wrap justify-content-between align-items-center">
             <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
-                <strong class="me-1">${data.nama}</strong>${data.hadir ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i>'}
+                <strong class="me-1">${escapeHtml(data.nama)}</strong>${data.hadir ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i>'}
             </p>
             <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
         </div>
         <hr class="text-dark my-1">
-        <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${data.komentar}</p>
+        <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${escapeHtml(data.komentar)}</p>
         <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-4 py-0">Balas</button>
         ${innerCard(data.comment)}
     </div>`;
