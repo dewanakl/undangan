@@ -2,7 +2,7 @@
 
 ##### Demo: https://dewanakl.github.io/undangan/?to=Teman+teman+semua
 
-##### Deployment API: https://youtu.be/WOVyAw1UAtI
+##### Deployment API: https://dikit.my.id/DeploymentUndanganAPI
 
 ### Tech stack
 - Bootstrap 5.3
