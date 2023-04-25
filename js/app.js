@@ -28,12 +28,12 @@ const audio = (() => {
 
 const escapeHtml = (unsafe) => {
     return unsafe
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#039;');
-}
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+};
 
 const salin = (btn) => {
     navigator.clipboard.writeText(btn.getAttribute('data-nomer'));
@@ -107,9 +107,6 @@ const balasan = async (button) => {
     let tmp = button.innerText;
     button.innerText = 'Loading...';
 
-    const BALAS = document.getElementById('balasan');
-    BALAS.innerHTML = null;
-
     let id = button.getAttribute('data-uuid').toString();
     let token = localStorage.getItem('token') ?? '';
 
@@ -132,6 +129,9 @@ const balasan = async (button) => {
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
+                const BALAS = document.getElementById('balasan');
+                BALAS.innerHTML = null;
+
                 document.getElementById('kirim').style.display = 'none';
                 document.getElementById('hadiran').style.display = 'none';
                 document.getElementById('labelhadir').style.display = 'none';
@@ -454,11 +454,10 @@ window.addEventListener('load', () => {
         document.getElementById('namatamu').remove();
     } else {
         let div = document.createElement('div');
-        name = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         div.classList.add('m-2');
         div.innerHTML = `
         <p class="mt-0 mb-1 mx-0 p-0 text-light">Kepada Yth Bapak/Ibu/Saudara/i</p>
-        <h2 class="text-light">${name}</h2>
+        <h2 class="text-light">${escapeHtml(name)}</h2>
         `;
 
         document.getElementById('formnama').value = name;
