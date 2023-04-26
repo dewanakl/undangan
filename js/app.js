@@ -348,10 +348,12 @@ const pagination = (() => {
         getNext: () => {
             return pageNow;
         },
-        reset: () => {
-            pageNow = perPage;
+        reset: async () => {
+            pageNow = 0;
             resultData = 0;
-            this.previous();
+            await ucapan();
+            document.getElementById('next').classList.remove('disabled');
+            disabledPrevious();
         },
         setResultData: (len) => {
             resultData = len;
