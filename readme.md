@@ -2,7 +2,8 @@
 
 ##### Demo: https://dewanakl.github.io/undangan/?to=Teman+teman+semua
 
-##### Deployment API: https://dikit.my.id/DeploymentUndanganAPI
+##### Deployment API Vercel: [https://dikit.my.id/DeploymentApiVercel](https://dikit.my.id/DeploymentApiVercel)
+##### Deployment API Hosting: [https://dikit.my.id/DeploymentApiHosting](https://dikit.my.id/DeploymentApiHosting)
 
 ### Tech stack
 - Bootstrap 5.3.0-alpha3
