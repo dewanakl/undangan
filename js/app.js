@@ -44,6 +44,7 @@ const salin = (btn) => {
     setTimeout(() => {
         btn.innerHTML = tmp;
         btn.disabled = false;
+        btn.focus();
     }, 1500);
 };
 
@@ -69,7 +70,6 @@ const timer = () => {
 };
 
 const buka = async () => {
-    document.getElementById('loading').style.display = 'none';
     document.getElementById('tombol-musik').style.display = 'block';
     audio.play();
     AOS.init();
@@ -548,6 +548,73 @@ const kirim = async () => {
     document.getElementById('kirim').innerHTML = tmp;
 };
 
+const progressBar = (() => {
+    let bar = document.getElementById('bar');
+
+    let clear = null;
+    let second = 1;
+    let counter = 1;
+    let untilOneHundred = parseInt(bar.style.width.replace('%', ''));
+
+    clear = setInterval(() => {
+
+        if (untilOneHundred < 100) {
+            untilOneHundred = (counter + (untilOneHundred / 10)) / (second + (untilOneHundred / 100));
+            setNum(untilOneHundred);
+        } else {
+            clearInterval(clear);
+        }
+
+        if (counter % 100 == 1) {
+            second += 1;
+        }
+
+        counter += 1;
+    }, 10);
+
+    let setNum = (num) => {
+        bar.style.width = num + "%";
+        bar.innerText = Math.floor(num) + "%";
+    };
+
+    return {
+        stop: () => {
+            clearInterval(clear);
+            setNum(100.0);
+        }
+    };
+})();
+
+const opacity = () => {
+    let modal = new Promise((res) => {
+        let clear = null;
+        clear = setInterval(() => {
+            if (document.getElementById('exampleModal').classList.contains('show')) {
+                clearInterval(clear);
+                res();
+            }
+        }, 100);
+    });
+
+    modal.then(() => {
+        progressBar.stop();
+
+        let op = parseInt(document.getElementById('loading').style.opacity);
+        let clear = null;
+
+        clear = setInterval(() => {
+            if (op >= 0) {
+                op -= 0.025;
+                document.getElementById('loading').style.opacity = op;
+            } else {
+                clearInterval(clear);
+                document.getElementById('loading').remove();
+                document.getElementById('exampleModal').classList.add('fade');
+            }
+        }, 10);
+    });
+};
+
 window.addEventListener('load', () => {
     let modal = new bootstrap.Modal('#exampleModal');
     let name = (new URLSearchParams(window.location.search)).get('to') ?? '';
@@ -567,4 +634,5 @@ window.addEventListener('load', () => {
     }
 
     modal.show();
+    opacity();
 }, false);
