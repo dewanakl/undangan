@@ -565,7 +565,7 @@ const progressBar = (() => {
             clearInterval(clear);
         }
 
-        if (counter % 100 == 1) {
+        if (counter % 100 == 0) {
             second += 1;
         }
 
