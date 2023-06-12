@@ -615,6 +615,13 @@ const opacity = () => {
     });
 };
 
+const modalFoto = (btn) => {
+    let modal = new bootstrap.Modal('#modalFoto');
+    let img = document.getElementById('showModalFoto');
+    img.src = btn.src;
+    modal.show();
+};
+
 window.addEventListener('load', () => {
     let modal = new bootstrap.Modal('#exampleModal');
     let name = (new URLSearchParams(window.location.search)).get('to') ?? '';
