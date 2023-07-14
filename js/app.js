@@ -1,27 +1,19 @@
 const audio = (() => {
-    var instance = undefined;
-
-    var getInstance = () => {
-        if (!instance) {
-            instance = new Audio();
-            instance.autoplay = true;
-            instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
-            instance.load();
-            instance.currentTime = 0;
-            instance.volume = 1;
-            instance.muted = false;
-            instance.loop = true;
-        }
-
-        return instance;
-    };
+    let instance = new Audio();
+    instance.autoplay = true;
+    instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
+    instance.load();
+    instance.currentTime = 0;
+    instance.volume = 1;
+    instance.muted = false;
+    instance.loop = true;
 
     return {
         play: () => {
-            getInstance().play();
+            instance.play();
         },
         pause: () => {
-            getInstance().pause();
+            instance.pause();
         }
     };
 })();
@@ -35,10 +27,10 @@ const escapeHtml = (unsafe) => {
         .replace(/'/g, '&#039;');
 };
 
-const salin = (btn) => {
+const salin = (btn, msg = null) => {
     navigator.clipboard.writeText(btn.getAttribute('data-nomer'));
     let tmp = btn.innerHTML;
-    btn.innerHTML = 'Tersalin';
+    btn.innerHTML = msg ?? 'Tersalin';
     btn.disabled = true;
 
     setTimeout(() => {
@@ -49,16 +41,16 @@ const salin = (btn) => {
 };
 
 const timer = () => {
-    var countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu').replace(' ', 'T'))).getTime();
-    var time = undefined;
-    var distance = undefined;
+    let countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu').replace(' ', 'T'))).getTime();
+    let time = null;
+    let distance = null;
 
     time = setInterval(() => {
         distance = countDownDate - (new Date()).getTime();
 
         if (distance < 0) {
             clearInterval(time);
-            time = undefined;
+            time = null;
             return;
         }
 
@@ -102,10 +94,40 @@ const resetForm = () => {
     document.getElementById('formpesan').value = null;
 };
 
-const balasan = async (button) => {
+const parseRequest = (method, token = null, body = null) => {
+    let req = {
+        method: method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    };
+
+    if (token) {
+        req.headers['Authorization'] = 'Bearer ' + token;
+    }
+
+    if (body) {
+        req.body = JSON.stringify(body);
+    }
+
+    return req;
+};
+
+const getUrl = (optional = null) => {
+    let url = document.querySelector('body').getAttribute('data-url');
+
+    if (optional) {
+        return url + optional;
+    }
+
+    return url;
+};
+
+const balasan = async (button, msg = null) => {
     button.disabled = true;
     let tmp = button.innerText;
-    button.innerText = 'Loading...';
+    button.innerText = msg ?? 'Loading...';
 
     let id = button.getAttribute('data-uuid').toString();
     let token = localStorage.getItem('token') ?? '';
@@ -121,16 +143,7 @@ const balasan = async (button) => {
     document.getElementById('hadiran').style.display = 'none';
     document.getElementById('labelhadir').style.display = 'none';
 
-    const REQ = {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
-    };
-
-    await fetch(document.querySelector('body').getAttribute('data-url') + '/api/comment/' + id, REQ)
+    await fetch(getUrl('/api/comment/' + id), parseRequest('GET', token))
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
@@ -199,28 +212,22 @@ const kirimBalasan = async () => {
         return;
     }
 
+    document.getElementById('formnama').disabled = true;
+    document.getElementById('formpesan').disabled = true;
+
     document.getElementById('batal').disabled = true;
     document.getElementById('kirimbalasan').disabled = true;
     let tmp = document.getElementById('kirimbalasan').innerHTML;
     document.getElementById('kirimbalasan').innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
-    const REQ = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify({
+    let isSuccess = false;
+    await fetch(
+        getUrl('/api/comment'),
+        parseRequest('POST', token, {
             nama: nama,
             id: id,
             komentar: komentar
-        })
-    };
-
-    let isSuccess = false;
-
-    await fetch(document.querySelector('body').getAttribute('data-url') + '/api/comment', REQ)
+        }))
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 201) {
@@ -251,6 +258,8 @@ const kirimBalasan = async () => {
     document.getElementById('batal').disabled = false;
     document.getElementById('kirimbalasan').disabled = false;
     document.getElementById('kirimbalasan').innerHTML = tmp;
+    document.getElementById('formnama').disabled = false;
+    document.getElementById('formpesan').disabled = false;
 };
 
 const innerCard = (comment) => {
@@ -282,7 +291,7 @@ const renderCard = (data) => {
     <div class="card-body bg-light shadow p-3 m-0 rounded-4" id="${data.uuid}">
         <div class="d-flex flex-wrap justify-content-between align-items-center">
             <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
-                <strong class="me-1">${escapeHtml(data.nama)}</strong>${data.hadir ? '<i class="fa-solid fa-circle-check text-success"></i>' : '<i class="fa-solid fa-circle-xmark text-danger"></i>'}
+                <strong class="me-1">${escapeHtml(data.nama)}</strong><i class="fa-solid ${data.hadir ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'}"></i>
             </p>
             <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
         </div>
@@ -315,23 +324,23 @@ const renderLoading = (num) => {
     }
 
     return hasil;
-}
+};
 
 const pagination = (() => {
 
     const perPage = 10;
-    var pageNow = 0;
-    var resultData = 0;
+    let pageNow = 0;
+    let resultData = 0;
 
-    var disabledPrevious = () => {
+    let disabledPrevious = () => {
         document.getElementById('previous').classList.add('disabled');
     };
 
-    var disabledNext = () => {
+    let disabledNext = () => {
         document.getElementById('next').classList.add('disabled');
     };
 
-    var buttonAction = async (button) => {
+    let buttonAction = async (button) => {
         let tmp = button.innerHTML;
         button.disabled = true;
         button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
@@ -398,16 +407,7 @@ const ucapan = async () => {
         return;
     }
 
-    const REQ = {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        }
-    };
-
-    await fetch(document.querySelector('body').getAttribute('data-url') + `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`, REQ)
+    await fetch(getUrl(`/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`), parseRequest('GET', token))
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
@@ -437,19 +437,12 @@ const login = async () => {
     document.getElementById('daftarucapan').innerHTML = renderLoading(pagination.getPer());
     let body = document.querySelector('body');
 
-    const REQ = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: body.getAttribute('data-email').toString(),
-            password: body.getAttribute('data-password').toString()
-        })
-    };
-
-    await fetch(body.getAttribute('data-url') + '/api/login', REQ)
+    await fetch(
+        getUrl('/api/login'),
+        parseRequest('POST', null, {
+            email: body.getAttribute('data-email'),
+            password: body.getAttribute('data-password')
+        }))
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 200) {
@@ -503,25 +496,21 @@ const kirim = async () => {
         return;
     }
 
+    document.getElementById('formnama').disabled = true;
+    document.getElementById('hadiran').disabled = true;
+    document.getElementById('formpesan').disabled = true;
+
     document.getElementById('kirim').disabled = true;
     let tmp = document.getElementById('kirim').innerHTML;
     document.getElementById('kirim').innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
-    const REQ = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-        body: JSON.stringify({
+    await fetch(
+        getUrl('/api/comment'),
+        parseRequest('POST', token, {
             nama: nama,
             hadir: hadir == 1,
             komentar: komentar
-        })
-    };
-
-    await fetch(document.querySelector('body').getAttribute('data-url') + '/api/comment', REQ)
+        }))
         .then((res) => res.json())
         .then((res) => {
             if (res.code == 201) {
@@ -544,42 +533,45 @@ const kirim = async () => {
             alert(err);
         });
 
+    document.getElementById('formnama').disabled = false;
+    document.getElementById('hadiran').disabled = false;
+    document.getElementById('formpesan').disabled = false;
     document.getElementById('kirim').disabled = false;
     document.getElementById('kirim').innerHTML = tmp;
 };
 
 const progressBar = (() => {
     let bar = document.getElementById('bar');
+    let second = 0;
+    let counter = 0;
+    let stop = false;
 
-    let clear = null;
-    let second = 1;
-    let counter = 1;
-    let untilOneHundred = parseInt(bar.style.width.replace('%', ''));
+    const sleep = (until) => new Promise((p) => {
+        setTimeout(p, until);
+    });
 
-    clear = setInterval(() => {
-
-        if (untilOneHundred < 100) {
-            untilOneHundred = (counter + (untilOneHundred / 10)) / (second + (untilOneHundred / 100));
-            setNum(untilOneHundred);
-        } else {
-            clearInterval(clear);
-        }
-
-        if (counter % 100 == 0) {
-            second += 1;
-        }
-
-        counter += 1;
-    }, 10);
-
-    let setNum = (num) => {
+    const setNum = (num) => {
         bar.style.width = num + "%";
-        bar.innerText = Math.floor(num) + "%";
+        bar.innerText = num + "%";
+
+        return num == 100 || stop;
     };
+
+    (async () => {
+        while (true) {
+            if (stop || setNum(counter)) {
+                break;
+            }
+
+            await sleep(second);
+            second += (counter * counter);
+            counter += 1;
+        }
+    })();
 
     return {
         stop: () => {
-            clearInterval(clear);
+            stop = true;
             setNum(100.0);
         }
     };
@@ -615,10 +607,9 @@ const opacity = () => {
     });
 };
 
-const modalFoto = (btn) => {
+const modalFoto = (img) => {
     let modal = new bootstrap.Modal('#modalFoto');
-    let img = document.getElementById('showModalFoto');
-    img.src = btn.src;
+    document.getElementById('showModalFoto').src = img.src;
     modal.show();
 };
 
