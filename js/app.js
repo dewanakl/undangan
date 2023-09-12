@@ -272,6 +272,86 @@ const kirimBalasan = async () => {
     document.getElementById('formpesan').disabled = false;
 };
 
+const getTempLike = (key = null) => {
+    if (!localStorage.getItem('likes')) {
+        localStorage.setItem('likes', JSON.stringify({}));
+    }
+
+    if (key) {
+        return JSON.parse(localStorage.getItem('likes'))[key];
+    }
+
+    return JSON.parse(localStorage.getItem('likes'));
+};
+
+const setTempLike = (key, value) => {
+    let storage = getTempLike();
+    storage[key] = value;
+    localStorage.setItem('likes', JSON.stringify(storage));
+};
+
+const removeTempLike = (key) => {
+    let storage = getTempLike();
+    delete storage[key];
+    localStorage.setItem('likes', JSON.stringify(storage));
+};
+
+const inTempLike = (key) => {
+    return Object.keys(getTempLike()).includes(key);
+};
+
+const like = async (button) => {
+    let token = localStorage.getItem('token') ?? '';
+    let id = button.getAttribute('data-uuid');
+
+    let heart = button.firstElementChild.lastElementChild;
+    let info = button.firstElementChild.firstElementChild;
+
+    button.disabled = true;
+    info.innerText = 'Loading..';
+
+    if (inTempLike(id)) {
+        await fetch(
+            getUrl('/api/comment/' + getTempLike(id)),
+            parseRequest('PATCH', token))
+            .then((res) => res.json())
+            .then((res) => {
+                if (res.data.status) {
+                    removeTempLike(id);
+
+                    heart.classList.remove('fa-solid', 'text-danger');
+                    heart.classList.add('fa-regular');
+
+                    info.setAttribute('data-suka', (parseInt(info.getAttribute('data-suka')) - 1).toString())
+                    info.innerText = info.getAttribute('data-suka') + ' suka';
+                }
+            })
+            .catch((err) => {
+                alert(err);
+            });
+
+    } else {
+        await fetch(
+            getUrl('/api/comment/' + id),
+            parseRequest('POST', token))
+            .then((res) => res.json())
+            .then((res) => {
+                setTempLike(id, res.data.uuid);
+
+                heart.classList.remove('fa-regular');
+                heart.classList.add('fa-solid', 'text-danger');
+
+                info.setAttribute('data-suka', (parseInt(info.getAttribute('data-suka')) + 1).toString())
+                info.innerText = info.getAttribute('data-suka') + ' suka';
+            })
+            .catch((err) => {
+                alert(err);
+            });
+    }
+
+    button.disabled = false;
+};
+
 const innerCard = (comment) => {
     let result = '';
 
@@ -286,7 +366,15 @@ const innerCard = (comment) => {
             </div>
             <hr class="text-dark my-1">
             <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${escapeHtml(data.komentar)}</p>
-            <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-4 py-0">Balas</button>
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0">Balas</button>
+                <button style="font-size: 0.8rem;" onclick="like(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-2 py-0 px-0">
+                    <div class="d-flex justify-content-start align-items-center">
+                        <p class="my-0 mx-1" data-suka="${data.likes.length}">${data.likes.length} suka</p>
+                        <i class="py-1 me-1 p-0 ${inTempLike(data.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
+                    </div>
+                </button>
+            </div>
             ${innerCard(data.comment)}
         </div>`;
     });
@@ -307,7 +395,15 @@ const renderCard = (data) => {
         </div>
         <hr class="text-dark my-1">
         <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${escapeHtml(data.komentar)}</p>
-        <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-4 py-0">Balas</button>
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0">Balas</button>
+            <button style="font-size: 0.8rem;" onclick="like(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-2 py-0 px-0">
+                <div class="d-flex justify-content-start align-items-center">
+                    <p class="my-0 mx-1" data-suka="${data.likes.length}">${data.likes.length} suka</p>
+                    <i class="py-1 me-1 p-0 ${inTempLike(data.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
+                </div>
+            </button>
+        </div>
         ${innerCard(data.comment)}
     </div>`;
     return DIV;
@@ -573,8 +669,8 @@ const progressBar = (() => {
                 break;
             }
 
-            await sleep(second);
-            second += (counter * counter);
+            await sleep(Math.exp(second));
+            second += 0.1;
             counter += 1;
         }
     })();
