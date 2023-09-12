@@ -304,6 +304,12 @@ const like = async (button) => {
     let token = localStorage.getItem('token') ?? '';
     let id = button.getAttribute('data-uuid');
 
+    if (token.length == 0) {
+        alert('Terdapat kesalahan, token kosong !');
+        window.location.reload();
+        return;
+    }
+
     let heart = button.firstElementChild.lastElementChild;
     let info = button.firstElementChild.firstElementChild;
 
