@@ -113,10 +113,6 @@ const parseRequest = (method, token = null, body = null) => {
         }
     };
 
-    if (method == 'GET' || method == 'get') {
-        req.credentials = "include";
-    }
-
     if (token) {
         req.headers['Authorization'] = 'Bearer ' + token;
     }
