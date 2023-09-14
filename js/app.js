@@ -107,6 +107,7 @@ const resetForm = () => {
 const parseRequest = (method, token = null, body = null) => {
     let req = {
         method: method,
+        credentials: "include",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -376,12 +377,12 @@ const innerCard = (comment) => {
                 <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0">Balas</button>
                 <button style="font-size: 0.8rem;" onclick="like(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-2 py-0 px-0">
                     <div class="d-flex justify-content-start align-items-center">
-                        <p class="my-0 mx-1" data-suka="${data.likes.length}">${data.likes.length} suka</p>
+                        <p class="my-0 mx-1" data-suka="${data.like.love}">${data.like.love} suka</p>
                         <i class="py-1 me-1 p-0 ${inTempLike(data.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
                     </div>
                 </button>
             </div>
-            ${innerCard(data.comment)}
+            ${innerCard(data.comments)}
         </div>`;
     });
 
@@ -405,12 +406,12 @@ const renderCard = (data) => {
             <button style="font-size: 0.8rem;" onclick="balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0">Balas</button>
             <button style="font-size: 0.8rem;" onclick="like(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-2 py-0 px-0">
                 <div class="d-flex justify-content-start align-items-center">
-                    <p class="my-0 mx-1" data-suka="${data.likes.length}">${data.likes.length} suka</p>
+                    <p class="my-0 mx-1" data-suka="${data.like.love}">${data.like.love} suka</p>
                     <i class="py-1 me-1 p-0 ${inTempLike(data.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
                 </div>
             </button>
         </div>
-        ${innerCard(data.comment)}
+        ${innerCard(data.comments)}
     </div>`;
     return DIV;
 };
@@ -550,7 +551,7 @@ const login = async () => {
     let body = document.querySelector('body');
 
     await fetch(
-        getUrl('/api/login'),
+        getUrl('/api/session'),
         parseRequest('POST', null, {
             email: body.getAttribute('data-email'),
             password: body.getAttribute('data-password')
