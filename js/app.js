@@ -107,12 +107,15 @@ const resetForm = () => {
 const parseRequest = (method, token = null, body = null) => {
     let req = {
         method: method,
-        credentials: "include",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
     };
+
+    if (method == 'GET' || method == 'get') {
+        req.credentials = "include";
+    }
 
     if (token) {
         req.headers['Authorization'] = 'Bearer ' + token;
