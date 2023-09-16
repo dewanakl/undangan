@@ -127,6 +127,10 @@ const parseRequest = (method, token = null, body = null) => {
 const getUrl = (optional = null) => {
     let url = document.querySelector('body').getAttribute('data-url');
 
+    if (url.slice(-1) == '/') {
+        url = url.slice(0, -1);
+    }
+
     if (optional) {
         return url + optional;
     }
@@ -322,6 +326,16 @@ const like = async (button) => {
             parseRequest('PATCH', token))
             .then((res) => res.json())
             .then((res) => {
+                if (res.error.length != 0) {
+                    if (res.error[0] == 'Expired token') {
+                        alert('Terdapat kesalahan, token expired !');
+                        window.location.reload();
+                        return;
+                    }
+
+                    alert(res.error[0]);
+                }
+
                 if (res.data.status) {
                     removeTempLike(id);
 
@@ -342,13 +356,25 @@ const like = async (button) => {
             parseRequest('POST', token))
             .then((res) => res.json())
             .then((res) => {
-                setTempLike(id, res.data.uuid);
+                if (res.error.length != 0) {
+                    if (res.error[0] == 'Expired token') {
+                        alert('Terdapat kesalahan, token expired !');
+                        window.location.reload();
+                        return;
+                    }
 
-                heart.classList.remove('fa-regular');
-                heart.classList.add('fa-solid', 'text-danger');
+                    alert(res.error[0]);
+                }
 
-                info.setAttribute('data-suka', (parseInt(info.getAttribute('data-suka')) + 1).toString())
-                info.innerText = info.getAttribute('data-suka') + ' suka';
+                if (res.code == 201) {
+                    setTempLike(id, res.data.uuid);
+
+                    heart.classList.remove('fa-regular');
+                    heart.classList.add('fa-solid', 'text-danger');
+
+                    info.setAttribute('data-suka', (parseInt(info.getAttribute('data-suka')) + 1).toString())
+                    info.innerText = info.getAttribute('data-suka') + ' suka';
+                }
             })
             .catch((err) => {
                 alert(err);
@@ -457,9 +483,9 @@ const pagination = (() => {
         button.disabled = true;
         button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
         await ucapan();
+        document.getElementById('daftarucapan').scrollIntoView({ behavior: 'smooth' });
         button.disabled = false;
         button.innerHTML = tmp;
-        document.getElementById('daftarucapan').scrollIntoView({ behavior: 'smooth' });
     };
 
     return {
@@ -473,6 +499,7 @@ const pagination = (() => {
             pageNow = 0;
             resultData = 0;
             await ucapan();
+            document.getElementById('page').innerText = 1;
             document.getElementById('next').classList.remove('disabled');
             disabledPrevious();
         },
@@ -486,6 +513,7 @@ const pagination = (() => {
             if (pageNow < 0) {
                 disabledPrevious();
             } else {
+                document.getElementById('page').innerText = parseInt(document.getElementById('page').innerText) - 1;
                 pageNow -= perPage;
                 disabledNext();
                 await buttonAction(button);
@@ -499,6 +527,7 @@ const pagination = (() => {
             if (resultData < perPage) {
                 disabledNext();
             } else {
+                document.getElementById('page').innerText = parseInt(document.getElementById('page').innerText) + 1;
                 pageNow += perPage;
                 disabledPrevious();
                 await buttonAction(button);
