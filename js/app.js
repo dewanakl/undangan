@@ -389,7 +389,6 @@ const innerCard = (comment) => {
 
     comment.forEach((data) => {
         result += `
-    <div style="min-width: 85vw !important;">
         <div class="card-body border-start bg-light py-2 ps-2 pe-0 my-2 ms-2 me-0" id="${data.uuid}">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
                 <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
@@ -408,11 +407,8 @@ const innerCard = (comment) => {
                     </div>
                 </button>
             </div>
-            <div class="overflow-x-scroll">
-                ${innerCard(data.comments)}
-            </div>
-        </div>
-    </div>`;
+            ${innerCard(data.comments)}
+        </div>`;
     });
 
     return result;
@@ -440,9 +436,7 @@ const renderCard = (data) => {
                 </div>
             </button>
         </div>
-        <div class="overflow-x-scroll">
-            ${innerCard(data.comments)}
-        </div>
+        ${innerCard(data.comments)}
     </div>`;
     return DIV;
 };
