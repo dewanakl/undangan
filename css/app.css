@@ -14,12 +14,12 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-.font-estetik {
+.font-esthetic {
     font-family: 'Sacramento', cursive !important;
     color: #ffffff !important;
 }
 
-.cropper {
+.img-crop {
     width: 14rem;
     height: 14rem;
     position: relative;
@@ -27,7 +27,7 @@ body::-webkit-scrollbar {
     border-radius: 50%;
 }
 
-.cropper>img {
+.img-crop>img {
     display: inline;
     margin: 0 auto;
     height: auto;
@@ -41,7 +41,7 @@ body::-webkit-scrollbar {
     z-index: 1055;
 }
 
-.loading {
+.loading-page {
     position: fixed;
     top: 0;
     left: 0;
@@ -55,24 +55,13 @@ body::-webkit-scrollbar {
     overflow-wrap: break-word !important;
 }
 
-.mousey {
+.mouse-animation {
     padding: 0.25rem 0.625rem;
     height: 2rem;
     border: 0.1rem solid #fff;
     border-radius: 1.4rem;
     opacity: 0.75;
     box-sizing: content-box;
-}
-
-.scroller {
-    width: 0.25rem;
-    height: 0.625rem;
-    border-radius: 25%;
-    background-color: #fff;
-    animation-name: scroll;
-    animation-duration: 2.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
 }
 
 @keyframes scroll {
@@ -89,4 +78,27 @@ body::-webkit-scrollbar {
         transform: translateY(1rem);
         opacity: 0;
     }
+}
+
+.mouse-animation>.scroll-animation {
+    width: 0.25rem;
+    height: 0.625rem;
+    border-radius: 25%;
+    background-color: #fff;
+    animation-name: scroll;
+    animation-duration: 2.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.dark-section {
+    background-color: #111111 !important;
+    margin-top: -5px;
+    margin-bottom: -5px;
+}
+
+footer {
+    background-color: #111111 !important;
+    margin-top: -5px;
+    padding-bottom: 4rem;
 }
