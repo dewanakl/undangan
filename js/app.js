@@ -1,30 +1,23 @@
 const audio = (() => {
     let instance = null;
 
-    let createOrGet = () => {
-        if (!(instance instanceof HTMLAudioElement)) {
-            instance = new Audio();
-            instance.autoplay = true;
-            instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
-            instance.load();
-            instance.currentTime = 0;
-            instance.volume = 1;
-            instance.muted = false;
-            instance.loop = true;
-        }
-
-        return instance;
+    if (!(instance instanceof HTMLAudioElement)) {
+        instance = new Audio();
+        instance.autoplay = true;
+        instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
+        instance.load();
+        instance.currentTime = 0;
+        instance.volume = 1;
+        instance.muted = false;
+        instance.loop = true;
     }
 
     return {
-        play: () => {
-            createOrGet().play();
-        },
-        pause: () => {
-            createOrGet().pause();
-        }
+        play: () => instance.play(),
+        pause: () => instance.pause(),
     };
 })();
+// OK
 
 const progressBar = (() => {
     let bar = document.getElementById('bar');
@@ -62,6 +55,7 @@ const progressBar = (() => {
         }
     };
 })();
+// OK
 
 const pagination = (() => {
 
@@ -312,6 +306,7 @@ const comment = (() => {
         button.innerText = tmp;
     };
 
+    // OK
     const innerComment = (data) => {
         return `
         <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -330,8 +325,7 @@ const comment = (() => {
                 </div>
             </button>
         </div>
-        ${innerCard(data.comments)}
-        `;
+        ${innerCard(data.comments)}`;
     };
 
     // OK
@@ -356,6 +350,7 @@ const comment = (() => {
         return result;
     };
 
+    // OK
     const renderCard = (data) => {
         const DIV = document.createElement('div');
         DIV.classList.add('mb-3');
@@ -501,8 +496,6 @@ const comment = (() => {
                 }
             })
             .catch((err) => {
-                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-                resetForm();
                 alert(err);
             });
 
@@ -519,6 +512,7 @@ const comment = (() => {
         formpesan.disabled = false;
     };
 
+    // OK
     const ubah = async () => {
         let token = localStorage.getItem('token') ?? '';
         let id = sunting.getAttribute('data-uuid');
@@ -531,11 +525,9 @@ const comment = (() => {
             return;
         }
 
-        if (document.getElementById(id).getAttribute('data-parent') === 'true') {
-            if (hadir == 0) {
-                alert('silahkan pilih kehadiran');
-                return;
-            }
+        if (document.getElementById(id).getAttribute('data-parent') === 'true' && hadir == 0) {
+            alert('silahkan pilih kehadiran');
+            return;
         }
 
         if (komentar.length == 0) {
@@ -644,6 +636,7 @@ const comment = (() => {
         }
     };
 
+    // OK
     const edit = async (button) => {
         button.disabled = true;
         let tmp = button.innerText;
@@ -701,17 +694,18 @@ const comment = (() => {
         button.innerText = tmp;
     };
 
+    // OK
     return {
-        ucapan: () => ucapan(),
-        kirim: () => send(),
-        renderLoading: (num) => renderLoading(num),
+        ucapan: ucapan,
+        kirim: send,
+        renderLoading: renderLoading,
 
-        hapus: (btn) => hapus(btn),
-        edit: (btn) => edit(btn),
-        ubah: () => ubah(),
+        hapus: hapus,
+        edit: edit,
+        ubah: ubah,
 
-        balasan: (btn) => balasan(btn),
-        reply: () => reply(),
+        balasan: balasan,
+        reply: reply,
         batal: () => {
             if (tempID) {
                 document.getElementById(tempID).scrollIntoView({ behavior: 'smooth' });
