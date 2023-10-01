@@ -29,7 +29,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
     <link rel="preconnect" href="https://gstatic.com" crossorigin="anonymous">
 
-    <!-- Dependencies -->
+    <!-- Dependencies CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI=" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha256-MBffSnbbXwHCuZtgPYiwMQbfE7z+GOZ7fBPCNB06Z98=" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="./css/app.css">
 </head>
 
-<body data-email="user@example.com" data-password="12345678" data-url="https://api.ulems.my.id" style="overflow-y: hidden;">
+<body data-email="user@example.com" data-password="12345678" data-url="https://api.ulems.my.id/" style="overflow-y: hidden;">
 
     <!-- Navbar Bottom -->
     <nav class="navbar navbar-dark bg-dark navbar-expand fixed-bottom rounded-top-4 p-0" id="navbar-menus">
@@ -362,8 +362,6 @@
 
                 <div class="card-body border rounded-4 shadow p-3">
                     <h1 class="font-esthetic text-center mb-3" style="font-size: 3rem;">Ucapan & Doa</h1>
-
-                    <input type="hidden" id="id-balasan">
                     <div class="mb-1" id="balasan"></div>
 
                     <div class="mb-3">
@@ -389,13 +387,13 @@
                         <button class="flex-fill btn btn-danger btn-sm rounded-3 shadow m-1" style="display: none;" onclick="comment.batal()" id="batal">
                             Batal<i class="fa-solid fa-xmark ms-1"></i>
                         </button>
-                        <button class="flex-fill btn btn-primary btn-sm rounded-3 shadow m-1" style="display: none;" onclick="comment.reply()" id="reply">
-                            Kirim<i class="fa-solid fa-paper-plane ms-1"></i>
+                        <button class="flex-fill btn btn-success btn-sm rounded-3 shadow m-1" style="display: none;" onclick="comment.reply()" id="reply">
+                            Balas<i class="fa-solid fa-reply ms-1"></i>
                         </button>
-                    </div>
-
-                    <div class="d-grid mb-2">
-                        <button class="btn btn-primary btn-sm rounded-3 shadow" onclick="comment.kirim()" id="kirim">
+                        <button class="flex-fill btn btn-warning btn-sm rounded-3 shadow m-1" style="display: none;" onclick="comment.ubah()" id="ubah">
+                            Edit<i class="fa-solid fa-pen-to-square ms-1"></i>
+                        </button>
+                        <button class="flex-fill btn btn-primary btn-sm rounded-3 shadow m-1" onclick="comment.kirim()" id="kirim">
                             Kirim<i class="fa-solid fa-paper-plane ms-1"></i>
                         </button>
                     </div>
@@ -510,7 +508,7 @@
         </div>
     </div>
 
-    <!-- Dependencies -->
+    <!-- Dependencies JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha256-gvZPYrsDwbwYJLD5yeBfcNujPhRoGOY831wwbIzz3t0=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" integrity="sha256-pQBbLkFHcP1cy0C8IhoSdxlm0CtcH5yJ2ki9jjgR03c=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/tsparticles-confetti@2.12.0/tsparticles.confetti.bundle.min.js" integrity="sha256-XG5M9shcLLpu8ct5bVbu6lLVzLpfZChl+csxdyLVP18=" crossorigin="anonymous"></script>

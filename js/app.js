@@ -144,21 +144,28 @@ const pagination = (() => {
 const comment = (() => {
     const kirim = document.getElementById('kirim');
     const hadiran = document.getElementById('form-kehadiran');
-    const kirimBalasan = document.getElementById('reply');
+    const balas = document.getElementById('reply');
     const formnama = document.getElementById('form-nama');
     const formpesan = document.getElementById('form-pesan');
+    const batal = document.getElementById('batal');
+    const sunting = document.getElementById('ubah');
+    let tempID = null;
 
+    // OK
     const resetForm = () => {
         kirim.style.display = 'block';
         hadiran.style.display = 'block';
+        batal.style.display = 'none';
+        balas.style.display = 'none';
+        sunting.style.display = 'none';
         document.getElementById('label-kehadiran').style.display = 'block';
-        document.getElementById('batal').style.display = 'none';
-        kirimBalasan.style.display = 'none';
-        document.getElementById('id-balasan').value = null;
         document.getElementById('balasan').innerHTML = null;
         formnama.value = null;
         hadiran.value = 0;
         formpesan.value = null;
+        formnama.disabled = false;
+        hadiran.disabled = false;
+        formpesan.disabled = false;
     };
 
     // OK
@@ -239,6 +246,7 @@ const comment = (() => {
         kirim.innerHTML = tmp;
     };
 
+    // OK
     const balasan = async (button) => {
         button.disabled = true;
         let tmp = button.innerText;
@@ -263,21 +271,25 @@ const comment = (() => {
             .then((res) => {
                 if (res.code == 200) {
                     kirim.style.display = 'none';
-                    document.getElementById('batal').style.display = 'block';
-                    kirimBalasan.style.display = 'block';
-                    document.getElementById('idbalasan').value = id;
+                    batal.style.display = 'block';
+                    balas.style.display = 'block';
+
+                    tempID = id;
 
                     BALAS.innerHTML = `
-                <div class="card-body bg-light shadow p-3 my-2 rounded-4">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
-                            <strong>${escapeHtml(res.data.nama)}</strong>
-                        </p>
-                        <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${res.data.created_at}</small>
-                    </div>
-                    <hr class="text-dark my-1">
-                    <p class="text-dark m-0 p-0" style="white-space: pre-line">${escapeHtml(res.data.komentar)}</p>
-                </div>`;
+                    <div class="my-3">
+                        <label class="form-label">Balasan</label>
+                        <div id="id-balasan" data-uuid="${id}" class="card-body bg-light shadow p-3 rounded-4">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
+                                    <strong>${escapeHtml(res.data.nama)}</strong>
+                                </p>
+                                <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${res.data.created_at}</small>
+                            </div>
+                            <hr class="text-dark my-1">
+                            <p class="text-dark m-0 p-0" style="white-space: pre-line">${escapeHtml(res.data.komentar)}</p>
+                        </div>
+                    </div>`;
                 }
 
                 if (res.error.length != 0) {
@@ -300,6 +312,29 @@ const comment = (() => {
         button.innerText = tmp;
     };
 
+    const innerComment = (data) => {
+        return `
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div class="d-flex flex-wrap justify-content-start align-items-center">
+                <button style="font-size: 0.8rem;" onclick="comment.balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0">Balas</button>
+                ${owns.has(data.uuid)
+                ? `
+                <button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0 ms-1">Ubah</button>
+                <button style="font-size: 0.8rem;" onclick="comment.hapus(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0 ms-1">Hapus</button>`
+                : ''}
+            </div>
+            <button style="font-size: 0.8rem;" onclick="like(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-2 py-0 px-0">
+                <div class="d-flex justify-content-start align-items-center">
+                    <p class="my-0 mx-1" data-suka="${data.like.love}">${data.like.love} suka</p>
+                    <i class="py-1 me-1 p-0 ${likes.has(data.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
+                </div>
+            </button>
+        </div>
+        ${innerCard(data.comments)}
+        `;
+    };
+
+    // OK
     const innerCard = (comment) => {
         let result = '';
 
@@ -314,23 +349,7 @@ const comment = (() => {
                 </div>
                 <hr class="text-dark my-1">
                 <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${escapeHtml(data.komentar)}</p>
-                <div class="d-flex flex-wrap justify-content-between align-items-center">
-                    <div class="d-flex flex-wrap justify-content-start align-items-center">
-                        <button style="font-size: 0.8rem;" onclick="comment.balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0">Balas</button>
-                        ${owns.has(data.uuid)
-                    ? `
-                        <button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0 ms-1">Ubah</button>
-                        <button style="font-size: 0.8rem;" onclick="comment.hapus(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0 ms-1">Hapus</button>`
-                    : ''}
-                    </div>
-                    <button style="font-size: 0.8rem;" onclick="like(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-2 py-0 px-0">
-                        <div class="d-flex justify-content-start align-items-center">
-                            <p class="my-0 mx-1" data-suka="${data.like.love}">${data.like.love} suka</p>
-                            <i class="py-1 me-1 p-0 ${likes.has(data.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
-                        </div>
-                    </button>
-                </div>
-                ${innerCard(data.comments)}
+                ${innerComment(data)}
             </div>`;
         });
 
@@ -341,7 +360,7 @@ const comment = (() => {
         const DIV = document.createElement('div');
         DIV.classList.add('mb-3');
         DIV.innerHTML = `
-        <div class="card-body bg-light shadow p-3 m-0 rounded-4" id="${data.uuid}">
+        <div class="card-body bg-light shadow p-3 m-0 rounded-4" data-parent="true" id="${data.uuid}">
             <div class="d-flex flex-wrap justify-content-between align-items-center">
                 <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
                     <strong class="me-1">${escapeHtml(data.nama)}</strong><i class="fa-solid ${data.hadir ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'}"></i>
@@ -350,23 +369,7 @@ const comment = (() => {
             </div>
             <hr class="text-dark my-1">
             <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${escapeHtml(data.komentar)}</p>
-            <div class="d-flex flex-wrap justify-content-between align-items-center">
-                <div class="d-flex flex-wrap justify-content-start align-items-center">
-                    <button style="font-size: 0.8rem;" onclick="comment.balasan(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0">Balas</button>
-                    ${owns.has(data.uuid)
-                ? `
-                    <button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-parent="true" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0 ms-1">Ubah</button>
-                    <button style="font-size: 0.8rem;" onclick="comment.hapus(this)" data-parent="true" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-3 py-0 ms-1">Hapus</button>`
-                : ''}
-                </div>
-                <button style="font-size: 0.8rem;" onclick="like(this)" data-uuid="${data.uuid}" class="btn btn-sm btn-outline-dark rounded-2 py-0 px-0">
-                    <div class="d-flex justify-content-start align-items-center">
-                        <p class="my-0 mx-1" data-suka="${data.like.love}">${data.like.love} suka</p>
-                        <i class="py-1 me-1 p-0 ${likes.has(data.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
-                    </div>
-                </button>
-            </div>
-            ${innerCard(data.comments)}
+            ${innerComment(data)}
         </div>`;
         return DIV;
     };
@@ -375,8 +378,8 @@ const comment = (() => {
     const ucapan = async () => {
         const UCAPAN = document.getElementById('daftar-ucapan');
         UCAPAN.innerHTML = renderLoading(pagination.getPer());
-        let token = localStorage.getItem('token') ?? '';
 
+        let token = localStorage.getItem('token') ?? '';
         if (token.length == 0) {
             alert('Terdapat kesalahan, token kosong !');
             window.location.reload();
@@ -436,12 +439,12 @@ const comment = (() => {
         return result;
     };
 
-
-    const sendReply = async () => {
+    // OK
+    const reply = async () => {
         let nama = formnama.value;
         let komentar = formpesan.value;
         let token = localStorage.getItem('token') ?? '';
-        let id = document.getElementById('idbalasan').value;
+        let id = document.getElementById('id-balasan').getAttribute('data-uuid');
 
         if (token.length == 0) {
             alert('Terdapat kesalahan, token kosong !');
@@ -467,10 +470,10 @@ const comment = (() => {
         formnama.disabled = true;
         formpesan.disabled = true;
 
-        document.getElementById('batal').disabled = true;
-        kirimBalasan.disabled = true;
-        let tmp = kirimBalasan.innerHTML;
-        kirimBalasan.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+        batal.disabled = true;
+        balas.disabled = true;
+        let tmp = balas.innerHTML;
+        balas.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
         let isSuccess = false;
         await fetch(
@@ -484,7 +487,7 @@ const comment = (() => {
             .then((res) => {
                 if (res.code == 201) {
                     isSuccess = true;
-                    setTempOwn(res.data.uuid, res.data.own);
+                    owns.set(res.data.uuid, res.data.own);
                 }
 
                 if (res.error.length != 0) {
@@ -498,6 +501,7 @@ const comment = (() => {
                 }
             })
             .catch((err) => {
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
                 resetForm();
                 alert(err);
             });
@@ -508,17 +512,18 @@ const comment = (() => {
             resetForm();
         }
 
-        document.getElementById('batal').disabled = false;
-        kirimBalasan.disabled = false;
-        kirimBalasan.innerHTML = tmp;
+        batal.disabled = false;
+        balas.disabled = false;
+        balas.innerHTML = tmp;
         formnama.disabled = false;
         formpesan.disabled = false;
     };
 
-
-    const ubah = async (button) => {
+    const ubah = async () => {
         let token = localStorage.getItem('token') ?? '';
-        let id = document.getElementById('idModalEdit').value;
+        let id = sunting.getAttribute('data-uuid');
+        let hadir = hadiran.value;
+        let komentar = formpesan.value;
 
         if (token.length == 0) {
             alert('Terdapat kesalahan, token kosong !');
@@ -526,16 +531,32 @@ const comment = (() => {
             return;
         }
 
-        button.disabled = true;
-        let tmp = button.innerText;
-        button.innerText = 'Loading..';
+        if (document.getElementById(id).getAttribute('data-parent') === 'true') {
+            if (hadir == 0) {
+                alert('silahkan pilih kehadiran');
+                return;
+            }
+        }
+
+        if (komentar.length == 0) {
+            alert('pesan tidak boleh kosong');
+            return;
+        }
+
+        hadiran.disabled = true;
+        formpesan.disabled = true;
+
+        sunting.disabled = true;
+        batal.disabled = true;
+        let tmp = sunting.innerHTML;
+        sunting.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
         let isSuccess = false;
         await fetch(
-            getUrl('/api/comment/' + getTempOwn(id)),
+            getUrl('/api/comment/' + owns.get(id)),
             parseRequest('PUT', token, {
-                hadir: document.getElementById('edithadiran').value == 1,
-                komentar: document.getElementById('editformpesan').value
+                hadir: parseInt(hadir) == 1,
+                komentar: komentar
             }))
             .then((res) => res.json())
             .then((res) => {
@@ -550,7 +571,6 @@ const comment = (() => {
                 }
 
                 if (res.data.status) {
-                    bootstrap.Modal.getInstance(document.getElementById('modalEdit')).hide();
                     isSuccess = true;
                 }
             })
@@ -559,14 +579,20 @@ const comment = (() => {
             });
 
 
-        button.innerText = tmp;
-        button.disabled = false;
+        sunting.innerHTML = tmp;
+        sunting.disabled = false;
+        batal.disabled = false;
+        hadiran.disabled = false;
+        formpesan.disabled = false;
 
         if (isSuccess) {
-            ucapan();
+            await ucapan();
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            resetForm();
         }
     };
 
+    // OK
     const hapus = async (button) => {
         if (!confirm('Kamu yakin ingin menghapus?')) {
             return;
@@ -618,7 +644,7 @@ const comment = (() => {
         }
     };
 
-    const modalEdit = async (button) => {
+    const edit = async (button) => {
         button.disabled = true;
         let tmp = button.innerText;
         button.innerText = 'Loading...';
@@ -632,13 +658,29 @@ const comment = (() => {
             return;
         }
 
-        let ress = {};
-
         await fetch(getUrl('/api/comment/' + id), parseRequest('GET', token))
             .then((res) => res.json())
             .then((res) => {
                 if (res.code == 200) {
-                    ress = res.data;
+                    tempID = id;
+                    batal.style.display = 'block';
+                    sunting.style.display = 'block';
+                    kirim.style.display = 'none';
+                    sunting.setAttribute('data-uuid', id);
+                    formpesan.value = res.data.komentar;
+                    formnama.value = res.data.nama;
+                    formnama.disabled = true;
+
+                    if (document.getElementById(id).getAttribute('data-parent') !== 'true') {
+                        document.getElementById('label-kehadiran').style.display = 'none';
+                        hadiran.style.display = 'none';
+                    } else {
+                        hadiran.value = res.data.hadir ? 1 : 2;
+                        document.getElementById('label-kehadiran').style.display = 'block';
+                        hadiran.style.display = 'block';
+                    }
+
+                    document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
                 }
 
                 if (res.error.length != 0) {
@@ -652,62 +694,31 @@ const comment = (() => {
                 }
             })
             .catch((err) => {
-                resetForm();
                 alert(err);
             });
 
         button.disabled = false;
         button.innerText = tmp;
-
-        let modal = new bootstrap.Modal('#modalEdit');
-        document.getElementById('idModalEdit').value = button.getAttribute('data-uuid');
-
-        if (button.getAttribute('data-parent') !== 'true') {
-            document.getElementById('edithadiran').style.display = 'none';
-            document.getElementById('editlabel-kehadiran').style.display = 'none';
-        } else {
-            let mySelect = document.getElementById('edithadiran');
-            // for (let i, j = 0; i = mySelect.options[j]; j++) {
-
-            //     i.selected = i.value == (ress.hadir ? 1 : 2);
-
-            // }
-
-            // for (var i = 0; i < mySelect.options.length; i++) {
-            //     console.log(mySelect.options[i].defaultSelected);
-            //     mySelect.options[i].defaultSelected = i == (ress.hadir ? "0" : "1");
-            // }
-
-
-            mySelect.value = ress.hadir;
-
-            document.getElementById('edithadiran').style.display = 'block';
-            document.getElementById('editlabel-kehadiran').style.display = 'block';
-        }
-
-        document.getElementById('editformpesan').innerText = ress.komentar
-
-        modal.show();
     };
 
     return {
-        kirim: () => send(),
         ucapan: () => ucapan(),
-
-        hapus: (btn) => hapus(btn),
-        edit: () => modalEdit(),
-
-
+        kirim: () => send(),
         renderLoading: (num) => renderLoading(num),
 
+        hapus: (btn) => hapus(btn),
+        edit: (btn) => edit(btn),
+        ubah: () => ubah(),
 
         balasan: (btn) => balasan(btn),
+        reply: () => reply(),
         batal: () => {
+            if (tempID) {
+                document.getElementById(tempID).scrollIntoView({ behavior: 'smooth' });
+                tempID = null;
+            }
             resetForm();
         },
-        reply: () => {
-            //
-        }
     };
 })();
 
@@ -796,7 +807,7 @@ const timer = () => {
 };
 
 const animation = () => {
-    const duration = 5 * 1000;
+    const duration = 10 * 1000;
     const animationEnd = Date.now() + duration;
     let skew = 1;
 
