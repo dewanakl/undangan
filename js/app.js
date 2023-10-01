@@ -1,20 +1,24 @@
 const audio = (() => {
     let instance = null;
 
-    if (!(instance instanceof HTMLAudioElement)) {
-        instance = new Audio();
-        instance.autoplay = true;
-        instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
-        instance.load();
-        instance.currentTime = 0;
-        instance.volume = 1;
-        instance.muted = false;
-        instance.loop = true;
+    let createOrGet = () => {
+        if (!(instance instanceof HTMLAudioElement)) {
+            instance = new Audio();
+            instance.autoplay = true;
+            instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
+            instance.load();
+            instance.currentTime = 0;
+            instance.volume = 1;
+            instance.muted = false;
+            instance.loop = true;
+        }
+
+        return instance;
     }
 
     return {
-        play: () => instance.play(),
-        pause: () => instance.pause(),
+        play: () => createOrGet().play(),
+        pause: () => createOrGet().pause(),
     };
 })();
 // OK
