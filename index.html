@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="./css/app.css">
 </head>
 
-<body data-email="user@example.com" data-password="12345678" data-url="https://api.ulems.my.id">
+<body data-email="user@example.com" data-password="12345678" data-url="https://api.ulems.my.id" style="overflow-y: hidden;">
 
     <!-- Navbar Bottom -->
     <nav class="navbar navbar-dark bg-dark navbar-expand fixed-bottom rounded-top-4 p-0" id="navbar-menus">
@@ -363,17 +363,17 @@
                 <div class="card-body border rounded-4 shadow p-3">
                     <h1 class="font-esthetic text-center mb-3" style="font-size: 3rem;">Ucapan & Doa</h1>
 
-                    <input type="hidden" id="idbalasan">
+                    <input type="hidden" id="id-balasan">
                     <div class="mb-1" id="balasan"></div>
 
                     <div class="mb-3">
-                        <label for="formnama" class="form-label">Nama</label>
-                        <input type="text" class="form-control shadow-sm" id="formnama" placeholder="Isikan Nama Anda">
+                        <label for="form-nama" class="form-label">Nama</label>
+                        <input type="text" class="form-control shadow-sm" id="form-nama" placeholder="Isikan Nama Anda">
                     </div>
 
                     <div class="mb-3">
-                        <label for="hadiran" class="form-label" id="labelhadir">Kehadiran</label>
-                        <select class="form-select shadow-sm" aria-label="selectkehadiran" id="hadiran">
+                        <label for="form-kehadiran" class="form-label" id="label-kehadiran">Kehadiran</label>
+                        <select class="form-select shadow-sm" id="form-kehadiran">
                             <option value="0" selected>Konfirmasi Kehadiran</option>
                             <option value="1">Hadir</option>
                             <option value="2">Berhalangan</option>
@@ -381,15 +381,15 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="formpesan" class="form-label">Ucapan & Doa</label>
-                        <textarea class="form-control shadow-sm" id="formpesan" rows="4" placeholder="Tulis Ucapan & Doa"></textarea>
+                        <label for="form-pesan" class="form-label">Ucapan & Doa</label>
+                        <textarea class="form-control shadow-sm" id="form-pesan" rows="4" placeholder="Tulis Ucapan & Doa"></textarea>
                     </div>
 
                     <div class="d-flex">
-                        <button class="flex-fill btn btn-danger btn-sm rounded-4 shadow m-1" style="display: none;" onclick="resetForm()" id="batal">
+                        <button class="flex-fill btn btn-danger btn-sm rounded-3 shadow m-1" style="display: none;" onclick="comment.batal()" id="batal">
                             Batal<i class="fa-solid fa-xmark ms-1"></i>
                         </button>
-                        <button class="flex-fill btn btn-primary btn-sm rounded-4 shadow m-1" style="display: none;" onclick="kirimBalasan()" id="kirimbalasan">
+                        <button class="flex-fill btn btn-primary btn-sm rounded-3 shadow m-1" style="display: none;" onclick="comment.reply()" id="reply">
                             Kirim<i class="fa-solid fa-paper-plane ms-1"></i>
                         </button>
                     </div>
@@ -401,7 +401,7 @@
                     </div>
                 </div>
 
-                <div class="rounded-4 mt-4 mb-2" id="daftarucapan"></div>
+                <div class="rounded-4 mt-4 mb-2" id="daftar-ucapan"></div>
 
                 <nav class="d-flex justify-content-center mb-0">
                     <ul class="pagination">
@@ -459,7 +459,7 @@
         </div>
     </footer>
 
-    <!-- Welcome -->
+    <!-- Welcome Page -->
     <div class="loading-page" id="welcome" style="opacity: 1;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100vh !important;">
 

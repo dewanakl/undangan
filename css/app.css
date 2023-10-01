@@ -5,7 +5,6 @@ html {
 body {
     font-family: 'Josefin Sans', sans-serif;
     padding: 0 !important;
-    overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -58,7 +57,7 @@ body::-webkit-scrollbar {
 .mouse-animation {
     padding: 0.25rem 0.625rem;
     height: 2rem;
-    border: 0.1rem solid #fff;
+    border: 0.1rem solid #ffffff;
     border-radius: 1.4rem;
     opacity: 0.75;
     box-sizing: content-box;
@@ -84,7 +83,7 @@ body::-webkit-scrollbar {
     width: 0.25rem;
     height: 0.625rem;
     border-radius: 25%;
-    background-color: #fff;
+    background-color: #ffffff;
     animation-name: scroll;
     animation-duration: 2.5s;
     animation-timing-function: linear;

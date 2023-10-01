@@ -1,20 +1,17 @@
-// OK
 const audio = (() => {
     let instance = null;
 
     let createOrGet = () => {
-        if (instance instanceof HTMLAudioElement) {
-            return instance;
+        if (!(instance instanceof HTMLAudioElement)) {
+            instance = new Audio();
+            instance.autoplay = true;
+            instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
+            instance.load();
+            instance.currentTime = 0;
+            instance.volume = 1;
+            instance.muted = false;
+            instance.loop = true;
         }
-
-        instance = new Audio();
-        instance.autoplay = true;
-        instance.src = document.getElementById('tombol-musik').getAttribute('data-url');
-        instance.load();
-        instance.currentTime = 0;
-        instance.volume = 1;
-        instance.muted = false;
-        instance.loop = true;
 
         return instance;
     }
@@ -29,7 +26,6 @@ const audio = (() => {
     };
 })();
 
-// OK
 const progressBar = (() => {
     let bar = document.getElementById('bar');
     let second = 0;
@@ -50,7 +46,7 @@ const progressBar = (() => {
     (async () => {
         while (true) {
             if (stop || setNum(counter)) {
-                break;
+                return;
             }
 
             await sleep(Math.exp(second));
@@ -67,12 +63,12 @@ const progressBar = (() => {
     };
 })();
 
-// OK
 const pagination = (() => {
 
     const perPage = 10;
     let pageNow = 0;
     let resultData = 0;
+
     let page = document.getElementById('page');
     let prev = document.getElementById('previous');
     let next = document.getElementById('next');
@@ -90,7 +86,7 @@ const pagination = (() => {
         button.disabled = true;
         button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
         await comment.ucapan();
-        document.getElementById('daftarucapan').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
         button.disabled = false;
         button.innerHTML = tmp;
     };
@@ -105,9 +101,9 @@ const pagination = (() => {
         reset: async () => {
             pageNow = 0;
             resultData = 0;
-            await comment.ucapan();
             page.innerText = 1;
             next.classList.remove('disabled');
+            await comment.ucapan();
             disabledPrevious();
         },
         setResultData: (len) => {
@@ -144,21 +140,21 @@ const pagination = (() => {
     };
 })();
 
-// 
+// Not complete
 const comment = (() => {
     const kirim = document.getElementById('kirim');
-    const hadiran = document.getElementById('hadiran');
-    const kirimBalasan = document.getElementById('kirimbalasan');
-    const formnama = document.getElementById('formnama');
-    const formpesan = document.getElementById('formpesan');
+    const hadiran = document.getElementById('form-kehadiran');
+    const kirimBalasan = document.getElementById('reply');
+    const formnama = document.getElementById('form-nama');
+    const formpesan = document.getElementById('form-pesan');
 
     const resetForm = () => {
         kirim.style.display = 'block';
         hadiran.style.display = 'block';
-        document.getElementById('labelhadir').style.display = 'block';
+        document.getElementById('label-kehadiran').style.display = 'block';
         document.getElementById('batal').style.display = 'none';
         kirimBalasan.style.display = 'none';
-        document.getElementById('idbalasan').value = null;
+        document.getElementById('id-balasan').value = null;
         document.getElementById('balasan').innerHTML = null;
         formnama.value = null;
         hadiran.value = 0;
@@ -260,7 +256,7 @@ const comment = (() => {
         const BALAS = document.getElementById('balasan');
         BALAS.innerHTML = renderLoading(1);
         hadiran.style.display = 'none';
-        document.getElementById('labelhadir').style.display = 'none';
+        document.getElementById('label-kehadiran').style.display = 'none';
 
         await fetch(getUrl('/api/comment/' + id), parseRequest('GET', token))
             .then((res) => res.json())
@@ -377,7 +373,7 @@ const comment = (() => {
 
     // OK
     const ucapan = async () => {
-        const UCAPAN = document.getElementById('daftarucapan');
+        const UCAPAN = document.getElementById('daftar-ucapan');
         UCAPAN.innerHTML = renderLoading(pagination.getPer());
         let token = localStorage.getItem('token') ?? '';
 
@@ -668,7 +664,7 @@ const comment = (() => {
 
         if (button.getAttribute('data-parent') !== 'true') {
             document.getElementById('edithadiran').style.display = 'none';
-            document.getElementById('editlabelhadir').style.display = 'none';
+            document.getElementById('editlabel-kehadiran').style.display = 'none';
         } else {
             let mySelect = document.getElementById('edithadiran');
             // for (let i, j = 0; i = mySelect.options[j]; j++) {
@@ -686,7 +682,7 @@ const comment = (() => {
             mySelect.value = ress.hadir;
 
             document.getElementById('edithadiran').style.display = 'block';
-            document.getElementById('editlabelhadir').style.display = 'block';
+            document.getElementById('editlabel-kehadiran').style.display = 'block';
         }
 
         document.getElementById('editformpesan').innerText = ress.komentar
@@ -697,14 +693,24 @@ const comment = (() => {
     return {
         kirim: () => send(),
         ucapan: () => ucapan(),
+
         hapus: (btn) => hapus(btn),
         edit: () => modalEdit(),
+
+
         renderLoading: (num) => renderLoading(num),
-        balasan: (btn) => balasan(btn)
+
+
+        balasan: (btn) => balasan(btn),
+        batal: () => {
+            resetForm();
+        },
+        reply: () => {
+            //
+        }
     };
 })();
 
-// OK
 const storage = (table) => ((table) => {
 
     const get = (key = null) => {
@@ -743,13 +749,10 @@ const storage = (table) => ((table) => {
     };
 })(table);
 
-// OK
 const likes = storage('likes');
 
-// OK
 const owns = storage('owns');
 
-// OK
 const escapeHtml = (unsafe) => {
     return unsafe
         .replace(/&/g, '&amp;')
@@ -759,7 +762,6 @@ const escapeHtml = (unsafe) => {
         .replace(/'/g, '&#039;');
 };
 
-// OK
 const salin = (btn, msg = null, timeout = 1500) => {
     navigator.clipboard.writeText(btn.getAttribute('data-nomer'));
     let tmp = btn.innerHTML;
@@ -773,7 +775,6 @@ const salin = (btn, msg = null, timeout = 1500) => {
     }, timeout);
 };
 
-// OK
 const timer = () => {
     let countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu').replace(' ', 'T'))).getTime();
     let time = null;
@@ -794,7 +795,6 @@ const timer = () => {
     }, 1000);
 };
 
-// OK
 const animation = () => {
     const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;
@@ -806,15 +806,17 @@ const animation = () => {
 
     (function frame() {
         const timeLeft = animationEnd - Date.now();
-        skew = Math.max(0.9, skew - 0.001);
+        const ticks = Math.max(200, 500 * (timeLeft / duration));
+
+        skew = Math.max(0.8, skew - 0.001);
 
         confetti({
-            particleCount: 2,
+            particleCount: 1,
             startVelocity: 0,
-            ticks: Math.max(250, 500 * (timeLeft / duration)),
+            ticks: ticks,
             origin: {
                 x: Math.random(),
-                y: Math.random() * skew - 0.1,
+                y: Math.random() * skew - 0.2,
             },
             colors: ["FFC0CB", "FF69B4", "FF1493", "C71585"],
             shapes: ["heart"],
@@ -829,9 +831,17 @@ const animation = () => {
     })();
 };
 
-// OK
 const buka = async () => {
-    opacity('welcome')
+    document.getElementById('daftar-ucapan').innerHTML = comment.renderLoading(pagination.getPer());
+    document.querySelector('body').style.overflowY = 'scroll';
+
+    confetti({
+        particleCount: 100,
+        origin: { y: 0.8 },
+        zIndex: 1057
+    });
+    opacity('welcome');
+
     document.getElementById('tombol-musik').style.display = 'block';
     audio.play();
     AOS.init();
@@ -840,7 +850,6 @@ const buka = async () => {
     animation();
 };
 
-// OK
 const play = (btn) => {
     if (btn.getAttribute('data-status') !== 'true') {
         btn.setAttribute('data-status', 'true');
@@ -853,7 +862,6 @@ const play = (btn) => {
     }
 };
 
-// OK
 const parseRequest = (method, token = null, body = null) => {
     let req = {
         method: method,
@@ -874,7 +882,6 @@ const parseRequest = (method, token = null, body = null) => {
     return req;
 };
 
-// OK
 const getUrl = (path = null) => {
     let url = document.querySelector('body').getAttribute('data-url');
 
@@ -882,21 +889,15 @@ const getUrl = (path = null) => {
         url = url.slice(0, -1);
     }
 
-    if (path) {
-        return url + path;
-    }
-
-    return url;
+    return path ? url + path : url;
 };
 
-// OK
 const modalFoto = (img) => {
     let modal = new bootstrap.Modal('#modalFoto');
     document.getElementById('showModalFoto').src = img.src;
     modal.show();
 };
 
-// OK
 const namaTamu = () => {
     let name = (new URLSearchParams(window.location.search)).get('to') ?? '';
 
@@ -909,13 +910,11 @@ const namaTamu = () => {
     div.classList.add('m-2');
     div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0 text-light">Kepada Yth Bapak/Ibu/Saudara/i</p><h2 class="text-light">${escapeHtml(name)}</h2>`;
 
-    formnama.value = escapeHtml(name);
+    document.getElementById('form-nama').value = escapeHtml(name);
     document.getElementById('nama-tamu').appendChild(div);
 };
 
-// OK
 const login = async () => {
-    document.getElementById('daftarucapan').innerHTML = comment.renderLoading(pagination.getPer());
     let body = document.querySelector('body');
 
     await fetch(
@@ -945,7 +944,6 @@ const login = async () => {
         });
 };
 
-// OK
 const like = async (button) => {
     let token = localStorage.getItem('token') ?? '';
     let id = button.getAttribute('data-uuid');
@@ -1026,10 +1024,7 @@ const like = async (button) => {
     button.disabled = false;
 };
 
-// OK
 const opacity = (nama) => {
-    progressBar.stop();
-
     let op = parseInt(document.getElementById(nama).style.opacity);
     let clear = null;
 
@@ -1045,46 +1040,8 @@ const opacity = (nama) => {
     }, 10);
 };
 
-// OK
 window.addEventListener('load', () => {
     namaTamu();
+    progressBar.stop();
     opacity('loading');
-
-    function fire(particleRatio, opts) {
-        confetti(
-            Object.assign({}, opts, {
-                particleCount: Math.floor(250 * particleRatio),
-                zIndex: 1057,
-                origin: { y: 0.7 }
-            })
-        );
-    }
-
-    fire(0.25, {
-        spread: 26,
-        startVelocity: 55,
-    });
-
-    fire(0.2, {
-        spread: 60,
-    });
-
-    fire(0.35, {
-        spread: 100,
-        decay: 0.91,
-        scalar: 0.8,
-    });
-
-    fire(0.1, {
-        spread: 120,
-        startVelocity: 25,
-        decay: 0.92,
-        scalar: 1.2,
-    });
-
-    fire(0.1, {
-        spread: 120,
-        startVelocity: 45,
-    });
-
 }, false);
