@@ -1,3 +1,4 @@
+// OK
 const audio = (() => {
     let instance = null;
 
@@ -21,8 +22,8 @@ const audio = (() => {
         pause: () => createOrGet().pause(),
     };
 })();
-// OK
 
+// OK
 const progressBar = (() => {
     let bar = document.getElementById('bar');
     let second = 0;
@@ -59,8 +60,8 @@ const progressBar = (() => {
         }
     };
 })();
-// OK
 
+// Not complete
 const pagination = (() => {
 
     const perPage = 10;
@@ -720,6 +721,7 @@ const comment = (() => {
     };
 })();
 
+// OK
 const storage = (table) => ((table) => {
 
     const get = (key = null) => {
@@ -746,22 +748,23 @@ const storage = (table) => ((table) => {
         localStorage.setItem(table, JSON.stringify(storage));
     };
 
-    const has = (key) => {
-        return Object.keys(get()).includes(key);
-    };
+    const has = (key) => Object.keys(get()).includes(key);
 
     return {
-        get: (key = null) => get(key),
-        set: (key, value) => set(key, value),
-        unset: (key) => unset(key),
-        has: (key) => has(key),
+        get: get,
+        set: set,
+        unset: unset,
+        has: has,
     };
 })(table);
 
+// OK
 const likes = storage('likes');
 
+// OK
 const owns = storage('owns');
 
+// OK
 const escapeHtml = (unsafe) => {
     return unsafe
         .replace(/&/g, '&amp;')
@@ -771,19 +774,27 @@ const escapeHtml = (unsafe) => {
         .replace(/'/g, '&#039;');
 };
 
+// OK
 const salin = (btn, msg = null, timeout = 1500) => {
     navigator.clipboard.writeText(btn.getAttribute('data-nomer'));
+
     let tmp = btn.innerHTML;
     btn.innerHTML = msg ?? 'Tersalin';
     btn.disabled = true;
+    let id = null;
 
-    setTimeout(() => {
+    id = setTimeout(() => {
         btn.innerHTML = tmp;
         btn.disabled = false;
         btn.focus();
+
+        clearTimeout(id);
+        id = null;
+        return;
     }, timeout);
 };
 
+// OK
 const timer = () => {
     let countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu').replace(' ', 'T'))).getTime();
     let time = null;
@@ -804,6 +815,7 @@ const timer = () => {
     }, 1000);
 };
 
+// OK
 const animation = () => {
     const duration = 10 * 1000;
     const animationEnd = Date.now() + duration;
@@ -829,7 +841,7 @@ const animation = () => {
             },
             colors: ["FFC0CB", "FF69B4", "FF1493", "C71585"],
             shapes: ["heart"],
-            gravity: randomInRange(0, 0.5),
+            gravity: randomInRange(0.5, 1),
             scalar: randomInRange(1, 2),
             drift: randomInRange(-0.5, 0.5),
         });
@@ -840,25 +852,27 @@ const animation = () => {
     })();
 };
 
+// OK
 const buka = async () => {
     document.getElementById('daftar-ucapan').innerHTML = comment.renderLoading(pagination.getPer());
     document.querySelector('body').style.overflowY = 'scroll';
 
-    confetti({
-        particleCount: 100,
-        origin: { y: 0.8 },
-        zIndex: 1057
-    });
     opacity('welcome');
-
     document.getElementById('tombol-musik').style.display = 'block';
     audio.play();
     AOS.init();
-    await login();
+
+    await confetti({
+        origin: { y: 0.8 },
+        zIndex: 1057
+    });
+
+    login();
     timer();
     animation();
 };
 
+// OK
 const play = (btn) => {
     if (btn.getAttribute('data-status') !== 'true') {
         btn.setAttribute('data-status', 'true');
@@ -871,6 +885,7 @@ const play = (btn) => {
     }
 };
 
+// OK
 const parseRequest = (method, token = null, body = null) => {
     let req = {
         method: method,
@@ -891,6 +906,7 @@ const parseRequest = (method, token = null, body = null) => {
     return req;
 };
 
+// OK
 const getUrl = (path = null) => {
     let url = document.querySelector('body').getAttribute('data-url');
 
@@ -901,12 +917,13 @@ const getUrl = (path = null) => {
     return path ? url + path : url;
 };
 
+// OK
 const modalFoto = (img) => {
-    let modal = new bootstrap.Modal('#modalFoto');
     document.getElementById('showModalFoto').src = img.src;
-    modal.show();
+    (new bootstrap.Modal('#modalFoto')).show();
 };
 
+// OK
 const namaTamu = () => {
     let name = (new URLSearchParams(window.location.search)).get('to') ?? '';
 
@@ -923,6 +940,7 @@ const namaTamu = () => {
     document.getElementById('nama-tamu').appendChild(div);
 };
 
+// OK
 const login = async () => {
     let body = document.querySelector('body');
 
@@ -938,6 +956,7 @@ const login = async () => {
                 localStorage.removeItem('token');
                 localStorage.setItem('token', res.data.token);
                 comment.ucapan();
+                return;
             }
 
             if (res.error.length != 0) {
@@ -946,13 +965,14 @@ const login = async () => {
                 return;
             }
         })
-        .catch(() => {
-            alert('Terdapat kesalahan, otomatis reload halaman');
+        .catch((err) => {
+            alert(`Terdapat kesalahan: ${err}, otomatis reload halaman`);
             window.location.reload();
             return;
         });
 };
 
+// OK
 const like = async (button) => {
     let token = localStorage.getItem('token') ?? '';
     let id = button.getAttribute('data-uuid');
@@ -1033,6 +1053,7 @@ const like = async (button) => {
     button.disabled = false;
 };
 
+// OK
 const opacity = (nama) => {
     let op = parseInt(document.getElementById(nama).style.opacity);
     let clear = null;
@@ -1045,12 +1066,14 @@ const opacity = (nama) => {
             clearInterval(clear);
             clear = null;
             document.getElementById(nama).remove();
+            return;
         }
     }, 10);
 };
 
+// OK
 window.addEventListener('load', () => {
     namaTamu();
     progressBar.stop();
     opacity('loading');
-}, false);
+});
