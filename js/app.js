@@ -85,7 +85,7 @@ const pagination = (() => {
         button.disabled = true;
         button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
         await comment.ucapan();
-        document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth', block: 'center' });
         button.disabled = false;
         button.innerHTML = tmp;
     };
@@ -462,7 +462,7 @@ const comment = (() => {
 
         if (isSuccess) {
             await ucapan();
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             resetForm();
         }
 
@@ -528,7 +528,7 @@ const comment = (() => {
 
         if (isSuccess) {
             await ucapan();
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             resetForm();
         }
     };
@@ -635,7 +635,7 @@ const comment = (() => {
         reply: reply,
         batal: () => {
             if (tempID) {
-                document.getElementById(tempID).scrollIntoView({ behavior: 'smooth' });
+                document.getElementById(tempID).scrollIntoView({ behavior: 'smooth', block: 'center' });
                 tempID = null;
             }
             resetForm();
