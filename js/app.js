@@ -85,7 +85,7 @@ const pagination = (() => {
         button.disabled = true;
         button.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
         await comment.ucapan();
-        document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
         button.disabled = false;
         button.innerHTML = tmp;
     };
