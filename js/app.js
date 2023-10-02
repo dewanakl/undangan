@@ -520,17 +520,17 @@ const comment = (() => {
                 alert(`Terdapat kesalahan: ${err}`);
             });
 
-        sunting.innerHTML = tmp;
-        sunting.disabled = false;
-        batal.disabled = false;
-        hadiran.disabled = false;
-        formpesan.disabled = false;
-
         if (isSuccess) {
             await ucapan();
             document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             resetForm();
         }
+
+        sunting.innerHTML = tmp;
+        sunting.disabled = false;
+        batal.disabled = false;
+        hadiran.disabled = false;
+        formpesan.disabled = false;
     };
 
     // OK
