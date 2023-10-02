@@ -61,7 +61,7 @@ const progressBar = (() => {
     };
 })();
 
-// Not complete
+// OK
 const pagination = (() => {
 
     const perPage = 10;
@@ -208,34 +208,23 @@ const comment = (() => {
         let tmp = kirim.innerHTML;
         kirim.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
-        await fetch(
-            getUrl('/api/comment'),
-            parseRequest('POST', token, {
+        await request('POST', '/api/comment')
+            .token(token)
+            .body({
                 nama: nama,
                 hadir: hadir == 1,
                 komentar: komentar
-            }))
-            .then((res) => res.json())
+            })
             .then((res) => {
                 if (res.code == 201) {
                     owns.set(res.data.uuid, res.data.own);
                     resetForm();
                     pagination.reset();
                 }
-
-                if (res.error.length != 0) {
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
-                    }
-
-                    throw res.error[0];
-                }
             })
             .catch((err) => {
                 resetForm();
-                alert(err);
+                alert(`Terdapat kesalahan: ${err}`);
             });
 
         formnama.disabled = false;
@@ -265,8 +254,8 @@ const comment = (() => {
         hadiran.style.display = 'none';
         document.getElementById('label-kehadiran').style.display = 'none';
 
-        await fetch(getUrl('/api/comment/' + id), parseRequest('GET', token))
-            .then((res) => res.json())
+        await request('GET', '/api/comment/' + id)
+            .token(token)
             .then((res) => {
                 if (res.code == 200) {
                     kirim.style.display = 'none';
@@ -290,20 +279,10 @@ const comment = (() => {
                         </div>
                     </div>`;
                 }
-
-                if (res.error.length != 0) {
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
-                    }
-
-                    throw res.error[0];
-                }
             })
             .catch((err) => {
                 resetForm();
-                alert(err);
+                alert(`Terdapat kesalahan: ${err}`);
             });
 
         document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
@@ -386,10 +365,8 @@ const comment = (() => {
             return;
         }
 
-        await fetch(getUrl(`/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`),
-            parseRequest('GET', token)
-        )
-            .then((res) => res.json())
+        await request('GET', `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
+            .token(token)
             .then((res) => {
                 if (res.code == 200) {
                     UCAPAN.innerHTML = null;
@@ -400,18 +377,8 @@ const comment = (() => {
                         UCAPAN.innerHTML = `<div class="h6 text-center">Tidak ada data</div>`;
                     }
                 }
-
-                if (res.error.length != 0) {
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
-                    }
-
-                    throw res.error[0];
-                }
             })
-            .catch((err) => alert(err));
+            .catch((err) => alert(`Terdapat kesalahan: ${err}`));
     };
 
     // OK
@@ -476,32 +443,21 @@ const comment = (() => {
         balas.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
         let isSuccess = false;
-        await fetch(
-            getUrl('/api/comment'),
-            parseRequest('POST', token, {
+        await request('POST', '/api/comment')
+            .token(token)
+            .body({
                 nama: nama,
                 id: id,
                 komentar: komentar
-            }))
-            .then((res) => res.json())
+            })
             .then((res) => {
                 if (res.code == 201) {
                     isSuccess = true;
                     owns.set(res.data.uuid, res.data.own);
                 }
-
-                if (res.error.length != 0) {
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
-                    }
-
-                    throw res.error[0];
-                }
             })
             .catch((err) => {
-                alert(err);
+                alert(`Terdapat kesalahan: ${err}`);
             });
 
         if (isSuccess) {
@@ -549,32 +505,20 @@ const comment = (() => {
         sunting.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
         let isSuccess = false;
-        await fetch(
-            getUrl('/api/comment/' + owns.get(id)),
-            parseRequest('PUT', token, {
+        await request('PUT', '/api/comment/' + owns.get(id))
+            .body({
                 hadir: parseInt(hadir) == 1,
                 komentar: komentar
-            }))
-            .then((res) => res.json())
+            })
+            .token(token)
             .then((res) => {
-                if (res.error.length != 0) {
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
-                    }
-
-                    throw res.error[0];
-                }
-
                 if (res.data.status) {
                     isSuccess = true;
                 }
             })
             .catch((err) => {
-                alert(err);
+                alert(`Terdapat kesalahan: ${err}`);
             });
-
 
         sunting.innerHTML = tmp;
         sunting.disabled = false;
@@ -609,28 +553,16 @@ const comment = (() => {
         button.innerText = 'Loading..';
 
         let isSuccess = false;
-        await fetch(
-            getUrl('/api/comment/' + owns.get(id)),
-            parseRequest('DELETE', token))
-            .then((res) => res.json())
+        await request('DELETE', '/api/comment/' + owns.get(id))
+            .token(token)
             .then((res) => {
-                if (res.error.length != 0) {
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
-                    }
-
-                    throw res.error[0];
-                }
-
                 if (res.data.status) {
                     owns.unset(id);
                     isSuccess = true;
                 }
             })
             .catch((err) => {
-                alert(err);
+                alert(`Terdapat kesalahan: ${err}`);
             });
 
         button.innerText = tmp;
@@ -656,8 +588,8 @@ const comment = (() => {
             return;
         }
 
-        await fetch(getUrl('/api/comment/' + id), parseRequest('GET', token))
-            .then((res) => res.json())
+        await request('GET', '/api/comment/' + id)
+            .token(token)
             .then((res) => {
                 if (res.code == 200) {
                     tempID = id;
@@ -680,19 +612,9 @@ const comment = (() => {
 
                     document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
                 }
-
-                if (res.error.length != 0) {
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
-                    }
-
-                    throw res.error[0];
-                }
             })
             .catch((err) => {
-                alert(err);
+                alert(`Terdapat kesalahan: ${err}`);
             });
 
         button.disabled = false;
@@ -763,6 +685,59 @@ const likes = storage('likes');
 
 // OK
 const owns = storage('owns');
+
+// OK
+const request = (method, path) => {
+
+    let url = document.querySelector('body').getAttribute('data-url');
+
+    let req = {
+        method: method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    };
+
+    return {
+        async then(...prms) {
+            if (url.slice(-1) == '/') {
+                url = url.slice(0, -1);
+            }
+
+            return fetch(path ? url + path : url, req)
+                .then((res) => res.json())
+                .then((res) => {
+                    if (res.error.length == 0) {
+                        return res;
+                    }
+
+                    if (res.error[0] == 'Expired token') {
+                        alert('Terdapat kesalahan, token expired !');
+                        window.location.reload();
+                        return;
+                    }
+
+                    throw res.error[0];
+                })
+                .then(...prms);
+        },
+        token(token) {
+            if (token) {
+                req.headers['Authorization'] = 'Bearer ' + token;
+            }
+
+            return this;
+        },
+        body(body) {
+            if (body) {
+                req.body = JSON.stringify(body);
+            }
+
+            return this;
+        },
+    };
+};
 
 // OK
 const escapeHtml = (unsafe) => {
@@ -886,38 +861,6 @@ const play = (btn) => {
 };
 
 // OK
-const parseRequest = (method, token = null, body = null) => {
-    let req = {
-        method: method,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    };
-
-    if (token) {
-        req.headers['Authorization'] = 'Bearer ' + token;
-    }
-
-    if (body) {
-        req.body = JSON.stringify(body);
-    }
-
-    return req;
-};
-
-// OK
-const getUrl = (path = null) => {
-    let url = document.querySelector('body').getAttribute('data-url');
-
-    if (url.slice(-1) == '/') {
-        url = url.slice(0, -1);
-    }
-
-    return path ? url + path : url;
-};
-
-// OK
 const modalFoto = (img) => {
     document.getElementById('showModalFoto').src = img.src;
     (new bootstrap.Modal('#modalFoto')).show();
@@ -944,29 +887,20 @@ const namaTamu = () => {
 const login = async () => {
     let body = document.querySelector('body');
 
-    await fetch(
-        getUrl('/api/session'),
-        parseRequest('POST', null, {
+    await request('POST', '/api/session')
+        .body({
             email: body.getAttribute('data-email'),
             password: body.getAttribute('data-password')
-        }))
-        .then((res) => res.json())
+        })
         .then((res) => {
             if (res.code == 200) {
                 localStorage.removeItem('token');
                 localStorage.setItem('token', res.data.token);
                 comment.ucapan();
-                return;
-            }
-
-            if (res.error.length != 0) {
-                alert('Terdapat kesalahan, ' + res.error[0]);
-                window.location.reload();
-                return;
             }
         })
         .catch((err) => {
-            alert(`Terdapat kesalahan: ${err}, otomatis reload halaman`);
+            alert(`Terdapat kesalahan: ${err}`);
             window.location.reload();
             return;
         });
@@ -990,21 +924,9 @@ const like = async (button) => {
     info.innerText = 'Loading..';
 
     if (likes.has(id)) {
-        await fetch(
-            getUrl('/api/comment/' + likes.get(id)),
-            parseRequest('PATCH', token))
-            .then((res) => res.json())
+        await request('PATCH', '/api/comment/' + likes.get(id))
+            .token(token)
             .then((res) => {
-                if (res.error.length != 0) {
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
-                    }
-
-                    throw res.error[0];
-                }
-
                 if (res.data.status) {
                     likes.unset(id);
 
@@ -1016,25 +938,13 @@ const like = async (button) => {
                 }
             })
             .catch((err) => {
-                alert(err);
+                alert(`Terdapat kesalahan: ${err}`);
             });
 
     } else {
-        await fetch(
-            getUrl('/api/comment/' + id),
-            parseRequest('POST', token))
-            .then((res) => res.json())
+        await request('POST', '/api/comment/' + id)
+            .token(token)
             .then((res) => {
-                if (res.error.length != 0) {
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
-                    }
-
-                    throw res.error[0];
-                }
-
                 if (res.code == 201) {
                     likes.set(id, res.data.uuid);
 
@@ -1046,7 +956,7 @@ const like = async (button) => {
                 }
             })
             .catch((err) => {
-                alert(err);
+                alert(`Terdapat kesalahan: ${err}`);
             });
     }
 
