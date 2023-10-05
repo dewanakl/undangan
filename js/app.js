@@ -1,4 +1,36 @@
-// OK
+const progressBar = (() => {
+    const bar = document.getElementById('bar');
+    const assets = document.querySelectorAll('img');
+
+    let totalAssets = assets.length;
+    let loadedAssets = 0;
+
+    const progress = () => {
+        const progressPercentage = Math.min((loadedAssets / totalAssets) * 100, 100);
+
+        bar.style.width = progressPercentage.toString() + "%";
+        bar.innerText = `${progressPercentage.toFixed(0)}%`;
+
+        if (loadedAssets == totalAssets) {
+            window.scrollTo(0, 0);
+            tamu();
+            opacity('loading');
+        }
+    };
+
+    assets.forEach(asset => {
+        if (asset.complete && asset.naturalWidth !== 0) {
+            loadedAssets++;
+            progress();
+        } else {
+            asset.addEventListener('load', () => {
+                loadedAssets++;
+                progress();
+            });
+        }
+    });
+})();
+
 const audio = (() => {
     let instance = null;
 
@@ -20,44 +52,6 @@ const audio = (() => {
     return {
         play: () => createOrGet().play(),
         pause: () => createOrGet().pause(),
-    };
-})();
-
-// OK
-const progressBar = (() => {
-    let bar = document.getElementById('bar');
-    let second = 0;
-    let counter = 0;
-    let stop = false;
-
-    const sleep = (until) => new Promise((p) => {
-        setTimeout(p, until);
-    });
-
-    const setNum = (num) => {
-        bar.style.width = num + "%";
-        bar.innerText = num + "%";
-
-        return num == 100 || stop;
-    };
-
-    (async () => {
-        while (true) {
-            if (stop || setNum(counter)) {
-                return;
-            }
-
-            await sleep(Math.exp(second));
-            second += 0.1;
-            counter += 1;
-        }
-    })();
-
-    return {
-        stop: () => {
-            stop = true;
-            setNum(100.0);
-        }
     };
 })();
 
@@ -208,6 +202,7 @@ const comment = (() => {
         let tmp = kirim.innerHTML;
         kirim.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
+        let isSuccess = false;
         await request('POST', '/api/comment')
             .token(token)
             .body({
@@ -218,18 +213,19 @@ const comment = (() => {
             .then((res) => {
                 if (res.code == 201) {
                     owns.set(res.data.uuid, res.data.own);
-                    resetForm();
-                    pagination.reset();
+                    isSuccess = true;
                 }
             })
             .catch((err) => {
-                resetForm();
                 alert(`Terdapat kesalahan: ${err}`);
             });
 
-        formnama.disabled = false;
-        hadiran.disabled = false;
-        formpesan.disabled = false;
+        if (isSuccess) {
+            await pagination.reset();
+            document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
+            resetForm();
+        }
+
         kirim.disabled = false;
         kirim.innerHTML = tmp;
     };
@@ -680,10 +676,8 @@ const storage = (table) => ((table) => {
     };
 })(table);
 
-// OK
 const likes = storage('likes');
 
-// OK
 const owns = storage('owns');
 
 // OK
@@ -710,12 +704,6 @@ const request = (method, path) => {
                 .then((res) => {
                     if (res.error.length == 0) {
                         return res;
-                    }
-
-                    if (res.error[0] == 'Expired token') {
-                        alert('Terdapat kesalahan, token expired !');
-                        window.location.reload();
-                        return;
                     }
 
                     throw res.error[0];
@@ -834,17 +822,17 @@ const buka = async () => {
 
     opacity('welcome');
     document.getElementById('tombol-musik').style.display = 'block';
-    audio.play();
     AOS.init();
 
     await confetti({
         origin: { y: 0.8 },
         zIndex: 1057
     });
-
-    login();
-    timer();
     animation();
+
+    await login();
+    timer();
+    audio.play();
 };
 
 // OK
@@ -867,7 +855,7 @@ const modalFoto = (img) => {
 };
 
 // OK
-const namaTamu = () => {
+const tamu = () => {
     let name = (new URLSearchParams(window.location.search)).get('to') ?? '';
 
     if (name.length == 0) {
@@ -980,10 +968,3 @@ const opacity = (nama) => {
         }
     }, 10);
 };
-
-// OK
-window.addEventListener('load', () => {
-    namaTamu();
-    progressBar.stop();
-    opacity('loading');
-});
