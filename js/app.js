@@ -1,5 +1,4 @@
 const progressBar = (() => {
-    const bar = document.getElementById('bar');
     const assets = document.querySelectorAll('img');
 
     let totalAssets = assets.length;
@@ -8,11 +7,19 @@ const progressBar = (() => {
     const progress = () => {
         const progressPercentage = Math.min((loadedAssets / totalAssets) * 100, 100);
 
-        bar.style.width = progressPercentage.toString() + "%";
-        bar.innerText = `${progressPercentage.toFixed(0)}%`;
+        document.getElementById('bar').style.width = progressPercentage.toString() + "%";
+        document.getElementById('progress-info').innerText = `Loading asset (${loadedAssets}) [${progressPercentage.toFixed(0)}%]`;
 
         if (loadedAssets == totalAssets) {
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+
             window.scrollTo(0, 0);
+
             tamu();
             opacity('loading');
         }
@@ -823,6 +830,7 @@ const buka = async () => {
     opacity('welcome');
     document.getElementById('tombol-musik').style.display = 'block';
     AOS.init();
+    audio.play();
 
     await confetti({
         origin: { y: 0.8 },
@@ -832,7 +840,6 @@ const buka = async () => {
 
     await login();
     timer();
-    audio.play();
 };
 
 // OK
