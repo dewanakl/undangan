@@ -13,7 +13,8 @@ Currently supported project versions with security updates:
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability, please send an e-mail to Dewana Kretarta Lokeswara via dewanakretarta29@gmail.com
+If you discover a security vulnerability, please send an e-mail to Dewana Kretarta Lokeswara via <dewanakretarta29@gmail.com>
 
 ## Comments on this Policy
+
 If you have suggestions on how this process could be improved please submit a Pull Request.

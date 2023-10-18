@@ -1,10 +1,16 @@
-## Template website undangan pernikahan sederhana
+# Template website undangan pernikahan sederhana
 
-##### Demo: <https://dewanakl.github.io/undangan/?to=Teman+teman+semua>
+## Demo
 
-##### Deployment API Vercel: [https://dikit.my.id/DeploymentApiVercel](https://dikit.my.id/DeploymentApiVercel)
+<https://dewanakl.github.io/undangan/?to=Teman+teman+semua>
 
-##### Deployment API Hosting: [https://dikit.my.id/DeploymentApiHosting](https://dikit.my.id/DeploymentApiHosting)
+### Deployment API Vercel
+
+[https://dikit.my.id/DeploymentApiVercel](https://dikit.my.id/DeploymentApiVercel)
+
+### Deployment API Hosting
+
+[https://dikit.my.id/DeploymentApiHosting](https://dikit.my.id/DeploymentApiHosting)
 
 ### Tech stack
 
