@@ -415,7 +415,18 @@ const session = (() => {
     };
 
     return {
-        login: login,
+        login: async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const jwt = JSON.parse(atob(token.split('.')[1]));
+
+                if (jwt.exp < ((new Date()).getTime() / 1000)) {
+                    await login();
+                }
+            } else {
+                await login();
+            }
+        },
     };
 })(); // OK
 
@@ -507,9 +518,11 @@ const comment = (() => {
         sunting.style.display = 'none';
         document.getElementById('label-kehadiran').style.display = 'block';
         document.getElementById('balasan').innerHTML = null;
+
         formnama.value = null;
         hadiran.value = 0;
         formpesan.value = null;
+
         formnama.disabled = false;
         hadiran.disabled = false;
         formpesan.disabled = false;
@@ -582,6 +595,9 @@ const comment = (() => {
 
         kirim.disabled = false;
         kirim.innerHTML = tmp;
+        formnama.disabled = false;
+        hadiran.disabled = false;
+        formpesan.disabled = false;
     };
 
     // OK
@@ -616,7 +632,7 @@ const comment = (() => {
 
                     BALAS.innerHTML = `
                     <div class="my-3">
-                        <label class="form-label">Balasan</label>
+                        <h6>Balasan</h6>
                         <div id="id-balasan" data-uuid="${id}" class="card-body bg-light shadow p-3 rounded-4">
                             <div class="d-flex flex-wrap justify-content-between align-items-center">
                                 <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
@@ -988,6 +1004,7 @@ const comment = (() => {
                 document.getElementById(tempID).scrollIntoView({ behavior: 'smooth', block: 'center' });
                 tempID = null;
             }
+
             resetForm();
         },
     };
