@@ -417,11 +417,14 @@ const session = (() => {
     return {
         login: async () => {
             const token = localStorage.getItem('token');
+
             if (token) {
                 const jwt = JSON.parse(atob(token.split('.')[1]));
 
                 if (jwt.exp < ((new Date()).getTime() / 1000)) {
                     await login();
+                } else {
+                    await comment.ucapan();
                 }
             } else {
                 await login();
