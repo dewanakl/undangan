@@ -232,7 +232,7 @@ const util = (() => {
             origin: { y: 0.8 },
             zIndex: 1057
         });
-        await session.login();
+        await session.check();
         await animation();
     };
 
@@ -414,22 +414,24 @@ const session = (() => {
             });
     };
 
-    return {
-        login: async () => {
-            const token = localStorage.getItem('token');
+    const check = async () => {
+        const token = localStorage.getItem('token');
 
-            if (token) {
-                const jwt = JSON.parse(atob(token.split('.')[1]));
+        if (token) {
+            const jwt = JSON.parse(atob(token.split('.')[1]));
 
-                if (jwt.exp < ((new Date()).getTime() / 1000)) {
-                    await login();
-                } else {
-                    await comment.ucapan();
-                }
-            } else {
+            if (jwt.exp < ((new Date()).getTime() / 1000)) {
                 await login();
+            } else {
+                await comment.ucapan();
             }
-        },
+        } else {
+            await login();
+        }
+    };
+
+    return {
+        check: check,
     };
 })(); // OK
 
@@ -516,6 +518,7 @@ const comment = (() => {
     const resetForm = () => {
         kirim.style.display = 'block';
         hadiran.style.display = 'block';
+
         batal.style.display = 'none';
         balas.style.display = 'none';
         sunting.style.display = 'none';
@@ -534,7 +537,7 @@ const comment = (() => {
     // OK
     const send = async () => {
         let nama = formnama.value;
-        let hadir = hadiran.value;
+        let hadir = parseInt(hadiran.value);
         let komentar = formpesan.value;
         let token = localStorage.getItem('token') ?? '';
 

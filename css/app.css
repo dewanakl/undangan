@@ -51,7 +51,7 @@ body::-webkit-scrollbar {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #212529;
+    background-color: #111111;
     z-index: 1056 !important;
 }
 
