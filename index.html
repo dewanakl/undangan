@@ -26,7 +26,7 @@
     <!-- Preconnect CDN -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Dependencies CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI=" crossorigin="anonymous">
@@ -35,6 +35,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" integrity="sha256-GqiEX9BuR1rv5zPU5Vs2qS/NSHl1BJyBcjQYJ6ycwD4=" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/app.css">
@@ -119,6 +120,7 @@
         <section class="dark-section" id="mempelai">
 
             <div class="text-center">
+                <h1 class="font-arabic py-4 px-2" style="font-size: 2rem">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</h1>
                 <h1 class="font-esthetic py-4 px-2" style="font-size: 2rem">Assalamualaikum Warahmatullahi Wabarakatuh</h1>
 
                 <p class="pb-3 px-3">
@@ -404,7 +406,7 @@
                             </button>
                         </li>
                         <li class="page-item disabled">
-                            <span class="page-link" id="page">1</span>
+                            <span class="page-link text-light" id="page">1</span>
                         </li>
                         <li class="page-item" id="next">
                             <button class="page-link" onclick="pagination.next(this)" aria-label="Next">
@@ -433,6 +435,8 @@
                 </p>
 
                 <h1 class="font-esthetic" data-aos="fade-up" data-aos-duration="2000">Wassalamualaikum Warahmatullahi Wabarakatuh</h1>
+                <h1 class="font-arabic py-4 px-2" data-aos="fade-up" data-aos-duration="2000" style="font-size: 2rem">الحَمْدُ لله رَبِّ العَالَمِيْن</h1>
+
                 <hr class="mt-3 mb-2">
 
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
@@ -485,7 +489,7 @@
                 <div class="progress" role="progressbar" style="height: 0.5rem;">
                     <div class="progress-bar" id="bar" style="width: 0%"></div>
                 </div>
-                <small class="mt-1" id="progress-info">Loading asset</small>
+                <small class="mt-1 text-light" id="progress-info">Loading asset</small>
             </div>
         </div>
     </div>

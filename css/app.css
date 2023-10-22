@@ -18,6 +18,11 @@ body::-webkit-scrollbar {
     color: #ffffff !important;
 }
 
+.font-arabic {
+    font-family: 'Noto Naskh Arabic', serif !important;
+    color: #ffffff !important;
+}
+
 .img-crop {
     width: 14rem;
     height: 14rem;

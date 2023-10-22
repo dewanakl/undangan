@@ -53,7 +53,7 @@ const request = (method, path) => {
             return fetch(url + path, req)
                 .then((res) => res.json())
                 .then((res) => {
-                    if (res.error.length == 0) {
+                    if (res.error == null || res.error.length == 0) {
                         return res;
                     }
 
@@ -934,12 +934,12 @@ const comment = (() => {
                 alert(`Terdapat kesalahan: ${err}`);
             });
 
-        button.innerText = tmp;
-        button.disabled = false;
-
         if (isSuccess) {
             ucapan();
         }
+
+        button.innerText = tmp;
+        button.disabled = false;
     };
 
     // OK
