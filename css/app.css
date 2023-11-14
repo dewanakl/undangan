@@ -97,12 +97,12 @@ body::-webkit-scrollbar {
 
 .dark-section {
     background-color: #111111 !important;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: -0.4rem;
+    margin-bottom: -0.4rem;
 }
 
 footer {
     background-color: #111111 !important;
-    margin-top: 0.5rem;
+    margin-top: -0.4rem;
     padding-bottom: 4rem;
 }

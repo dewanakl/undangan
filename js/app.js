@@ -1,4 +1,3 @@
-// OK
 const storage = (table) => {
 
     if (!localStorage.getItem(table)) {
@@ -32,7 +31,6 @@ const storage = (table) => {
     };
 };
 
-// OK
 const request = (method, path) => {
 
     let url = document.querySelector('body').getAttribute('data-url');
@@ -53,11 +51,11 @@ const request = (method, path) => {
             return fetch(url + path, req)
                 .then((res) => res.json())
                 .then((res) => {
-                    if (res.error == null || res.error.length == 0) {
-                        return res;
+                    if (res.error !== null) {
+                        throw res.error[0];
                     }
 
-                    throw res.error[0];
+                    return res;
                 })
                 .then(...params);
         },
@@ -74,7 +72,6 @@ const request = (method, path) => {
 
 const util = (() => {
 
-    // OK
     const opacity = (nama) => {
         let nm = document.getElementById(nama);
         let op = parseInt(nm.style.opacity);
@@ -93,7 +90,6 @@ const util = (() => {
         }, 10);
     };
 
-    // OK
     const escapeHtml = (unsafe) => {
         return unsafe
             .replace(/&/g, '&amp;')
@@ -103,12 +99,11 @@ const util = (() => {
             .replace(/'/g, '&#039;');
     };
 
-    // OK
-    const salin = (btn, msg = null, timeout = 1500) => {
+    const salin = (btn, msg = 'Tersalin', timeout = 1500) => {
         navigator.clipboard.writeText(btn.getAttribute('data-nomer'));
 
         let tmp = btn.innerHTML;
-        btn.innerHTML = msg ?? 'Tersalin';
+        btn.innerHTML = msg;
         btn.disabled = true;
 
         let clear = null;
@@ -123,19 +118,11 @@ const util = (() => {
         }, timeout);
     };
 
-    // OK
     const timer = () => {
         let countDownDate = (new Date(document.getElementById('tampilan-waktu').getAttribute('data-waktu').replace(' ', 'T'))).getTime();
 
-        let clear = null;
-        clear = setInterval(() => {
-            let distance = countDownDate - (new Date()).getTime();
-
-            if (distance < 0) {
-                clearInterval(clear);
-                clear = null;
-                return;
-            }
+        setInterval(() => {
+            let distance = Math.abs(countDownDate - (new Date()).getTime());
 
             document.getElementById('hari').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
             document.getElementById('jam').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -144,7 +131,6 @@ const util = (() => {
         }, 1000);
     };
 
-    // OK
     const play = (btn) => {
         if (btn.getAttribute('data-status') !== 'true') {
             btn.setAttribute('data-status', 'true');
@@ -157,17 +143,15 @@ const util = (() => {
         }
     };
 
-    // OK
     const modal = (img) => {
         document.getElementById('show-modal-image').src = img.src;
         (new bootstrap.Modal('#modal-image')).show();
     };
 
-    // OK
     const tamu = () => {
-        let name = (new URLSearchParams(window.location.search)).get('to') ?? '';
+        let name = (new URLSearchParams(window.location.search)).get('to');
 
-        if (name.length == 0) {
+        if (!name) {
             document.getElementById('nama-tamu').remove();
             return;
         }
@@ -180,7 +164,6 @@ const util = (() => {
         document.getElementById('nama-tamu').appendChild(div);
     };
 
-    // OK
     const animation = async () => {
         const duration = 10 * 1000;
         const animationEnd = Date.now() + duration;
@@ -217,9 +200,7 @@ const util = (() => {
         })();
     };
 
-    // OK
     const buka = async () => {
-        document.getElementById('daftar-ucapan').innerHTML = comment.renderLoading(pagination.getPer());
         document.querySelector('body').style.overflowY = 'scroll';
         AOS.init();
         audio.play();
@@ -245,7 +226,7 @@ const util = (() => {
         escapeHtml: escapeHtml,
         opacity: opacity
     };
-})(); // OK
+})();
 
 const progress = (() => {
 
@@ -262,24 +243,23 @@ const progress = (() => {
         bar.style.width = Math.min((loaded / total) * 100, 100).toString() + "%";
         info.innerText = `Loading assets (${loaded}/${total}) [${parseInt(bar.style.width).toFixed(0)}%]`;
 
-        if (loaded != total) {
-            return;
+        if (loaded == total) {
+
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+            window.scrollTo(0, 0);
+
+            util.tamu();
+            util.opacity('loading');
         }
-
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-        window.scrollTo(0, 0);
-
-        util.tamu();
-        util.opacity('loading');
     };
 
     assets.forEach((asset) => {
-        if (asset.complete && asset.naturalWidth !== 0) {
+        if (asset.complete && (asset.naturalWidth !== 0)) {
             progress();
         } else {
             asset.addEventListener('load', () => {
@@ -287,7 +267,7 @@ const progress = (() => {
             });
         }
     });
-})(); // OK
+})();
 
 const audio = (() => {
     let audio = null;
@@ -295,13 +275,13 @@ const audio = (() => {
     const singleton = () => {
         if (!audio) {
             audio = new Audio();
-            audio.autoplay = true;
             audio.src = document.getElementById('tombol-musik').getAttribute('data-url');
             audio.load();
             audio.currentTime = 0;
-            audio.volume = 1;
+            audio.autoplay = true;
             audio.muted = false;
             audio.loop = true;
+            audio.volume = 1;
         }
 
         return audio;
@@ -311,7 +291,7 @@ const audio = (() => {
         play: () => singleton().play(),
         pause: () => singleton().pause(),
     };
-})(); // OK
+})();
 
 const pagination = (() => {
 
@@ -388,7 +368,7 @@ const pagination = (() => {
             }
         }
     };
-})(); // OK
+})();
 
 const session = (() => {
 
@@ -433,17 +413,17 @@ const session = (() => {
     return {
         check: check,
     };
-})(); // OK
+})();
 
 const like = (() => {
 
     const likes = storage('likes');
 
     const like = async (button) => {
-        let token = localStorage.getItem('token') ?? '';
+        let token = localStorage.getItem('token');
         let id = button.getAttribute('data-uuid');
 
-        if (token.length == 0) {
+        if (!token) {
             alert('Terdapat kesalahan, token kosong !');
             window.location.reload();
             return;
@@ -497,9 +477,8 @@ const like = (() => {
     return {
         like: like,
     };
-})(); // OK
+})();
 
-// Not complete
 const comment = (() => {
     const kirim = document.getElementById('kirim');
     const hadiran = document.getElementById('form-kehadiran');
