@@ -36,11 +36,18 @@
     <link rel="apple-touch-icon" sizes="192x192" type="image/png" href="https://ulems.my.id/assets/images/icon-192x192.png">
     <link rel="icon" type="image/x-icon" href="https://ulems.my.id/favicon.ico">
 
-    <!-- Preconnect CDN -->
+    <!-- Preconnect and preload CDN -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI=" crossorigin="anonymous" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha256-MBffSnbbXwHCuZtgPYiwMQbfE7z+GOZ7fBPCNB06Z98=" crossorigin="anonymous" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" integrity="sha256-GqiEX9BuR1rv5zPU5Vs2qS/NSHl1BJyBcjQYJ6ycwD4=" crossorigin="anonymous" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha256-gvZPYrsDwbwYJLD5yeBfcNujPhRoGOY831wwbIzz3t0=" crossorigin="anonymous" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" integrity="sha256-pQBbLkFHcP1cy0C8IhoSdxlm0CtcH5yJ2ki9jjgR03c=" crossorigin="anonymous" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/tsparticles-confetti@2.12.0/tsparticles.confetti.bundle.min.js" integrity="sha256-XG5M9shcLLpu8ct5bVbu6lLVzLpfZChl+csxdyLVP18=" crossorigin="anonymous" as="script">
+    
     <!-- Dependencies CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI=" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha256-MBffSnbbXwHCuZtgPYiwMQbfE7z+GOZ7fBPCNB06Z98=" crossorigin="anonymous">
@@ -269,13 +276,13 @@
 
                         <div class="carousel-inner rounded-4">
                             <div class="carousel-item active">
-                                <img src="https://picsum.photos/1280/720?random=1" class="d-block w-100" onclick="util.modal(this)">
+                                <img src="https://picsum.photos/1280/720?random=1" alt="gambar 1" class="d-block w-100" onclick="util.modal(this)">
                             </div>
                             <div class="carousel-item">
-                                <img src="https://picsum.photos/1280/720?random=2" class="d-block w-100" onclick="util.modal(this)">
+                                <img src="https://picsum.photos/1280/720?random=2" alt="gambar 2" class="d-block w-100" onclick="util.modal(this)">
                             </div>
                             <div class="carousel-item">
-                                <img src="https://picsum.photos/1280/720?random=3" class="d-block w-100" onclick="util.modal(this)">
+                                <img src="https://picsum.photos/1280/720?random=3" alt="gambar 3" class="d-block w-100" onclick="util.modal(this)">
                             </div>
                         </div>
 
@@ -299,13 +306,13 @@
 
                         <div class="carousel-inner rounded-4">
                             <div class="carousel-item active">
-                                <img src="https://picsum.photos/1280/720?random=4" class="d-block w-100" onclick="util.modal(this)">
+                                <img src="https://picsum.photos/1280/720?random=4" alt="gambar 4" class="d-block w-100" onclick="util.modal(this)">
                             </div>
                             <div class="carousel-item">
-                                <img src="https://picsum.photos/1280/720?random=5" class="d-block w-100" onclick="util.modal(this)">
+                                <img src="https://picsum.photos/1280/720?random=5" alt="gambar 5" class="d-block w-100" onclick="util.modal(this)">
                             </div>
                             <div class="carousel-item">
-                                <img src="https://picsum.photos/1280/720?random=6" class="d-block w-100" onclick="util.modal(this)">
+                                <img src="https://picsum.photos/1280/720?random=6" alt="gambar 6" class="d-block w-100" onclick="util.modal(this)">
                             </div>
                         </div>
 
@@ -416,7 +423,7 @@
                 <nav class="d-flex justify-content-center mb-0">
                     <ul class="pagination mb-0">
                         <li class="page-item disabled" id="previous">
-                            <button class="page-link" onclick="pagination.previous(this)" aria-label="Previous">
+                            <button class="page-link" onclick="pagination.previous(this)" aria-label="Sebelumnya">
                                 <i class="fa-solid fa-circle-left me-1"></i>Sebelumnya
                             </button>
                         </li>
@@ -424,7 +431,7 @@
                             <span class="page-link text-light" id="page">1</span>
                         </li>
                         <li class="page-item" id="next">
-                            <button class="page-link" onclick="pagination.next(this)" aria-label="Next">
+                            <button class="page-link" onclick="pagination.next(this)" aria-label="Selanjutnya">
                                 Selanjutnya<i class="fa-solid fa-circle-right ms-1"></i>
                             </button>
                         </li>
