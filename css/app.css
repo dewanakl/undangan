@@ -1,16 +1,16 @@
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth !important;
 }
 
 body {
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Josefin Sans', sans-serif !important;
     padding: 0 !important;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
 }
 
 body::-webkit-scrollbar {
-    display: none;
+    display: none !important;
 }
 
 .font-esthetic {
@@ -42,7 +42,7 @@ body::-webkit-scrollbar {
     position: fixed;
     bottom: 9vh;
     right: 2vh;
-    z-index: 1055;
+    z-index: 1055 !important;
 }
 
 .loading-page {
@@ -99,12 +99,12 @@ body::-webkit-scrollbar {
 
 .dark-section {
     background-color: #111111 !important;
-    margin-top: -0.4rem;
-    margin-bottom: -0.4rem;
+    margin-top: -0.5rem;
+    margin-bottom: -0.5rem;
 }
 
 footer {
     background-color: #111111 !important;
-    margin-top: -0.4rem;
-    padding-bottom: 4rem;
+    margin-top: -0.5rem;
+    padding-bottom: 5rem;
 }
