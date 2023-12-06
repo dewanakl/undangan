@@ -590,7 +590,6 @@ const comment = (() => {
             await pagination.reset();
             document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
             resetForm();
-            return;
         }
 
         kirim.disabled = false;
@@ -830,7 +829,6 @@ const comment = (() => {
             await ucapan();
             document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             resetForm();
-            return;
         }
 
         batal.disabled = false;
