@@ -485,53 +485,54 @@ const like = (() => {
 })();
 
 const comment = (() => {
-    const kirim = document.getElementById('kirim');
-    const hadiran = document.getElementById('form-kehadiran');
-    const balas = document.getElementById('reply');
-    const formnama = document.getElementById('form-nama');
-    const formpesan = document.getElementById('form-pesan');
-    const batal = document.getElementById('batal');
-    const sunting = document.getElementById('ubah');
+    const buttonBatal = document.getElementById('batal');
+    const buttonBalas = document.getElementById('balas');
+    const buttonUbah = document.getElementById('ubah');
+    const buttonKirim = document.getElementById('kirim');
+
+    const formKehadiran = document.getElementById('form-kehadiran');
+    const formNama = document.getElementById('form-nama');
+    const formPesan = document.getElementById('form-pesan');
 
     const owns = storage('owns');
     const likes = storage('likes');
 
-    let tempID = null;
+    const loader = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
-    // OK
+    let temporaryID = null;
+
     const convertMarkdownToHTML = (input) => {
         return input
             .replace(/\*([^*]+)\*/g, '<strong class="text-dark">$1</strong>')
             .replace(/_([^_]+)_/g, '<em class="text-dark">$1</em>')
             .replace(/~([^~]+)~/g, '<del class="text-dark">$1</del>')
             .replace(/```([^```]+)```/g, '<pre class="text-dark">$1</pre>');
-    }
-
-    // OK
-    const resetForm = () => {
-        kirim.style.display = 'block';
-        hadiran.style.display = 'block';
-
-        batal.style.display = 'none';
-        balas.style.display = 'none';
-        sunting.style.display = 'none';
-        document.getElementById('label-kehadiran').style.display = 'block';
-        document.getElementById('balasan').innerHTML = null;
-
-        formnama.value = null;
-        hadiran.value = 0;
-        formpesan.value = null;
-
-        formnama.disabled = false;
-        hadiran.disabled = false;
-        formpesan.disabled = false;
     };
 
-    // OK
-    const send = async () => {
-        let nama = formnama.value;
-        let hadir = parseInt(hadiran.value);
-        let komentar = formpesan.value;
+    const resetForm = () => {
+
+        buttonBatal.style.display = 'none';
+        buttonBalas.style.display = 'none';
+        buttonUbah.style.display = 'none';
+        buttonKirim.style.display = 'block';
+
+        document.getElementById('label-kehadiran').style.display = 'block';
+        document.getElementById('balasan').innerHTML = null;
+        formKehadiran.style.display = 'block';
+
+        formNama.value = null;
+        formKehadiran.value = 0;
+        formPesan.value = null;
+
+        formNama.disabled = false;
+        formKehadiran.disabled = false;
+        formPesan.disabled = false;
+    };
+
+    const kirim = async () => {
+        let nama = formNama.value;
+        let hadir = parseInt(formKehadiran.value);
+        let komentar = formPesan.value;
         let token = localStorage.getItem('token') ?? '';
 
         if (token.length == 0) {
@@ -560,13 +561,13 @@ const comment = (() => {
             return;
         }
 
-        formnama.disabled = true;
-        hadiran.disabled = true;
-        formpesan.disabled = true;
-        kirim.disabled = true;
+        formNama.disabled = true;
+        formKehadiran.disabled = true;
+        formPesan.disabled = true;
+        buttonKirim.disabled = true;
 
-        let tmp = kirim.innerHTML;
-        kirim.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+        let tmp = buttonKirim.innerHTML;
+        buttonKirim.innerHTML = loader;
 
         let isSuccess = false;
         await request('POST', '/api/comment')
@@ -590,17 +591,18 @@ const comment = (() => {
             await pagination.reset();
             document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
             resetForm();
+        } else {
+            buttonKirim.disabled = false;
+            buttonKirim.innerHTML = tmp;
+            formNama.disabled = false;
+            formKehadiran.disabled = false;
+            formPesan.disabled = false;
         }
-
-        kirim.disabled = false;
-        kirim.innerHTML = tmp;
-        formnama.disabled = false;
-        hadiran.disabled = false;
-        formpesan.disabled = false;
     };
 
-    // OK
     const balasan = async (button) => {
+        resetForm();
+
         button.disabled = true;
         let tmp = button.innerText;
         button.innerText = 'Loading...';
@@ -614,22 +616,21 @@ const comment = (() => {
             return;
         }
 
-        const BALAS = document.getElementById('balasan');
-        BALAS.innerHTML = renderLoading(1);
-        hadiran.style.display = 'none';
+        document.getElementById('balasan').innerHTML = renderLoading(1);
+        formKehadiran.style.display = 'none';
         document.getElementById('label-kehadiran').style.display = 'none';
 
         await request('GET', '/api/comment/' + id)
             .token(token)
             .then((res) => {
                 if (res.code == 200) {
-                    kirim.style.display = 'none';
-                    batal.style.display = 'block';
-                    balas.style.display = 'block';
+                    buttonKirim.style.display = 'none';
+                    buttonBatal.style.display = 'block';
+                    buttonBalas.style.display = 'block';
 
-                    tempID = id;
+                    temporaryID = id;
 
-                    BALAS.innerHTML = `
+                    document.getElementById('balasan').innerHTML = `
                     <div class="my-3">
                         <h6>Balasan</h6>
                         <div id="id-balasan" data-uuid="${id}" class="card-body bg-light shadow p-3 rounded-4">
@@ -655,7 +656,6 @@ const comment = (() => {
         button.innerText = tmp;
     };
 
-    // OK
     const innerComment = (data) => {
         return `
         <div class="d-flex flex-wrap justify-content-between align-items-center">
@@ -677,7 +677,6 @@ const comment = (() => {
         ${innerCard(data.comments)}`;
     };
 
-    // OK
     const innerCard = (comment) => {
         let result = '';
 
@@ -699,7 +698,6 @@ const comment = (() => {
         return result;
     };
 
-    // OK
     const renderCard = (data) => {
         const DIV = document.createElement('div');
         DIV.classList.add('mb-3');
@@ -718,7 +716,6 @@ const comment = (() => {
         return DIV;
     };
 
-    // OK
     const ucapan = async () => {
         const UCAPAN = document.getElementById('daftar-ucapan');
         UCAPAN.innerHTML = renderLoading(pagination.getPer());
@@ -746,7 +743,6 @@ const comment = (() => {
             .catch((err) => alert(`Terdapat kesalahan: ${err}`));
     };
 
-    // OK
     const renderLoading = (num) => {
         let result = '';
 
@@ -771,10 +767,9 @@ const comment = (() => {
         return result;
     };
 
-    // OK
-    const reply = async () => {
-        let nama = formnama.value;
-        let komentar = formpesan.value;
+    const balas = async () => {
+        let nama = formNama.value;
+        let komentar = formPesan.value;
         let token = localStorage.getItem('token') ?? '';
         let id = document.getElementById('id-balasan').getAttribute('data-uuid');
 
@@ -799,13 +794,13 @@ const comment = (() => {
             return;
         }
 
-        formnama.disabled = true;
-        formpesan.disabled = true;
+        formNama.disabled = true;
+        formPesan.disabled = true;
 
-        batal.disabled = true;
-        balas.disabled = true;
-        let tmp = balas.innerHTML;
-        balas.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+        buttonBatal.disabled = true;
+        buttonBalas.disabled = true;
+        let tmp = buttonBalas.innerHTML;
+        buttonBalas.innerHTML = loader;
 
         let isSuccess = false;
         await request('POST', '/api/comment')
@@ -829,21 +824,20 @@ const comment = (() => {
             await ucapan();
             document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             resetForm();
+        } else {
+            buttonBatal.disabled = false;
+            buttonBalas.disabled = false;
+            buttonBalas.innerHTML = tmp;
+            formNama.disabled = false;
+            formPesan.disabled = false;
         }
-
-        batal.disabled = false;
-        balas.disabled = false;
-        balas.innerHTML = tmp;
-        formnama.disabled = false;
-        formpesan.disabled = false;
     };
 
-    // OK
     const ubah = async () => {
         let token = localStorage.getItem('token') ?? '';
-        let id = sunting.getAttribute('data-uuid');
-        let hadir = hadiran.value;
-        let komentar = formpesan.value;
+        let id = buttonUbah.getAttribute('data-uuid');
+        let hadir = formKehadiran.value;
+        let komentar = formPesan.value;
 
         if (token.length == 0) {
             alert('Terdapat kesalahan, token kosong !');
@@ -861,13 +855,13 @@ const comment = (() => {
             return;
         }
 
-        hadiran.disabled = true;
-        formpesan.disabled = true;
+        formKehadiran.disabled = true;
+        formPesan.disabled = true;
 
-        sunting.disabled = true;
-        batal.disabled = true;
-        let tmp = sunting.innerHTML;
-        sunting.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+        buttonUbah.disabled = true;
+        buttonBatal.disabled = true;
+        let tmp = buttonUbah.innerHTML;
+        buttonUbah.innerHTML = loader;
 
         let isSuccess = false;
         await request('PUT', '/api/comment/' + owns.get(id))
@@ -889,16 +883,15 @@ const comment = (() => {
             await ucapan();
             document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             resetForm();
+        } else {
+            buttonUbah.innerHTML = tmp;
+            buttonUbah.disabled = false;
+            buttonBatal.disabled = false;
+            formKehadiran.disabled = false;
+            formPesan.disabled = false;
         }
-
-        sunting.innerHTML = tmp;
-        sunting.disabled = false;
-        batal.disabled = false;
-        hadiran.disabled = false;
-        formpesan.disabled = false;
     };
 
-    // OK
     const hapus = async (button) => {
         if (!confirm('Kamu yakin ingin menghapus?')) {
             return;
@@ -912,6 +905,8 @@ const comment = (() => {
             window.location.reload();
             return;
         }
+
+        resetForm();
 
         button.disabled = true;
         let tmp = button.innerText;
@@ -938,8 +933,9 @@ const comment = (() => {
         button.disabled = false;
     };
 
-    // OK
     const edit = async (button) => {
+        resetForm();
+
         button.disabled = true;
         let tmp = button.innerText;
         button.innerText = 'Loading...';
@@ -957,22 +953,24 @@ const comment = (() => {
             .token(token)
             .then((res) => {
                 if (res.code == 200) {
-                    tempID = id;
-                    batal.style.display = 'block';
-                    sunting.style.display = 'block';
-                    kirim.style.display = 'none';
-                    sunting.setAttribute('data-uuid', id);
-                    formpesan.value = res.data.komentar;
-                    formnama.value = res.data.nama;
-                    formnama.disabled = true;
+                    temporaryID = id;
+
+                    buttonBatal.style.display = 'block';
+                    buttonUbah.style.display = 'block';
+                    buttonKirim.style.display = 'none';
+                    buttonUbah.setAttribute('data-uuid', id);
+
+                    formPesan.value = res.data.komentar;
+                    formNama.value = res.data.nama;
+                    formNama.disabled = true;
 
                     if (document.getElementById(id).getAttribute('data-parent') !== 'true') {
                         document.getElementById('label-kehadiran').style.display = 'none';
-                        hadiran.style.display = 'none';
+                        formKehadiran.style.display = 'none';
                     } else {
-                        hadiran.value = res.data.hadir ? 1 : 2;
+                        formKehadiran.value = res.data.hadir ? 1 : 2;
                         document.getElementById('label-kehadiran').style.display = 'block';
-                        hadiran.style.display = 'block';
+                        formKehadiran.style.display = 'block';
                     }
 
                     document.getElementById('ucapan').scrollIntoView({ behavior: 'smooth' });
@@ -986,25 +984,26 @@ const comment = (() => {
         button.innerText = tmp;
     };
 
-    // OK
+    const batal = () => {
+        if (temporaryID) {
+            document.getElementById(temporaryID).scrollIntoView({ behavior: 'smooth', block: 'center' });
+            temporaryID = null;
+        }
+
+        resetForm();
+    };
+
     return {
         ucapan: ucapan,
-        kirim: send,
         renderLoading: renderLoading,
 
+        balasan: balasan,
         hapus: hapus,
         edit: edit,
+
+        batal: batal,
+        balas: balas,
         ubah: ubah,
-
-        balasan: balasan,
-        reply: reply,
-        batal: () => {
-            if (tempID) {
-                document.getElementById(tempID).scrollIntoView({ behavior: 'smooth', block: 'center' });
-                tempID = null;
-            }
-
-            resetForm();
-        },
+        kirim: kirim,
     };
 })();
