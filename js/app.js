@@ -591,13 +591,13 @@ const comment = (() => {
             await pagination.reset();
             document.getElementById('daftar-ucapan').scrollIntoView({ behavior: 'smooth' });
             resetForm();
-        } else {
-            buttonKirim.disabled = false;
-            buttonKirim.innerHTML = tmp;
-            formNama.disabled = false;
-            formKehadiran.disabled = false;
-            formPesan.disabled = false;
         }
+
+        buttonKirim.disabled = false;
+        buttonKirim.innerHTML = tmp;
+        formNama.disabled = false;
+        formKehadiran.disabled = false;
+        formPesan.disabled = false;
     };
 
     const balasan = async (button) => {
@@ -824,13 +824,13 @@ const comment = (() => {
             await ucapan();
             document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             resetForm();
-        } else {
-            buttonBatal.disabled = false;
-            buttonBalas.disabled = false;
-            buttonBalas.innerHTML = tmp;
-            formNama.disabled = false;
-            formPesan.disabled = false;
         }
+
+        buttonBatal.disabled = false;
+        buttonBalas.disabled = false;
+        buttonBalas.innerHTML = tmp;
+        formNama.disabled = false;
+        formPesan.disabled = false;
     };
 
     const ubah = async () => {
@@ -883,13 +883,13 @@ const comment = (() => {
             await ucapan();
             document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'center' });
             resetForm();
-        } else {
-            buttonUbah.innerHTML = tmp;
-            buttonUbah.disabled = false;
-            buttonBatal.disabled = false;
-            formKehadiran.disabled = false;
-            formPesan.disabled = false;
         }
+
+        buttonUbah.innerHTML = tmp;
+        buttonUbah.disabled = false;
+        buttonBatal.disabled = false;
+        formKehadiran.disabled = false;
+        formPesan.disabled = false;
     };
 
     const hapus = async (button) => {
