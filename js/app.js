@@ -206,6 +206,10 @@ const util = (() => {
         AOS.init();
         audio.play();
 
+        if (localStorage.getItem('alertClosed')) {
+            document.getElementById('alertDiv').style.display = 'none';
+        }
+
         opacity('welcome');
         document.getElementById('tombol-musik').style.display = 'block';
         timer();
@@ -495,6 +499,15 @@ const comment = (() => {
     let tempID = null;
 
     // OK
+    const convertMarkdownToHTML = (input) => {
+        return input
+            .replace(/\*([^*]+)\*/g, '<strong class="text-dark">$1</strong>')
+            .replace(/_([^_]+)_/g, '<em class="text-dark">$1</em>')
+            .replace(/~([^~]+)~/g, '<del class="text-dark">$1</del>')
+            .replace(/```([^```]+)```/g, '<pre class="text-dark">$1</pre>');
+    }
+
+    // OK
     const resetForm = () => {
         kirim.style.display = 'block';
         hadiran.style.display = 'block';
@@ -628,7 +641,7 @@ const comment = (() => {
                                 <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${res.data.created_at}</small>
                             </div>
                             <hr class="text-dark my-1">
-                            <p class="text-dark m-0 p-0" style="white-space: pre-line">${util.escapeHtml(res.data.komentar)}</p>
+                            <p class="text-dark m-0 p-0" style="white-space: pre-line">${convertMarkdownToHTML(util.escapeHtml(res.data.komentar))}</p>
                         </div>
                     </div>`;
                 }
@@ -679,7 +692,7 @@ const comment = (() => {
                     <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
                 </div>
                 <hr class="text-dark my-1">
-                <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${util.escapeHtml(data.komentar)}</p>
+                <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${convertMarkdownToHTML(util.escapeHtml(data.komentar))}</p>
                 ${innerComment(data)}
             </div>`;
         });
@@ -700,7 +713,7 @@ const comment = (() => {
                 <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${data.created_at}</small>
             </div>
             <hr class="text-dark my-1">
-            <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${util.escapeHtml(data.komentar)}</p>
+            <p class="text-dark mt-0 mb-1 mx-0 p-0" style="white-space: pre-line">${convertMarkdownToHTML(util.escapeHtml(data.komentar))}</p>
             ${innerComment(data)}
         </div>`;
         return DIV;
