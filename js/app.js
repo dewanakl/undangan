@@ -24,10 +24,10 @@ const storage = (table) => {
     const has = (key) => Object.keys(get()).includes(key);
 
     return {
-        get: get,
-        set: set,
-        unset: unset,
-        has: has,
+        get,
+        set,
+        unset,
+        has,
     };
 };
 
@@ -223,13 +223,13 @@ const util = (() => {
     };
 
     return {
-        buka: buka,
-        tamu: tamu,
-        modal: modal,
-        play: play,
-        salin: salin,
-        escapeHtml: escapeHtml,
-        opacity: opacity
+        buka,
+        tamu,
+        modal,
+        play,
+        salin,
+        escapeHtml,
+        opacity,
     };
 })();
 
@@ -415,9 +415,7 @@ const session = (() => {
         }
     };
 
-    return {
-        check: check,
-    };
+    return { check };
 })();
 
 const like = (() => {
@@ -479,9 +477,7 @@ const like = (() => {
         button.disabled = false;
     };
 
-    return {
-        like: like,
-    };
+    return { like };
 })();
 
 const comment = (() => {
@@ -994,16 +990,14 @@ const comment = (() => {
     };
 
     return {
-        ucapan: ucapan,
-        renderLoading: renderLoading,
-
-        balasan: balasan,
-        hapus: hapus,
-        edit: edit,
-
-        batal: batal,
-        balas: balas,
-        ubah: ubah,
-        kirim: kirim,
+        ucapan,
+        renderLoading,
+        balasan,
+        hapus,
+        edit,
+        batal,
+        balas,
+        ubah,
+        kirim,
     };
 })();
