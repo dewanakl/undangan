@@ -405,7 +405,7 @@ const session = (() => {
         if (token) {
             const jwt = JSON.parse(atob(token.split('.')[1]));
 
-            if (jwt.exp < ((new Date()).getTime() / 1000)) {
+            if (jwt.exp < ((new Date()).getTime() / 1000) || jwt.iss !== (new URL(window.location.href)).origin) {
                 await login();
             } else {
                 await comment.ucapan();
@@ -506,7 +506,7 @@ const comment = (() => {
             .replace(/\*([^*]+)\*/g, '<strong class="text-dark">$1</strong>')
             .replace(/_([^_]+)_/g, '<em class="text-dark">$1</em>')
             .replace(/~([^~]+)~/g, '<del class="text-dark">$1</del>')
-            .replace(/```([^```]+)```/g, '<pre class="text-dark">$1</pre>');
+            .replace(/```([^```]+)```/g, '<code class="font-monospace text-dark">$1</code>');
     };
 
     const resetForm = () => {
