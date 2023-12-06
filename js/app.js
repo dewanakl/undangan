@@ -405,7 +405,7 @@ const session = (() => {
         if (token) {
             const jwt = JSON.parse(atob(token.split('.')[1]));
 
-            if (jwt.exp < ((new Date()).getTime() / 1000) || jwt.iss !== (new URL(window.location.href)).origin) {
+            if (jwt.exp < ((new Date()).getTime() / 1000) || !jwt.iss.includes((new URL(window.location.href)).host)) {
                 await login();
             } else {
                 await comment.ucapan();
