@@ -499,10 +499,10 @@ const comment = (() => {
 
     const convertMarkdownToHTML = (input) => {
         return input
-            .replace(/\*([^*]+)\*/g, '<strong class="text-dark">$1</strong>')
-            .replace(/_([^_]+)_/g, '<em class="text-dark">$1</em>')
-            .replace(/~([^~]+)~/g, '<del class="text-dark">$1</del>')
-            .replace(/```([^```]+)```/g, '<code class="font-monospace text-dark">$1</code>');
+            .replace(/\*(?=\S)(.*?)(?<!\s)\*/g, '<strong class="text-dark">$1</strong>')
+            .replace(/\_(?=\S)(.*?)(?<!\s)\_/g, '<em class="text-dark">$1</em>')
+            .replace(/\~(?=\S)(.*?)(?<!\s)\~/g, '<del class="text-dark">$1</del>')
+            .replace(/\`\`\`(?=\S)(.*?)(?<!\s)\`\`\`/g, '<code class="font-monospace text-dark">$1</code>');
     };
 
     const resetForm = () => {
