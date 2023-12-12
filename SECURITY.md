@@ -8,8 +8,8 @@ Currently supported project versions with security updates:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.4.x   | :white_check_mark: |
-| < 1.4.1 | :x:                |
+| 2.x.x   | :white_check_mark: |
+| < 2.0.0 | :x:                |
 
 ## Reporting a Vulnerability
 
