@@ -249,15 +249,7 @@ const progress = (() => {
         info.innerText = `Loading assets (${loaded}/${total}) [${parseInt(bar.style.width).toFixed(0)}%]`;
 
         if (loaded == total) {
-
-            if ('scrollRestoration' in history) {
-                history.scrollRestoration = 'manual';
-            }
-
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
             window.scrollTo(0, 0);
-
             util.tamu();
             util.opacity('loading');
         }
@@ -267,9 +259,7 @@ const progress = (() => {
         if (asset.complete && (asset.naturalWidth !== 0)) {
             progress();
         } else {
-            asset.addEventListener('load', () => {
-                progress();
-            });
+            asset.addEventListener('load', () => progress());
         }
     });
 })();
