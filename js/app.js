@@ -131,11 +131,11 @@ const util = (() => {
         }, 1000);
     };
 
-    const play = (btn) => {
+    const music = (btn) => {
         if (btn.getAttribute('data-status') !== 'true') {
             btn.setAttribute('data-status', 'true');
             audio.play();
-            btn.innerHTML = '<i class="fa-solid fa-circle-pause"></i>';
+            btn.innerHTML = '<i class="fa-solid fa-circle-pause spin-button"></i>';
         } else {
             btn.setAttribute('data-status', 'false');
             audio.pause();
@@ -232,7 +232,7 @@ const util = (() => {
         buka,
         tamu,
         modal,
-        play,
+        music,
         salin,
         escapeHtml,
         opacity,

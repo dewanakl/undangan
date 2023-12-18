@@ -94,6 +94,20 @@ body::-webkit-scrollbar {
     animation-iteration-count: infinite;
 }
 
+@keyframes spin-icon {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spin-button {
+    animation: spin-icon 5s linear infinite;
+}
+
 .dark-section {
     background-color: #111111 !important;
     margin-top: -0.5rem;
