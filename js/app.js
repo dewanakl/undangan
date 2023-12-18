@@ -222,6 +222,12 @@ const util = (() => {
         await animation();
     };
 
+    const show = () => {
+        tamu();
+        opacity('loading');
+        window.scrollTo(0, 0);
+    };
+
     return {
         buka,
         tamu,
@@ -230,6 +236,7 @@ const util = (() => {
         salin,
         escapeHtml,
         opacity,
+        show
     };
 })();
 
@@ -249,9 +256,7 @@ const progress = (() => {
         info.innerText = `Loading assets (${loaded}/${total}) [${parseInt(bar.style.width).toFixed(0)}%]`;
 
         if (loaded == total) {
-            window.scrollTo(0, 0);
-            util.tamu();
-            util.opacity('loading');
+            util.show();
         }
     };
 
