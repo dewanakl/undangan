@@ -405,9 +405,9 @@
                     <div class="mb-3">
                         <label for="form-pesan" class="form-label">Ucapan & Doa</label>
                         <div id="alertDiv" class="alert alert-info alert-dismissible fade show" role="alert">
-                            <h5>Bestieee!!!</h5>
+                            <p style="font-size: 1.5rem;">Bestieee!!!</p>
                             <p class="m-0">Sekarang bisa format text seperti whatsapp lohh... cobainn sekaranggg, makaciwww bestieee</p>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="localStorage.setItem('alertClosed', 'true');document.getElementById('alertDiv').style.display = 'none';"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="localStorage.setItem('alertClosed', 'true'); document.getElementById('alertDiv').style.display = 'none';"></button>
                         </div>
                         <textarea class="form-control shadow-sm" id="form-pesan" rows="4" placeholder="Tulis Ucapan & Doa"></textarea>
                     </div>
@@ -522,7 +522,14 @@
                 <div class="progress" role="progressbar" style="height: 0.5rem;">
                     <div class="progress-bar" id="bar" style="width: 0%"></div>
                 </div>
-                <small class="mt-1 text-light" id="progress-info">Loading asset</small>
+                <small class="mt-1 text-light" id="progress-info" style="display: none;">Loading asset</small>
+
+                <script>
+                    document.getElementById('progress-info').style.display = 'block';
+                </script>
+                <noscript>
+                    <small class="mt-1 text-danger">Maaf, undangan ini perlu javascript</small>
+                </noscript>
             </div>
         </div>
     </div>
