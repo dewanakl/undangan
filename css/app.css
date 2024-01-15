@@ -108,6 +108,16 @@ body::-webkit-scrollbar {
     animation: spin-icon 5s linear infinite;
 }
 
+@keyframes love {
+    50% {
+        transform: translateY(1rem)
+    }
+}
+
+.animate-love {
+    animation: love 5s ease-in-out infinite;
+}
+
 .dark-section {
     background-color: #111111 !important;
     margin-top: -0.5rem;

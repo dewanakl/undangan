@@ -35,7 +35,7 @@ const request = (method, path) => {
 
     let url = document.querySelector('body').getAttribute('data-url');
     let req = {
-        method: method,
+        method: method.toUpperCase(),
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -228,15 +228,23 @@ const util = (() => {
         window.scrollTo(0, 0);
     };
 
+    const animate = (svg, timeout, classes) => {
+        let handler = null;
+
+        handler = setTimeout(() => {
+            svg.classList.add(classes);
+            handler = null;
+        }, timeout);
+    };
+
     return {
         buka,
-        tamu,
         modal,
         music,
         salin,
         escapeHtml,
-        opacity,
-        show
+        show,
+        animate
     };
 })();
 
