@@ -911,22 +911,17 @@ const comment = (() => {
         let tmp = button.innerText;
         button.innerText = 'Loading..';
 
-        let isSuccess = false;
         await request('DELETE', '/api/comment/' + owns.get(id))
             .token(token)
             .then((res) => {
                 if (res.data.status) {
                     owns.unset(id);
-                    isSuccess = true;
+                    document.getElementById(id).remove();
                 }
             })
             .catch((err) => {
                 alert(`Terdapat kesalahan: ${err}`);
             });
-
-        if (isSuccess) {
-            ucapan();
-        }
 
         button.innerText = tmp;
         button.disabled = false;
