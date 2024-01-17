@@ -110,7 +110,7 @@ body::-webkit-scrollbar {
 
 @keyframes love {
     50% {
-        transform: translateY(1rem)
+        transform: translateY(1rem);
     }
 }
 
