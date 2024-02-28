@@ -18,11 +18,11 @@
 
 ### Tech stack
 
-- Bootstrap 5.3.2
+- Bootstrap 5.3.3
 - AOS 2.3.4
-- Fontawsome 6.5.0
+- Fontawsome 6.5.1
 - Normalize 8.0.1
-- Confetti 2.12.0
+- Confetti 3.3.0
 - Google Fonts
 - Vanilla JS
 
