@@ -182,7 +182,7 @@ const util = (() => {
         (function frame() {
             const timeLeft = animationEnd - Date.now();
             const ticks = Math.max(50, 100 * (timeLeft / duration));
-            skew = Math.max(0.8, skew - 0.001);
+            skew = Math.max(0.9, skew - 0.001);
 
             colors.forEach((color) => {
                 confetti({
@@ -191,7 +191,7 @@ const util = (() => {
                     ticks: ticks,
                     origin: {
                         x: Math.random(),
-                        y: (Math.random() * skew) - 0.2,
+                        y: Math.random() * skew - 0.1,
                     },
                     zIndex: 1057,
                     colors: [color],
