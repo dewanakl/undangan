@@ -22,7 +22,7 @@
 - AOS 2.3.4
 - Fontawsome 6.5.1
 - Normalize 8.0.1
-- Confetti 3.3.0
+- Canvas Confetti 1.9.2
 - Google Fonts
 - Vanilla JS
 
