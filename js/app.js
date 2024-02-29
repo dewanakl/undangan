@@ -165,7 +165,7 @@ const util = (() => {
     };
 
     const animation = () => {
-        const duration = 10 * 1000;
+        const duration = 15 * 1000;
         const animationEnd = Date.now() + duration;
         const colors = ["#FFC0CB", "#FF1493", "#C71585"];
 
@@ -178,19 +178,17 @@ const util = (() => {
             matrix: [0.03333333333333333, 0, 0, 0.03333333333333333, -5.566666666666666, -5.533333333333333]
         });
 
-        let skew = 1;
         (function frame() {
             const timeLeft = animationEnd - Date.now();
-            skew = Math.max(0.9, skew - 0.001);
 
             colors.forEach((color) => {
                 confetti({
                     particleCount: 1,
                     startVelocity: 0,
-                    ticks: Math.max(50, 100 * (timeLeft / duration)),
+                    ticks: Math.max(45, 90 * (timeLeft / duration)),
                     origin: {
                         x: Math.random(),
-                        y: (Math.random() * skew) - 0.1,
+                        y: Math.random() - (timeLeft / duration),
                     },
                     zIndex: 1057,
                     colors: [color],
