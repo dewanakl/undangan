@@ -1,16 +1,11 @@
 html {
     scroll-behavior: smooth !important;
+    scrollbar-width: none !important;
 }
 
 body {
     font-family: 'Josefin Sans', sans-serif !important;
     padding: 0 !important;
-    -ms-overflow-style: none !important;
-    scrollbar-width: none !important;
-}
-
-body::-webkit-scrollbar {
-    display: none !important;
 }
 
 .font-esthetic {
