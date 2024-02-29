@@ -167,7 +167,7 @@ const util = (() => {
     const animation = async () => {
         const duration = 10 * 1000;
         const animationEnd = Date.now() + duration;
-        const colors = ["FFC0CB", "FF69B4", "C71585"];
+        const colors = ["#FFC0CB", "#FF1493", "#C71585"];
         let skew = 1;
 
         const randomInRange = (min, max) => {
@@ -179,9 +179,9 @@ const util = (() => {
             matrix: [0.03333333333333333, 0, 0, 0.03333333333333333, -5.566666666666666, -5.533333333333333]
         });
 
-        (async function frame() {
+        (function frame() {
             const timeLeft = animationEnd - Date.now();
-            const ticks = Math.max(50, 150 * (timeLeft / duration));
+            const ticks = Math.max(50, 100 * (timeLeft / duration));
             skew = Math.max(0.8, skew - 0.001);
 
             colors.forEach((color) => {
