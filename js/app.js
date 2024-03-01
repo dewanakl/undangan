@@ -185,10 +185,10 @@ const util = (() => {
                 confetti({
                     particleCount: 1,
                     startVelocity: 0,
-                    ticks: Math.max(45, 90 * (timeLeft / duration)),
+                    ticks: Math.max(50, 100 * (timeLeft / duration)),
                     origin: {
                         x: Math.random(),
-                        y: Math.random() - (timeLeft / duration),
+                        y: Math.abs(Math.random() - (timeLeft / duration)),
                     },
                     zIndex: 1057,
                     colors: [color],
