@@ -7,6 +7,7 @@ export const card = (() => {
 
     const owns = storage('owns');
     const likes = storage('likes');
+    const tracker = storage('tracker');
     const session = storage('session');
 
     const lists = new Map([
@@ -18,7 +19,7 @@ export const card = (() => {
 
     const renderLoading = () => {
         document.getElementById('comments').innerHTML = `
-        <div class="card-body bg-${theme.isDarkMode('dark', 'light')} shadow p-3 mx-0 mt-0 mb-3 rounded-4">
+        <div class="card-body bg-theme-${theme.isDarkMode('dark', 'light')} shadow p-3 mx-0 mt-0 mb-3 rounded-4">
             <div class="d-flex flex-wrap justify-content-between align-items-center placeholder-wave">
                 <span class="placeholder bg-secondary col-4 rounded-3"></span>
                 <span class="placeholder bg-secondary col-2 rounded-3"></span>
@@ -70,16 +71,29 @@ export const card = (() => {
             return '';
         }
 
-        return `<p class="text-${theme.isDarkMode('light', 'dark')} my-1 mx-0 p-0" style="white-space: pre-wrap; font-size: 0.8rem;"><i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)}</p>
+        if (!tracker.has(comment.ip)) {
+            fetch(`https://ipapi.co/${comment.ip}/city`)
+                .then((res) => res.text())
+                .then((res) => {
+                    if (res == 'Undefined') {
+                        res = 'Localhost';
+                    }
+
+                    tracker.set(comment.ip, res);
+                })
+                .catch((err) => console.error(err));
+        }
+
+        return `<p class="text-${theme.isDarkMode('light', 'dark')} my-1 mx-0 p-0" style="white-space: pre-wrap; font-size: 0.8rem;"><i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + (tracker.has(comment.ip) ? ' - ' + tracker.get(comment.ip) : '')}</p>
         <p class="text-${theme.isDarkMode('light', 'dark')} my-1 mx-0 p-0" style="white-space: pre-wrap; font-size: 0.8rem;"><i class="fa-solid fa-mobile-screen-button me-1"></i>${util.escapeHtml(comment.user_agent)}</p>`;
     };
 
     const renderHeader = (is_parent) => {
         if (is_parent) {
-            return `class="card-body bg-${theme.isDarkMode('dark', 'light')} shadow p-3 mx-0 mt-0 mb-3 rounded-4" data-parent="true"`;
+            return `class="card-body bg-theme-${theme.isDarkMode('dark', 'light')} shadow p-3 mx-0 mt-0 mb-3 rounded-4" data-parent="true"`;
         }
 
-        return `class="card-body border-start bg-${theme.isDarkMode('dark', 'light')} py-2 ps-2 pe-0 my-2 ms-2 me-0"`;
+        return `class="card-body border-start bg-theme-${theme.isDarkMode('dark', 'light')} py-2 ps-2 pe-0 my-2 ms-2 me-0"`;
     };
 
     const renderTitle = (comment, is_parent) => {
