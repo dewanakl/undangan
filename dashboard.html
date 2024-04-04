@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+
+<head>
+    <!-- Common -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard Ulems</title>
+
+    <!-- Appearance -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Dashboard Ulems">
+    <meta name="theme-color" content="#111111">
+    <meta name="color-scheme" content="dark">
+    <link rel="canonical" href="https://ulems.my.id/">
+    <link rel="shortcut icon" type="image/x-icon" href="https://ulems.my.id/favicon.ico">
+    <link rel="apple-touch-icon" sizes="192x192" type="image/png" href="https://ulems.my.id/assets/images/icon-192x192.png">
+    <link rel="icon" type="image/x-icon" href="https://ulems.my.id/favicon.ico">
+
+    <!-- Dependencies -->
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI=" crossorigin="anonymous" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha256-PI8n5gCcz9cQqQXm3PEtDuPG8qx9oFsFctPg0S5zb8g=" crossorigin="anonymous" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous" as="style">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-CDOy6cOibCWEdsRiZuaHf8dSGGJRYuBGC+mjoJimHGw=" crossorigin="anonymous" as="script">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha256-PI8n5gCcz9cQqQXm3PEtDuPG8qx9oFsFctPg0S5zb8g=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" integrity="sha256-wiz7ZSCn/btzhjKDQBms9Hx4sSeUYsDrTLg7roPstac=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap">
+
+    <!-- App -->
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <script src="./js/dashboard.mjs" type="module"></script>
+</head>
+
+<body data-url="http://localhost:8000/">
+
+    <!-- Nav bottom -->
+    <nav class="navbar bg-light navbar-expand fixed-bottom rounded-top-3 border-top d-md-none d-lg-none d-xl-none m-0 p-0">
+        <ul class="navbar-nav nav-justified w-100 align-items-center m-0 p-0">
+            <li class="nav-item">
+                <button class="nav-link pb-2 w-100 text-center active" onclick="navbar.buttonNavHome(this)" id="button-mobile-home">
+                    <i class="fas fa-home"></i>
+                    <span class="d-block" style="font-size: 0.8rem;">Home</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link pb-2 w-100 text-center" onclick="navbar.buttonNavSetting(this)" id="button-mobile-setting">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="d-block" style="font-size: 0.8rem;">Setting</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main -->
+    <main class="container mt-3 mb-5">
+
+        <!-- Header -->
+        <div class="d-none d-sm-flex justify-content-between align-items-center mt-4 mb-5">
+            <h3 class="m-0 p-0 flex-grow-1 fw-bold">Undangan<i class="fa-solid fa-fire text-danger ms-1"></i></h3>
+            <h4 class="m-0 p-0 flex-grow-1 text-end" id="dashboard-name">
+                <div class="placeholder-wave">
+                    <span class="placeholder col-8 rounded-3"></span>
+                </div>
+            </h4>
+        </div>
+
+        <!-- Body -->
+        <div class="row">
+
+            <!-- Menu -->
+            <div class="col-md-3 d-none d-md-block">
+                <div class="pe-3">
+                    <ul class="nav flex-column w-100 nav-pills" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="btn-theme-dark nav-link w-100 text-start fw-semibold mb-1 rounded-3 active" data-bs-toggle="pill" data-bs-target="#pills-home" id="button-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                                <i class="fas fa-home ms-3 me-2"></i>Home
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="btn-theme-dark nav-link w-100 text-start fw-semibold my-1 rounded-3" data-bs-toggle="pill" data-bs-target="#pills-setting" id="button-setting" type="button" role="tab" aria-controls="pills-setting" aria-selected="false">
+                                <i class="fas fa-gear ms-3 me-2"></i>Setting
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <hr class="my-2">
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="btn-theme-dark logout nav-link w-100 text-start fw-semibold mt-1 rounded-3" onclick="session.logout()" id="button-logout">
+                                <i class="fas fa-sign-out-alt ms-3 me-2"></i>Logout
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="col-md-9">
+                <div class="tab-content">
+
+                    <!-- Home -->
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" tabindex="0">
+
+                        <!-- Sub Header -->
+                        <div class="rounded-3 p-2 mb-4" style="background-color: var(--bs-gray-200)">
+                            <div class="d-flex justify-content-between">
+                                <p class="fw-semibold m-1" style="color: var(--bs-gray-900);"><i class="fa-solid fa-home mx-2"></i>Home</p>
+                                <button class="btn btn-success btn-sm m-0 pb-0" onclick="user.download(this)">
+                                    <i class="fa-solid fa-download"></i>
+                                    <span class="d-none d-sm-inline ms-1">Download</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="row">
+                            <div class="col-xl-3 mb-3">
+                                <div class="card-body rounded-3 shadow p-3 border-0" style="background: #8D9EFF;">
+                                    <div class="row align-items-center" style="color: var(--bs-gray-100);">
+                                        <div class="col">
+                                            <h6 class="fw-bold">Comments</h6>
+                                            <div class="h5 mb-0 fw-bold" id="count-comment">
+                                                <div class="placeholder-wave">
+                                                    <span class="placeholder col-8 rounded-3"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-comments fa-2x me-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 mb-3">
+                                <div class="card-body rounded-3 shadow p-3 border-0" style="background: #8D72E1;">
+                                    <div class="row align-items-center" style="color: var(--bs-gray-100);">
+                                        <div class="col">
+                                            <h6 class="fw-bold">Present</h6>
+                                            <div class="h5 mb-0 fw-bold" id="count-present">
+                                                <div class="placeholder-wave">
+                                                    <span class="placeholder col-8 rounded-3"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-circle-check fa-2x me-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 mb-3">
+                                <div class="card-body rounded-3 shadow p-3 border-0" style="background: #7766CF;">
+                                    <div class="row align-items-center" style="color: var(--bs-gray-100);">
+                                        <div class="col">
+                                            <h6 class="fw-bold">Absent</h6>
+                                            <div class="h5 mb-0 fw-bold" id="count-absent">
+                                                <div class="placeholder-wave">
+                                                    <span class="placeholder col-8 rounded-3"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-circle-xmark fa-2x me-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 mb-3">
+                                <div class="card-body rounded-3 shadow p-3 border-0" style="background: #6C4AB6;">
+                                    <div class="row align-items-center" style="color: var(--bs-gray-100);">
+                                        <div class="col">
+                                            <h6 class="fw-bold">Likes</h6>
+                                            <div class="h5 mb-0 fw-bold" id="count-like">
+                                                <div class="placeholder-wave">
+                                                    <span class="placeholder col-8 rounded-3"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-heart fa-2x me-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form -->
+                        <div class="bg-light p-3 my-2 rounded-4 shadow">
+                            <label for="form-comment" class="form-label fw-bold"><i class="fa-solid fa-comment me-1"></i>Comment</label>
+                            <textarea class="form-control shadow-sm mb-3 rounded-3" id="form-comment" placeholder="Type to comment"></textarea>
+
+                            <div class="d-flex justify-content-end mb-0">
+                                <button onclick="comment.send(this)" class="btn btn-primary btn-sm rounded-3">Kirim</button>
+                            </div>
+                        </div>
+
+                        <!-- Comments -->
+                        <div class="mt-3 mb-2" id="comments"></div>
+
+                        <!-- Pagination -->
+                        <nav class="d-flex justify-content-center py-3 mb-4">
+                            <ul class="pagination mb-0">
+                                <li class="page-item disabled" id="previous">
+                                    <button class="page-link" onclick="pagination.previous(this)">
+                                        <i class="fa-solid fa-circle-left me-1"></i>Previous
+                                    </button>
+                                </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link text-dark" id="page">1</span>
+                                </li>
+                                <li class="page-item" id="next">
+                                    <button class="page-link" onclick="pagination.next(this)">
+                                        Next<i class="fa-solid fa-circle-right ms-1"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- Setting -->
+                    <div class="tab-pane fade" id="pills-setting" role="tabpanel" tabindex="0">
+
+                        <!-- Sub Header -->
+                        <div class="rounded-3 p-2 mb-4" style="background-color: var(--bs-gray-200)">
+                            <p class="fw-semibold m-1" style="color: var(--bs-gray-900);"><i class="fa-solid fa-gear mx-2"></i>Setting</p>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="p-3 bg-light mb-3 rounded-3 shadow">
+                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-envelope me-1"></i>Email :</p>
+                            <p class="m-0 p-0" id="dashboard-email"></p>
+                        </div>
+
+                        <!-- Access Key -->
+                        <div class="p-3 bg-light mb-3 rounded-3 shadow">
+                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-key me-1"></i>Access Key :</p>
+                            <p class="mx-0 mt-0 mb-0 p-0" id="dashboard-accesskey" style="overflow-wrap: break-word !important;"></p>
+                            <hr class="text-dark my-3">
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-sm btn-primary rounded-3" onclick="user.regenerate(this)">Regenerate</button>
+                            </div>
+                        </div>
+
+                        <!-- Toggle -->
+                        <div class="p-3 bg-light mb-3 rounded-3 shadow">
+                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-sliders me-1"></i>Control :</p>
+
+                            <div class="form-check form-switch mb-1">
+                                <input class="form-check-input" type="checkbox" role="switch" id="darkMode" onchange="theme.change(this)">
+                                <label class="form-check-label" for="darkMode">Dark Mode</label>
+                            </div>
+                            <div class="form-check form-switch mb-1">
+                                <input class="form-check-input" type="checkbox" role="switch" id="filterBadWord" onchange="user.changeFilterBadWord(this)">
+                                <label class="form-check-label" for="filterBadWord">Filter Bad Word</label>
+                            </div>
+                            <div class="form-check form-switch mb-1">
+                                <input class="form-check-input" type="checkbox" role="switch" id="replyComment" onchange="user.replyComment(this)">
+                                <label class="form-check-label" for="replyComment">Can Reply Comment</label>
+                            </div>
+                            <div class="form-check form-switch mb-1">
+                                <input class="form-check-input" type="checkbox" role="switch" id="editComment" onchange="user.editComment(this)">
+                                <label class="form-check-label" for="editComment">Can Edit Comment</label>
+                            </div>
+                            <div class="form-check form-switch mb-1">
+                                <input class="form-check-input" type="checkbox" role="switch" id="deleteComment" onchange="user.deleteComment(this)">
+                                <label class="form-check-label" for="deleteComment">Can Delete Comment</label>
+                            </div>
+                        </div>
+
+                        <!-- Change Password -->
+                        <div class="p-3 bg-light mb-3 rounded-3 shadow">
+                            <p class="mx-0 mt-0 mb-3 p-0 fw-bold"><i class="fa-solid fa-lock me-1"></i>Change Password</p>
+                            <form>
+                                <input hidden type="text" autocomplete="username" value="...">
+                                <div class="mb-3">
+                                    <input type="password" class="form-control form-control-sm rounded-3" id="old_password" placeholder="Old Password" autocomplete="current-password">
+                                </div>
+                                <div class="mb-0">
+                                    <input type="password" class="form-control form-control-sm rounded-3" id="new_password" placeholder="New Password" autocomplete="new-password">
+                                </div>
+                            </form>
+                            <hr class="text-dark my-3">
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-sm btn-primary rounded-3" onclick="user.changePassword(this)">Change</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal login -->
+    <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label"><i class="fa-solid fa-envelope me-1"></i>Email</label>
+                            <input type="email" class="form-control rounded-3" id="loginEmail" autocomplete="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label"><i class="fa-solid fa-lock me-1"></i>Password</label>
+                            <input type="password" class="form-control rounded-3" id="loginPassword" autocomplete="current-password">
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary rounded-3" onclick="session.login(this)"><i class="fas fa-sign-in-alt me-1"></i>Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-CDOy6cOibCWEdsRiZuaHf8dSGGJRYuBGC+mjoJimHGw=" crossorigin="anonymous"></script>
+</body>
+
+</html>

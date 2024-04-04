@@ -1,0 +1,108 @@
+import { storage } from "./storage.mjs";
+
+export const THEME_DARK = 'dark';
+export const THEME_LIGHT = 'light';
+export const THEME_BS_DATA = 'data-bs-theme';
+
+export const theme = (() => {
+
+    const theme = storage('theme');
+
+    const onLight = () => {
+        const elements = document.querySelectorAll('.text-light, .btn-theme-light, .bg-dark, .bg-theme-dark, .btn-outline-light');
+        elements.forEach((element) => {
+            if (element.classList.contains('text-light')) {
+                element.classList.remove('text-light');
+                element.classList.add('text-dark');
+            }
+
+            if (element.classList.contains('btn-theme-light')) {
+                element.classList.remove('btn-theme-light');
+                element.classList.add('btn-theme-dark');
+            }
+
+            if (element.classList.contains('bg-dark')) {
+                element.classList.remove('bg-dark');
+                element.classList.add('bg-theme-light');
+            }
+
+            if (element.classList.contains('bg-theme-dark')) {
+                element.classList.remove('bg-theme-dark');
+                element.classList.add('bg-theme-light');
+            }
+
+            if (element.classList.contains('btn-outline-light')) {
+                element.classList.remove('btn-outline-light');
+                element.classList.add('btn-outline-dark');
+            }
+        });
+    };
+
+    const onDark = () => {
+        const elements = document.querySelectorAll('.text-dark, .btn-theme-dark, .bg-light, .bg-theme-light, .btn-outline-dark');
+        elements.forEach((element) => {
+            if (element.classList.contains('text-dark')) {
+                element.classList.remove('text-dark');
+                element.classList.add('text-light');
+            }
+
+            if (element.classList.contains('btn-theme-dark')) {
+                element.classList.remove('btn-theme-dark');
+                element.classList.add('btn-theme-light');
+            }
+
+            if (element.classList.contains('bg-light')) {
+                element.classList.remove('bg-light');
+                element.classList.add('bg-theme-dark');
+            }
+
+            if (element.classList.contains('bg-theme-light')) {
+                element.classList.remove('bg-theme-light');
+                element.classList.add('bg-theme-dark');
+            }
+
+            if (element.classList.contains('btn-outline-dark')) {
+                element.classList.remove('btn-outline-dark');
+                element.classList.add('btn-outline-light');
+            }
+        });
+    };
+
+    const isDarkMode = (onDark = null, onLight = null) => {
+        const status = theme.get('active') === THEME_DARK;
+
+        if (onDark && onLight) {
+            return status ? onDark : onLight;
+        }
+
+        return status;
+    };
+
+    const change = () => {
+        if (isDarkMode()) {
+            onLight();
+            document.documentElement.setAttribute(THEME_BS_DATA, THEME_LIGHT);
+            theme.set('active', THEME_LIGHT);
+        } else {
+            onDark();
+            document.documentElement.setAttribute(THEME_BS_DATA, THEME_DARK);
+            theme.set('active', THEME_DARK);
+        }
+    };
+
+    const check = () => {
+        if (isDarkMode()) {
+            onDark();
+            document.documentElement.setAttribute(THEME_BS_DATA, THEME_DARK);
+            document.getElementById('darkMode').checked = true;
+        } else {
+            theme.set('active', THEME_LIGHT);
+        }
+    };
+
+    return {
+        change,
+        check,
+        isDarkMode
+    };
+})();

@@ -1,0 +1,70 @@
+::-webkit-scrollbar {
+    width: 1rem;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 1rem;
+    border: 0.3rem solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf;
+}
+
+html {
+    scroll-behavior: smooth !important;
+    width: 100vw;
+}
+
+body {
+    font-family: 'Josefin Sans', sans-serif !important;
+    padding: 0 !important;
+    overflow-x: hidden;
+}
+
+.btn-theme-dark {
+    color: var(--bs-dark);
+    background-color: var(--bs-gray-100);
+}
+
+.btn-theme-light {
+    color: var(--bs-light);
+    background-color: var(--bs-gray-800);
+}
+
+.btn-theme-light:hover {
+    color: var(--bs-light);
+    background-color: var(--bs-gray-600);
+}
+
+.btn-theme-dark:hover {
+    color: var(--bs-dark);
+    background-color: var(--bs-gray-300);
+}
+
+.btn-theme-dark:focus {
+    color: var(--bs-dark);
+}
+
+.btn-theme-light:focus {
+    color: var(--bs-light);
+}
+
+.logout:hover {
+    color: var(--bs-light) !important;
+    background-color: var(--bs-danger) !important;
+}
+
+.bg-theme-light {
+    background-color: var(--bs-gray-100);
+}
+
+.bg-theme-dark {
+    background-color: var(--bs-gray-800);
+}
