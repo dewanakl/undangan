@@ -108,10 +108,10 @@
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" tabindex="0">
 
                         <!-- Sub Header -->
-                        <div class="rounded-3 p-2 mb-4" style="background-color: var(--bs-gray-200)">
+                        <div class="rounded-4 p-2 mb-4 shadow" style="background-color: var(--bs-gray-200)">
                             <div class="d-flex justify-content-between">
                                 <p class="fw-semibold m-1" style="color: var(--bs-gray-900);"><i class="fa-solid fa-home mx-2"></i>Home</p>
-                                <button class="btn btn-success btn-sm m-0 pb-0" onclick="user.download(this)">
+                                <button class="btn btn-success rounded-3 btn-sm m-0 pb-0" onclick="user.download(this)">
                                     <i class="fa-solid fa-download"></i>
                                     <span class="d-none d-sm-inline ms-1">Download</span>
                                 </button>
@@ -121,7 +121,7 @@
                         <!-- Stats -->
                         <div class="row">
                             <div class="col-xl-3 mb-3">
-                                <div class="card-body rounded-3 shadow p-3 border-0" style="background: #8D9EFF;">
+                                <div class="card-body rounded-4 shadow p-3 border-0" style="background: #8D9EFF;">
                                     <div class="row align-items-center" style="color: var(--bs-gray-100);">
                                         <div class="col">
                                             <h6 class="fw-bold">Comments</h6>
@@ -138,7 +138,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 mb-3">
-                                <div class="card-body rounded-3 shadow p-3 border-0" style="background: #8D72E1;">
+                                <div class="card-body rounded-4 shadow p-3 border-0" style="background: #8D72E1;">
                                     <div class="row align-items-center" style="color: var(--bs-gray-100);">
                                         <div class="col">
                                             <h6 class="fw-bold">Present</h6>
@@ -155,7 +155,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 mb-3">
-                                <div class="card-body rounded-3 shadow p-3 border-0" style="background: #7766CF;">
+                                <div class="card-body rounded-4 shadow p-3 border-0" style="background: #7766CF;">
                                     <div class="row align-items-center" style="color: var(--bs-gray-100);">
                                         <div class="col">
                                             <h6 class="fw-bold">Absent</h6>
@@ -172,7 +172,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 mb-3">
-                                <div class="card-body rounded-3 shadow p-3 border-0" style="background: #6C4AB6;">
+                                <div class="card-body rounded-4 shadow p-3 border-0" style="background: #6C4AB6;">
                                     <div class="row align-items-center" style="color: var(--bs-gray-100);">
                                         <div class="col">
                                             <h6 class="fw-bold">Likes</h6>
@@ -227,19 +227,19 @@
                     <div class="tab-pane fade" id="pills-setting" role="tabpanel" tabindex="0">
 
                         <!-- Sub Header -->
-                        <div class="rounded-3 p-2 mb-4" style="background-color: var(--bs-gray-200)">
+                        <div class="rounded-4 p-2 mb-4 shadow" style="background-color: var(--bs-gray-200)">
                             <p class="fw-semibold m-1" style="color: var(--bs-gray-900);"><i class="fa-solid fa-gear mx-2"></i>Setting</p>
                         </div>
 
                         <!-- Email -->
-                        <div class="p-3 bg-light mb-3 rounded-3 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-envelope me-1"></i>Email :</p>
+                        <div class="p-3 bg-light mb-3 rounded-4 shadow">
+                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-envelope me-1"></i>Email</p>
                             <p class="m-0 p-0" id="dashboard-email"></p>
                         </div>
 
                         <!-- Access Key -->
-                        <div class="p-3 bg-light mb-3 rounded-3 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-key me-1"></i>Access Key :</p>
+                        <div class="p-3 bg-light mb-3 rounded-4 shadow">
+                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-key me-1"></i>Access Key</p>
                             <p class="mx-0 mt-0 mb-0 p-0" id="dashboard-accesskey" style="overflow-wrap: break-word !important;"></p>
                             <hr class="text-dark my-3">
 
@@ -249,8 +249,8 @@
                         </div>
 
                         <!-- Toggle -->
-                        <div class="p-3 bg-light mb-3 rounded-3 shadow">
-                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-sliders me-1"></i>Control :</p>
+                        <div class="p-3 bg-light mb-3 rounded-4 shadow">
+                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-sliders me-1"></i>Control</p>
 
                             <div class="form-check form-switch mb-1">
                                 <input class="form-check-input" type="checkbox" role="switch" id="darkMode" onchange="theme.change(this)">
@@ -275,7 +275,7 @@
                         </div>
 
                         <!-- Change Password -->
-                        <div class="p-3 bg-light mb-3 rounded-3 shadow">
+                        <div class="p-3 bg-light mb-3 rounded-4 shadow">
                             <p class="mx-0 mt-0 mb-3 p-0 fw-bold"><i class="fa-solid fa-lock me-1"></i>Change Password</p>
                             <form>
                                 <input hidden type="text" autocomplete="username" value="...">
@@ -290,6 +290,21 @@
 
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-sm btn-primary rounded-3" onclick="user.changePassword(this)">Change</button>
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-light mb-3 rounded-4 shadow">
+                            <div class="row align-items-center justify-content-between flex-column flex-sm-row">
+                                <div class="col-auto">
+                                    <small>
+                                        Build with<i class="fa-solid fa-heart mx-1 text-danger"></i>Dewanakl
+                                    </small>
+                                </div>
+                                <div class="col-auto">
+                                    <small>
+                                        <i class="fa-brands fa-github me-1"></i><a target="_blank" href="https://github.com/dewanakl/undangan">dewanakl</a>
+                                    </small>
+                                </div>
                             </div>
                         </div>
                     </div>

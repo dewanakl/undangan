@@ -209,7 +209,7 @@ export const comment = (() => {
                 pagination.setResultData(res.data.length);
 
                 if (res.data.length === 0) {
-                    comments.innerHTML = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-3 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
+                    comments.innerHTML = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
                     return;
                 }
 
