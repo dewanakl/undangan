@@ -97,7 +97,7 @@ export const comment = (() => {
             .token(session.get('token'))
             .body({
                 id: id,
-                name: storage('user').get('name'),
+                name: '---',
                 presence: true,
                 comment: form.value
             })

@@ -5,6 +5,7 @@ import { pagination } from './pagination.mjs';
 
 export const card = (() => {
 
+    const user = storage('user');
     const owns = storage('owns');
     const likes = storage('likes');
     const tracker = storage('tracker');
@@ -98,7 +99,7 @@ export const card = (() => {
 
     const renderTitle = (comment, is_parent) => {
         if (comment.is_admin) {
-            return `<strong class="me-1">${util.escapeHtml(comment.name)}</strong><i class="fa-solid fa-certificate text-primary"></i>`;
+            return `<strong class="me-1">${util.escapeHtml(user.get('name'))}</strong><i class="fa-solid fa-certificate text-primary"></i>`;
         }
 
         if (is_parent) {
