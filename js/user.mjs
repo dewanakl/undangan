@@ -1,3 +1,4 @@
+import { util } from './util.mjs';
 import { storage } from './storage.mjs';
 import { request, HTTP_GET, HTTP_PATCH, HTTP_PUT } from './request.mjs';
 
@@ -12,10 +13,11 @@ export const user = (() => {
                 user.set(key, value);
             }
 
-            document.getElementById('dashboard-name').innerHTML = `${user.get('name')}<i class="fa-solid fa-hands text-warning ms-2"></i>`;
-            document.getElementById('dashboard-email').innerHTML = user.get('email');
-            document.getElementById('dashboard-accesskey').innerHTML = user.get('access_key');
+            document.getElementById('dashboard-name').innerHTML = `${util.escapeHtml(res.data.name)}<i class="fa-solid fa-hands text-warning ms-2"></i>`;
+            document.getElementById('dashboard-email').innerHTML = res.data.email;
+            document.getElementById('dashboard-accesskey').innerHTML = res.data.access_key;
 
+            document.getElementById('form-name').value = util.escapeHtml(res.data.name);
             document.getElementById('filterBadWord').checked = Boolean(res.data.is_filter);
             document.getElementById('replyComment').checked = Boolean(res.data.can_reply);
             document.getElementById('editComment').checked = Boolean(res.data.can_edit);
@@ -158,6 +160,36 @@ export const user = (() => {
         button.innerHTML = tmp;
     };
 
+    const changeName = async (button) => {
+        const name = document.getElementById('form-name');
+
+        if (name.value.length == 0) {
+            alert('Name cannot be empty');
+            return;
+        }
+
+        name.disabled = true;
+        button.disabled = true;
+        let tmp = button.innerHTML;
+        button.innerHTML = `<div class="spinner-border spinner-border-sm me-1" role="status"></div>${tmp}`;
+
+        await request(HTTP_PATCH, '/api/user').
+            token(token.get('token')).
+            body({
+                name: name.value,
+            }).
+            then((res) => {
+                if (res.data.status) {
+                    getUserDetail();
+                    alert('Success Change Name');
+                }
+            });
+
+        name.disabled = false;
+        button.disabled = false;
+        button.innerHTML = tmp;
+    };
+
     const download = async (button) => {
         button.disabled = true;
         let tmp = button.innerHTML;
@@ -191,6 +223,7 @@ export const user = (() => {
         deleteComment,
         regenerate,
         changePassword,
-        download
+        download,
+        changeName
     };
 })();

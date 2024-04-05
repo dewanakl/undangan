@@ -91,6 +91,10 @@ export const theme = (() => {
     };
 
     const check = () => {
+        if (!theme.has('active') && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            theme.set('active', THEME_DARK);
+        }
+
         if (isDarkMode()) {
             onDark();
             document.documentElement.setAttribute(THEME_BS_DATA, THEME_DARK);

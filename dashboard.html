@@ -237,11 +237,26 @@
                             <p class="m-0 p-0" id="dashboard-email"></p>
                         </div>
 
+                        <!-- Name -->
+                        <div class="p-3 bg-light mb-3 rounded-4 shadow">
+                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-person me-1"></i>Name</p>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control form-control-sm rounded-3" id="form-name">
+                                </div>
+                            </form>
+                            <hr class="text-dark mt-3 mb-2">
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-sm btn-primary rounded-3" onclick="user.changeName(this)">Change</button>
+                            </div>
+                        </div>
+
                         <!-- Access Key -->
                         <div class="p-3 bg-light mb-3 rounded-4 shadow">
                             <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-key me-1"></i>Access Key</p>
                             <p class="mx-0 mt-0 mb-0 p-0" id="dashboard-accesskey" style="overflow-wrap: break-word !important;"></p>
-                            <hr class="text-dark my-3">
+                            <hr class="text-dark mt-3 mb-2">
 
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-sm btn-primary rounded-3" onclick="user.regenerate(this)">Regenerate</button>
@@ -286,7 +301,7 @@
                                     <input type="password" class="form-control form-control-sm rounded-3" id="new_password" placeholder="New Password" autocomplete="new-password">
                                 </div>
                             </form>
-                            <hr class="text-dark my-3">
+                            <hr class="text-dark mt-3 mb-2">
 
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="btn btn-sm btn-primary rounded-3" onclick="user.changePassword(this)">Change</button>

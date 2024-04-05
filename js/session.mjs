@@ -9,6 +9,7 @@ export const session = (() => {
     const table = storage('session');
     const now = (new Date()).getTime() / 1000;
 
+    theme.check();
     comment.renderLoading();
 
     if (!table.has('token') || JSON.parse(atob(table.get('token')?.split('.')[1])).exp < now) {
@@ -17,7 +18,6 @@ export const session = (() => {
         user.getUserDetail();
         user.getStatUser();
         comment.comment();
-        theme.check();
     }
 
     const login = async (button) => {
