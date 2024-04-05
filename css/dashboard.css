@@ -28,6 +28,13 @@ body {
     overflow-x: hidden;
 }
 
+@media screen and (max-width: 767px) {
+    html {
+        scrollbar-width: none !important;
+        width: 100%;
+    }
+}
+
 .btn-theme-dark {
     color: var(--bs-dark);
     background-color: var(--bs-gray-100);

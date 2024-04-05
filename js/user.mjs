@@ -38,7 +38,7 @@ export const user = (() => {
         checkbox.disabled = true;
         let labelCheckbox = document.querySelector(`label[for="${checkbox.id}"]`);
         let tmp = labelCheckbox.innerHTML;
-        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm me-1 pb-0" role="status"></div>${tmp}`;
+        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
 
         await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -55,7 +55,7 @@ export const user = (() => {
         checkbox.disabled = true;
         let labelCheckbox = document.querySelector(`label[for="${checkbox.id}"]`);
         let tmp = labelCheckbox.innerHTML;
-        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm me-1 pb-0" role="status"></div>${tmp}`;
+        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
 
         await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -72,7 +72,7 @@ export const user = (() => {
         checkbox.disabled = true;
         let labelCheckbox = document.querySelector(`label[for="${checkbox.id}"]`);
         let tmp = labelCheckbox.innerHTML;
-        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm me-1 pb-0" role="status"></div>${tmp}`;
+        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
 
         await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -89,7 +89,7 @@ export const user = (() => {
         checkbox.disabled = true;
         let labelCheckbox = document.querySelector(`label[for="${checkbox.id}"]`);
         let tmp = labelCheckbox.innerHTML;
-        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm me-1 pb-0" role="status"></div>${tmp}`;
+        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
 
         await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -109,7 +109,7 @@ export const user = (() => {
 
         button.disabled = true;
         let tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm me-1" role="status"></div>${tmp}`;
+        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
 
         await request(HTTP_PUT, '/api/key').
             token(token.get('token')).
@@ -134,12 +134,12 @@ export const user = (() => {
 
         button.disabled = true;
         let tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm me-1" role="status"></div>${tmp}`;
+        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
 
         old.disabled = true;
         newest.disabled = true;
 
-        await request(HTTP_PATCH, '/api/user').
+        const result = await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
             body({
                 old_password: old.value,
@@ -151,6 +151,8 @@ export const user = (() => {
                     newest.value = null;
                     alert('Success Change Password');
                 }
+
+                return res.data.status;
             });
 
         old.disabled = false;
@@ -158,6 +160,10 @@ export const user = (() => {
 
         button.disabled = false;
         button.innerHTML = tmp;
+
+        if (result) {
+            button.disabled = true;
+        }
     };
 
     const changeName = async (button) => {
@@ -171,9 +177,9 @@ export const user = (() => {
         name.disabled = true;
         button.disabled = true;
         let tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm me-1" role="status"></div>${tmp}`;
+        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
 
-        await request(HTTP_PATCH, '/api/user').
+        const result = await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
             body({
                 name: name.value,
@@ -183,17 +189,23 @@ export const user = (() => {
                     getUserDetail();
                     alert('Success Change Name');
                 }
+
+                return res.data.status;
             });
 
         name.disabled = false;
         button.disabled = false;
         button.innerHTML = tmp;
+
+        if (result) {
+            button.disabled = true;
+        }
     };
 
     const download = async (button) => {
         button.disabled = true;
         let tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm me-1" role="status"></div>${tmp}`;
+        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
 
         const res = await request(HTTP_GET, '/api/download').token(token.get('token')).download();
         const data = await res?.blob();
@@ -214,6 +226,22 @@ export const user = (() => {
         button.innerHTML = tmp;
     };
 
+    const enableButtonName = () => {
+        const btn = document.getElementById('button-change-name');
+        if (btn.disabled) {
+            btn.disabled = false;
+        }
+    };
+
+    const enableButtonPassword = () => {
+        const btn = document.getElementById('button-change-password');
+        const old = document.getElementById('old_password');
+
+        if (btn.disabled && old.value.length !== 0) {
+            btn.disabled = false;
+        }
+    };
+
     return {
         getUserDetail,
         getStatUser,
@@ -224,6 +252,8 @@ export const user = (() => {
         regenerate,
         changePassword,
         download,
-        changeName
+        changeName,
+        enableButtonName,
+        enableButtonPassword,
     };
 })();

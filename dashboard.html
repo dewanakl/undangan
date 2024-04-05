@@ -193,7 +193,7 @@
                         <!-- Form -->
                         <div class="bg-light p-3 my-2 rounded-4 shadow">
                             <label for="form-comment" class="form-label fw-bold"><i class="fa-solid fa-comment me-1"></i>Comment</label>
-                            <textarea class="form-control shadow-sm mb-3 rounded-3" id="form-comment" placeholder="Type to comment"></textarea>
+                            <textarea class="form-control shadow-sm mb-3 rounded-3" id="form-comment" name="form-comment" placeholder="Type to comment"></textarea>
 
                             <div class="d-flex justify-content-end mb-0">
                                 <button onclick="comment.send(this)" class="btn btn-primary btn-sm rounded-3">Send</button>
@@ -242,13 +242,13 @@
                             <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-person me-1"></i>Name</p>
                             <form>
                                 <div class="mb-3">
-                                    <input type="text" class="form-control form-control-sm rounded-3" id="form-name">
+                                    <input type="text" class="form-control form-control-sm rounded-3" id="form-name" name="form-name" onchange="user.enableButtonName()">
                                 </div>
                             </form>
                             <hr class="text-dark mt-3 mb-2">
 
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-3" onclick="user.changeName(this)">Change</button>
+                                <button type="button" class="btn btn-sm btn-primary rounded-3" id="button-change-name" onclick="user.changeName(this)" disabled>Change</button>
                             </div>
                         </div>
 
@@ -293,18 +293,18 @@
                         <div class="p-3 bg-light mb-3 rounded-4 shadow">
                             <p class="mx-0 mt-0 mb-3 p-0 fw-bold"><i class="fa-solid fa-lock me-1"></i>Change Password</p>
                             <form>
-                                <input hidden type="text" autocomplete="username" value="...">
-                                <div class="mb-3">
-                                    <input type="password" class="form-control form-control-sm rounded-3" id="old_password" placeholder="Old Password" autocomplete="current-password">
+                                <input hidden type="text" name="username" autocomplete="username" value="...">
+                                <div class="mb-2">
+                                    <input type="password" class="form-control form-control-sm rounded-3" id="old_password" name="old_password" placeholder="Old Password" autocomplete="current-password">
                                 </div>
                                 <div class="mb-0">
-                                    <input type="password" class="form-control form-control-sm rounded-3" id="new_password" placeholder="New Password" autocomplete="new-password">
+                                    <input type="password" class="form-control form-control-sm rounded-3" id="new_password" name="new_password" onchange="user.enableButtonPassword()" placeholder="New Password" autocomplete="new-password">
                                 </div>
                             </form>
                             <hr class="text-dark mt-3 mb-2">
 
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-3" onclick="user.changePassword(this)">Change</button>
+                                <button type="button" class="btn btn-sm btn-primary rounded-3" id="button-change-password" onclick="user.changePassword(this)" disabled>Change</button>
                             </div>
                         </div>
 
