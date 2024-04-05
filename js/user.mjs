@@ -3,11 +3,12 @@ import { storage } from './storage.mjs';
 import { request, HTTP_GET, HTTP_PATCH, HTTP_PUT } from './request.mjs';
 
 export const user = (() => {
+
+    const user = storage('user');
     const token = storage('session');
 
     const getUserDetail = () => {
         request(HTTP_GET, '/api/user').token(token.get('token')).then((res) => {
-            const user = storage('user');
 
             for (let [key, value] of Object.entries(res.data)) {
                 user.set(key, value);
@@ -15,7 +16,7 @@ export const user = (() => {
 
             document.getElementById('dashboard-name').innerHTML = `${util.escapeHtml(res.data.name)}<i class="fa-solid fa-hands text-warning ms-2"></i>`;
             document.getElementById('dashboard-email').innerHTML = res.data.email;
-            document.getElementById('dashboard-accesskey').innerHTML = res.data.access_key;
+            document.getElementById('dashboard-accesskey').value = res.data.access_key;
 
             document.getElementById('form-name').value = util.escapeHtml(res.data.name);
             document.getElementById('filterBadWord').checked = Boolean(res.data.is_filter);
@@ -34,11 +35,36 @@ export const user = (() => {
         });
     };
 
-    const changeFilterBadWord = async (checkbox) => {
+    const addLoadingCheckbox = (checkbox) => {
         checkbox.disabled = true;
-        let labelCheckbox = document.querySelector(`label[for="${checkbox.id}"]`);
-        let tmp = labelCheckbox.innerHTML;
-        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+
+        const label = document.querySelector(`label[for="${checkbox.id}"]`);
+        const tmp = label.innerHTML;
+        label.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+
+        return {
+            restore: () => {
+                label.innerHTML = tmp;
+                checkbox.disabled = false;
+            },
+        };
+    };
+
+    const addLoadingButton = (button) => {
+        button.disabled = true;
+        const tmp = button.innerHTML;
+        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+
+        return {
+            restore: () => {
+                button.disabled = false;
+                button.innerHTML = tmp;
+            },
+        };
+    };
+
+    const changeFilterBadWord = async (checkbox) => {
+        const label = addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -47,15 +73,11 @@ export const user = (() => {
             }).
             then();
 
-        labelCheckbox.innerHTML = tmp;
-        checkbox.disabled = false;
+        label.restore();
     };
 
     const replyComment = async (checkbox) => {
-        checkbox.disabled = true;
-        let labelCheckbox = document.querySelector(`label[for="${checkbox.id}"]`);
-        let tmp = labelCheckbox.innerHTML;
-        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+        const label = addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -64,15 +86,11 @@ export const user = (() => {
             }).
             then();
 
-        labelCheckbox.innerHTML = tmp;
-        checkbox.disabled = false;
+        label.restore();
     };
 
     const editComment = async (checkbox) => {
-        checkbox.disabled = true;
-        let labelCheckbox = document.querySelector(`label[for="${checkbox.id}"]`);
-        let tmp = labelCheckbox.innerHTML;
-        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+        const label = addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -81,15 +99,11 @@ export const user = (() => {
             }).
             then();
 
-        labelCheckbox.innerHTML = tmp;
-        checkbox.disabled = false;
+        label.restore();
     };
 
     const deleteComment = async (checkbox) => {
-        checkbox.disabled = true;
-        let labelCheckbox = document.querySelector(`label[for="${checkbox.id}"]`);
-        let tmp = labelCheckbox.innerHTML;
-        labelCheckbox.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+        const label = addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -98,8 +112,7 @@ export const user = (() => {
             }).
             then();
 
-        labelCheckbox.innerHTML = tmp;
-        checkbox.disabled = false;
+        label.restore();
     };
 
     const regenerate = async (button) => {
@@ -107,9 +120,7 @@ export const user = (() => {
             return;
         }
 
-        button.disabled = true;
-        let tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+        const btn = addLoadingButton(button);
 
         await request(HTTP_PUT, '/api/key').
             token(token.get('token')).
@@ -119,8 +130,7 @@ export const user = (() => {
                 }
             });
 
-        button.disabled = false;
-        button.innerHTML = tmp;
+        btn.restore();
     };
 
     const changePassword = async (button) => {
@@ -132,12 +142,10 @@ export const user = (() => {
             return;
         }
 
-        button.disabled = true;
-        let tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
-
         old.disabled = true;
         newest.disabled = true;
+
+        const btn = addLoadingButton(button);
 
         const result = await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -149,17 +157,16 @@ export const user = (() => {
                 if (res.data.status) {
                     old.value = null;
                     newest.value = null;
-                    alert('Success Change Password');
+                    alert('Success change password');
                 }
 
                 return res.data.status;
             });
 
+        btn.restore();
+
         old.disabled = false;
         newest.disabled = false;
-
-        button.disabled = false;
-        button.innerHTML = tmp;
 
         if (result) {
             button.disabled = true;
@@ -175,9 +182,8 @@ export const user = (() => {
         }
 
         name.disabled = true;
-        button.disabled = true;
-        let tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+
+        const btn = addLoadingButton(button);
 
         const result = await request(HTTP_PATCH, '/api/user').
             token(token.get('token')).
@@ -187,15 +193,15 @@ export const user = (() => {
             then((res) => {
                 if (res.data.status) {
                     getUserDetail();
-                    alert('Success Change Name');
+                    alert('Success change name');
                 }
 
                 return res.data.status;
             });
 
         name.disabled = false;
-        button.disabled = false;
-        button.innerHTML = tmp;
+
+        btn.restore();
 
         if (result) {
             button.disabled = true;
@@ -203,27 +209,24 @@ export const user = (() => {
     };
 
     const download = async (button) => {
-        button.disabled = true;
-        let tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+        const btn = addLoadingButton(button);
 
         const res = await request(HTTP_GET, '/api/download').token(token.get('token')).download();
         const data = await res?.blob();
+        const filename = res?.headers.get('content-disposition')?.match(/(?<=")(?:\\.|[^"\\])*(?=")/)[0];
 
         const link = document.createElement('a');
         const href = window.URL.createObjectURL(data);
 
         link.href = href;
-        link.download = res?.headers.get('content-disposition')?.match(/(?<=")(?:\\.|[^"\\])*(?=")/)[0];
+        link.download = filename;
 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
         window.URL.revokeObjectURL(href);
-
-        button.disabled = false;
-        button.innerHTML = tmp;
+        btn.restore();
     };
 
     const enableButtonName = () => {
@@ -242,6 +245,29 @@ export const user = (() => {
         }
     };
 
+    const copyAccessKey = async (button) => {
+        try {
+            await navigator.clipboard.writeText(user.get('access_key'));
+        } catch (err) {
+            alert('Failed to copy access key');
+            return;
+        }
+
+        button.disabled = true;
+        let tmp = button.innerHTML;
+        button.innerHTML = '<i class="fa-solid fa-check"></i>';
+
+        let clear = null;
+        clear = setTimeout(() => {
+            button.disabled = false;
+            button.innerHTML = tmp;
+
+            clearTimeout(clear);
+            clear = null;
+            return;
+        }, 1500);
+    };
+
     return {
         getUserDetail,
         getStatUser,
@@ -255,5 +281,6 @@ export const user = (() => {
         changeName,
         enableButtonName,
         enableButtonPassword,
+        copyAccessKey
     };
 })();
