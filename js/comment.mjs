@@ -118,7 +118,7 @@ export const comment = (() => {
     };
 
     const cancel = (id) => {
-        if (confirm('Are you sure?')) {
+        if (document.getElementById(`form-inner-${id}`).value.length === 0 || confirm('Are you sure?')) {
             enabledButton(id);
             document.getElementById(`inner-${id}`).remove();
         }

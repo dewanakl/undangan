@@ -81,12 +81,13 @@ export const card = (() => {
                     }
 
                     tracker.set(comment.ip, res);
+                    document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + ' ' + res}`;
                 })
                 .catch((err) => console.error(err));
         }
 
-        return `<p class="text-${theme.isDarkMode('light', 'dark')} my-1 mx-0 p-0" style="white-space: pre-wrap; font-size: 0.8rem;"><i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + (tracker.has(comment.ip) ? ' - ' + tracker.get(comment.ip) : '')}</p>
-        <p class="text-${theme.isDarkMode('light', 'dark')} my-1 mx-0 p-0" style="white-space: pre-wrap; font-size: 0.8rem;"><i class="fa-solid fa-mobile-screen-button me-1"></i>${util.escapeHtml(comment.user_agent)}</p>`;
+        return `<p class="text-${theme.isDarkMode('light', 'dark')} my-1 mx-0 p-0" style="font-size: 0.8rem;" id="ip-${comment.uuid}"><i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + (tracker.has(comment.ip) ? ' ' + tracker.get(comment.ip) : `<span class="ms-2 mb-1 placeholder col-2 rounded-3"></span>`)}</p>
+        <p class="text-${theme.isDarkMode('light', 'dark')} my-1 mx-0 p-0" style="font-size: 0.8rem;"><i class="fa-solid fa-mobile-screen-button me-1"></i>${util.escapeHtml(comment.user_agent)}</p>`;
     };
 
     const renderHeader = (is_parent) => {
