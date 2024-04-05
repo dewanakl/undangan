@@ -50,16 +50,16 @@ export const card = (() => {
                 <button style="font-size: 0.8rem;" onclick="comment.reply(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0">Balas</button>
 
                 ${owns.has(comment.uuid)
-                ? `<button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 ms-1">Ubah</button>` : ''}
+                ? `<button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 ms-1">Edit</button>` : ''}
 
                 ${session.get('token')
-                ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" data-own="${comment.own}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 ms-1">Hapus</button>`
-                : (owns.has(comment.uuid) ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 ms-1">Hapus</button>` : '')}
+                ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" data-own="${comment.own}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 ms-1">Delete</button>`
+                : (owns.has(comment.uuid) ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 ms-1">Delete</button>` : '')}
             </div>
             <div class="ms-auto">
                 <button style="font-size: 0.8rem;" onclick="like.like(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-2 p-0">
                     <div class="d-flex justify-content-start align-items-center">
-                        <p class="my-0 mx-1" data-count-like="${comment.like.love}">${comment.like.love} suka</p>
+                        <p class="my-0 mx-1" data-count-like="${comment.like.love}">${comment.like.love} like</p>
                         <i class="py-1 me-1 px-0 pb-0 ${likes.has(comment.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
                     </div>
                 </button>
