@@ -17,7 +17,7 @@ export const comment = (() => {
 
         const id = button.getAttribute('data-uuid');
 
-        if (session.get('token')) {
+        if (session.get('token').split('.').length === 3) {
             owns.set(id, button.getAttribute('data-own'));
         }
 
@@ -35,19 +35,24 @@ export const comment = (() => {
         btn.restore();
     };
 
-    const enabledButton = (id) => {
+    const changeButton = (id, disabled) => {
         const buttonMethod = ['reply', 'edit', 'remove'];
 
         buttonMethod.forEach((v) => {
             const status = document.querySelector(`[onclick="comment.${v}(this)"][data-uuid="${id}"]`);
             if (status) {
-                status.disabled = false;
+                status.disabled = disabled;
             }
         });
     };
 
     const update = async (button) => {
         const id = button.getAttribute('data-uuid');
+
+        const presence = document.getElementById(`form-inner-presence-${id}`);
+        if (presence) {
+            presence.disabled = true;
+        }
 
         const form = document.getElementById(`form-${id ? `inner-${id}` : 'comment'}`);
         form.disabled = true;
@@ -62,6 +67,7 @@ export const comment = (() => {
         const status = await request(HTTP_PUT, '/api/comment/' + owns.get(id))
             .token(session.get('token'))
             .body({
+                presence: presence ? presence.value === "1" : null,
                 comment: form.value
             })
             .then((res) => res.data.status);
@@ -71,17 +77,35 @@ export const comment = (() => {
             cancel.disabled = false;
         }
 
+        if (presence) {
+            presence.disabled = false;
+        }
+
         btn.restore();
 
         if (status) {
-            document.getElementById(`inner-${id}`).remove();
-            document.getElementById(`content-${id}`).innerHTML = card.convertMarkdownToHTML(util.escapeHtml(form.value));
-            enabledButton(id);
+            comment();
         }
     };
 
     const send = async (button) => {
         const id = button.getAttribute('data-uuid');
+
+        const name = document.getElementById('form-name');
+        if (name && name.value.length == 0) {
+            alert('Please fill name');
+            return;
+        }
+
+        const presence = document.getElementById('form-presence');
+        if (!id && presence && presence.value == "0") {
+            alert('Please select presence');
+            return;
+        }
+
+        if (presence) {
+            presence.disabled = true;
+        }
 
         const form = document.getElementById(`form-${id ? `inner-${id}` : 'comment'}`);
         form.disabled = true;
@@ -97,8 +121,8 @@ export const comment = (() => {
             .token(session.get('token'))
             .body({
                 id: id,
-                name: '---',
-                presence: true,
+                name: name?.value ?? '---',
+                presence: presence ? presence.value === "1" : true,
                 comment: form.value
             })
             .then();
@@ -108,18 +132,25 @@ export const comment = (() => {
             cancel.disabled = false;
         }
 
+        if (presence) {
+            presence.disabled = false;
+        }
+
         btn.restore();
 
         if (response?.code === 201) {
             owns.set(response.data.uuid, response.data.own);
             form.value = null;
+            if (presence) {
+                presence.value = "0";
+            }
             comment();
         }
     };
 
     const cancel = (id) => {
         if (document.getElementById(`form-inner-${id}`).value.length === 0 || confirm('Are you sure?')) {
-            enabledButton(id);
+            changeButton(id, false);
             document.getElementById(`inner-${id}`).remove();
         }
     };
@@ -131,20 +162,13 @@ export const comment = (() => {
             return;
         }
 
-        const update = document.querySelector(`[onclick="comment.edit(this)"][data-uuid="${id}"]`);
-        if (update) {
-            update.disabled = true;
-        }
-
-        const remove = document.querySelector(`[onclick="comment.remove(this)"][data-uuid="${id}"]`);
-        if (remove) {
-            remove.disabled = true;
-        }
+        changeButton(id, true);
 
         const inner = document.createElement('div');
         inner.classList.add('my-2');
         inner.id = `inner-${id}`;
         inner.innerHTML = `
+        <label for="form-inner-${id}" class="form-label">Reply</label>
         <textarea class="form-control shadow-sm rounded-3 mb-2" id="form-inner-${id}" placeholder="Type reply comment"></textarea>
         <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
             <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Cancel</button>
@@ -161,17 +185,9 @@ export const comment = (() => {
             return;
         }
 
-        const reply = document.querySelector(`[onclick="comment.reply(this)"][data-uuid="${id}"]`);
-        if (reply) {
-            reply.disabled = true;
-        }
-
-        const remove = document.querySelector(`[onclick="comment.remove(this)"][data-uuid="${id}"]`);
-        if (remove) {
-            remove.disabled = true;
-        }
-
-        const btn = util.disableButton(button);
+        changeButton(id, true);
+        const tmp = button.innerText;
+        button.innerText = 'Loading..';
 
         const status = await request(HTTP_GET, '/api/comment/' + id)
             .token(session.get('token'))
@@ -182,6 +198,12 @@ export const comment = (() => {
             inner.classList.add('my-2');
             inner.id = `inner-${id}`;
             inner.innerHTML = `
+            <label for="form-inner-${id}" class="form-label">Edit</label>
+            ${document.getElementById(id).getAttribute('data-parent') === 'true' ? `
+            <select class="form-select shadow-sm mb-2" id="form-inner-presence-${id}">
+                <option value="1" ${status.data.presence ? 'selected' : ''}>Hadir</option>
+                <option value="2" ${status.data.presence ? '' : 'selected'}>Berhalangan</option>
+            </select>` : ''}
             <textarea class="form-control shadow-sm rounded-3 mb-2" id="form-inner-${id}" placeholder="Type update comment"></textarea>
             <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
                 <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Cancel</button>
@@ -192,7 +214,7 @@ export const comment = (() => {
             document.getElementById(`form-inner-${id}`).value = status.data.comment;
         }
 
-        btn.restore();
+        button.innerText = tmp;
     };
 
     const comment = async () => {
@@ -214,6 +236,7 @@ export const comment = (() => {
                 }
 
                 comments.innerHTML = res.data.map((comment) => card.renderContent(comment)).join('');
+                res.data.map((c) => card.fetchTracker(c));
             });
     };
 

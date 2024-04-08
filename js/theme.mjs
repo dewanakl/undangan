@@ -98,7 +98,10 @@ export const theme = (() => {
         if (isDarkMode()) {
             onDark();
             document.documentElement.setAttribute(THEME_BS_DATA, THEME_DARK);
-            document.getElementById('darkMode').checked = true;
+            const toggle = document.getElementById('darkMode');
+            if (toggle) {
+                toggle.checked = true;
+            }
         } else {
             theme.set('active', THEME_LIGHT);
         }

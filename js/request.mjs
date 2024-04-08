@@ -46,11 +46,12 @@ export const request = (method, path) => {
                 .catch((err) => alert(err));
         },
         token(token) {
-            req.headers.append('Authorization', 'Bearer ' + token);
-            return this;
-        },
-        key(key) {
-            req.headers.append('X_ACCESS_KEY', key);
+            if (token.split('.').length === 3) {
+                req.headers.append('Authorization', 'Bearer ' + token);
+                return this;
+            }
+
+            req.headers.append('X_ACCESS_KEY', token);
             return this;
         },
         body(body) {

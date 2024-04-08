@@ -12,7 +12,7 @@ export const session = (() => {
     theme.check();
     comment.renderLoading();
 
-    if (!table.has('token') || JSON.parse(atob(table.get('token')?.split('.')[1])).exp < now) {
+    if (table.get('token')?.split('.').length !== 3 || JSON.parse(atob(table.get('token')?.split('.')[1])).exp < now) {
         (new bootstrap.Modal('#loginModal')).show();
     } else {
         user.getUserDetail();

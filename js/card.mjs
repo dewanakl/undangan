@@ -8,6 +8,7 @@ export const card = (() => {
     const user = storage('user');
     const owns = storage('owns');
     const likes = storage('likes');
+    const config = storage('config');
     const tracker = storage('tracker');
     const session = storage('session');
 
@@ -47,14 +48,13 @@ export const card = (() => {
         return `
         <div class="d-flex flex-wrap justify-content-between align-items-center" id="button-${comment.uuid}">
             <div class="d-flex flex-wrap justify-content-start align-items-center">
-                <button style="font-size: 0.8rem;" onclick="comment.reply(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0">Reply</button>
+                ${config.get('can_reply') == true || config.get('can_reply') === undefined ? `<button style="font-size: 0.8rem;" onclick="comment.reply(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Reply</button>` : ''}
+                ${owns.has(comment.uuid) && (config.get('can_edit') == true || config.get('can_edit') === undefined)
+                ? `<button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Edit</button>` : ''}
 
-                ${owns.has(comment.uuid)
-                ? `<button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 ms-1">Edit</button>` : ''}
-
-                ${session.get('token')
-                ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" data-own="${comment.own}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 ms-1">Delete</button>`
-                : (owns.has(comment.uuid) ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 ms-1">Delete</button>` : '')}
+                ${session.get('token').split('.').length === 3
+                ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" data-own="${comment.own}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0">Delete</button>`
+                : (owns.has(comment.uuid) && (config.get('can_delete') == true || config.get('can_delete') === undefined) ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0">Delete</button>` : '')}
             </div>
             <div class="ms-auto">
                 <button style="font-size: 0.8rem;" onclick="like.like(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-2 p-0">
@@ -68,26 +68,15 @@ export const card = (() => {
     };
 
     const renderTracker = (comment) => {
-        if (comment.ip === null || comment.user_agent === null || comment.is_admin) {
+        if (comment.ip === undefined || comment.user_agent === undefined || comment.is_admin) {
             return '';
         }
 
-        if (!tracker.has(comment.ip)) {
-            fetch(`https://ipapi.co/${comment.ip}/city`)
-                .then((res) => res.text())
-                .then((res) => {
-                    if (res == 'Undefined') {
-                        res = 'Localhost';
-                    }
-
-                    tracker.set(comment.ip, res);
-                    document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + ' ' + res}`;
-                })
-                .catch((err) => console.error(err));
-        }
-
-        return `<p class="text-${theme.isDarkMode('light', 'dark')} my-1 mx-0 p-0" style="font-size: 0.8rem;" id="ip-${comment.uuid}"><i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + (tracker.has(comment.ip) ? ' ' + tracker.get(comment.ip) : `<span class="ms-2 mb-1 placeholder col-2 rounded-3"></span>`)}</p>
-        <p class="text-${theme.isDarkMode('light', 'dark')} my-1 mx-0 p-0" style="font-size: 0.8rem;"><i class="fa-solid fa-mobile-screen-button me-1"></i>${util.escapeHtml(comment.user_agent)}</p>`;
+        return `
+        <div class="p-2 my-2 rounded-3 border">
+        <p class="text-${theme.isDarkMode('light', 'dark')} mb-1 mx-0 p-0" style="font-size: 0.7rem;" id="ip-${comment.uuid}"><i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + (tracker.has(comment.ip) ? ' ' + tracker.get(comment.ip) : `<span class="ms-2 mb-1 placeholder col-2 rounded-3"></span>`)}</p>
+        <p class="text-${theme.isDarkMode('light', 'dark')} m-0 p-0" style="font-size: 0.7rem;"><i class="fa-solid fa-mobile-screen-button me-1"></i>${util.escapeHtml(comment.user_agent)}</p>
+        </div>`;
     };
 
     const renderHeader = (is_parent) => {
@@ -100,7 +89,7 @@ export const card = (() => {
 
     const renderTitle = (comment, is_parent) => {
         if (comment.is_admin) {
-            return `<strong class="me-1">${util.escapeHtml(user.get('name'))}</strong><i class="fa-solid fa-certificate text-primary"></i>`;
+            return `<strong class="me-1">${util.escapeHtml(user.get('name') ?? config.get('name'))}</strong><i class="fa-solid fa-certificate text-primary"></i>`;
         }
 
         if (is_parent) {
@@ -130,7 +119,28 @@ export const card = (() => {
         </div>`;
     };
 
+    const fetchTracker = (comment) => {
+        comment.comments.map((c) => fetchTracker(c));
+
+        if (comment.ip === undefined || tracker.has(comment.ip) || comment.user_agent === undefined || comment.is_admin) {
+            return;
+        }
+
+        fetch(`https://ipapi.co/${comment.ip}/city`)
+            .then((res) => res.text())
+            .then((res) => {
+                if (res == 'Undefined') {
+                    res = 'Localhost';
+                }
+
+                tracker.set(comment.ip, res);
+                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + ' ' + res}`;
+            })
+            .catch((err) => console.error(err));
+    };
+
     return {
+        fetchTracker,
         renderLoading,
         renderContent,
         convertMarkdownToHTML

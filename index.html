@@ -65,17 +65,17 @@
 
     <!-- App -->
     <link rel="stylesheet" href="./css/app.css">
-    <script src="./js/app.js" defer></script>
+    <script src="./js/app.mjs" type="module" defer></script>
 </head>
 
-<body data-email="user@example.com" data-password="12345678" data-url="https://api.ulems.my.id/" style="overflow-y: hidden;">
+<body data-key="33053b5b203160faac438b886ba7129d5330ab2ea9d0da10c8" data-url="http://localhost:8000/" style="overflow-y: hidden;">
 
     <!-- Navbar Bottom -->
-    <nav class="navbar navbar-dark bg-dark navbar-expand fixed-bottom rounded-top-4 p-0" id="navbar-menus">
+    <nav class="navbar navbar-dark bg-dark navbar-expand fixed-bottom rounded-top-4 p-0" id="navbar-menu">
         <ul class="navbar-nav nav-justified w-100 align-items-center">
             <li class="nav-item">
                 <a class="nav-link" href="#home">
-                    <i class="fas fa-home"></i>
+                    <i class="fa-solid fa-house"></i>
                     <span class="d-block" style="font-size: 0.7rem;">Home</span>
                 </a>
             </li>
@@ -107,7 +107,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="text-light" data-bs-spy="scroll" data-bs-target="#navbar-menus" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
+    <main class="text-light" data-bs-spy="scroll" data-bs-target="#navbar-menu" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
 
         <!-- Home -->
         <section class="container" id="home">
@@ -247,7 +247,7 @@
                     (kebesaran Allah) bagi kaum yang berpikir.
                 </p>
 
-                <span class="mb-0"><strong>QS. Ar-Rum Ayat 21</strong></span>
+                <p class="m-0 fw-bold">QS. Ar-Rum Ayat 21</p>
             </div>
         </div>
 
@@ -275,18 +275,18 @@
                     <div class="border rounded-pill shadow py-2 px-4 mx-2 mb-4">
 
                         <!-- Ganti waktunya pada data-waktu (sesuai format tersebut) -->
-                        <div class="row justify-content-center" data-waktu="2024-01-01 00:00:00" id="tampilan-waktu">
+                        <div class="row justify-content-center" data-time="2024-01-01 00:00:00" id="count-down">
                             <div class="col-3 p-1">
-                                <h2 class="d-inline m-0 p-0" id="hari">0</h2><small class="ms-1 me-0 my-0 p-0 d-inline">Hari</small>
+                                <h2 class="d-inline m-0 p-0" id="day">0</h2><small class="ms-1 me-0 my-0 p-0 d-inline">Hari</small>
                             </div>
                             <div class="col-3 p-1">
-                                <h2 class="d-inline m-0 p-0" id="jam">0</h2><small class="ms-1 me-0 my-0 p-0 d-inline">Jam</small>
+                                <h2 class="d-inline m-0 p-0" id="hour">0</h2><small class="ms-1 me-0 my-0 p-0 d-inline">Jam</small>
                             </div>
                             <div class="col-3 p-1">
-                                <h2 class="d-inline m-0 p-0" id="menit">0</h2><small class="ms-1 me-0 my-0 p-0 d-inline">Menit</small>
+                                <h2 class="d-inline m-0 p-0" id="minute">0</h2><small class="ms-1 me-0 my-0 p-0 d-inline">Menit</small>
                             </div>
                             <div class="col-3 p-1">
-                                <h2 class="d-inline m-0 p-0" id="detik">0</h2><small class="ms-1 me-0 my-0 p-0 d-inline">Detik</small>
+                                <h2 class="d-inline m-0 p-0" id="second">0</h2><small class="ms-1 me-0 my-0 p-0 d-inline">Detik</small>
                             </div>
                         </div>
                     </div>
@@ -346,11 +346,11 @@
 
                     <h1 class="font-esthetic text-center py-3" data-aos="fade-down" data-aos-duration="1500" style="font-size: 2rem;">Galeri</h1>
 
-                    <div id="carousel-foto-satu" data-aos="fade-up" data-aos-duration="1500" class="carousel slide" data-bs-ride="carousel">
+                    <div id="carousel-image-one" data-aos="fade-up" data-aos-duration="1500" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carousel-foto-satu" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carousel-foto-satu" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carousel-foto-satu" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            <button type="button" data-bs-target="#carousel-image-one" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carousel-image-one" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carousel-image-one" data-bs-slide-to="2" aria-label="Slide 3"></button>
                         </div>
 
                         <div class="carousel-inner rounded-4">
@@ -365,22 +365,22 @@
                             </div>
                         </div>
 
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-foto-satu" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-image-one" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
 
-                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-foto-satu" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-image-one" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
                     </div>
 
-                    <div id="carousel-foto-dua" data-aos="fade-up" data-aos-duration="1500" class="carousel slide mt-4" data-bs-ride="carousel">
+                    <div id="carousel-image-two" data-aos="fade-up" data-aos-duration="1500" class="carousel slide mt-4" data-bs-ride="carousel">
                         <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carousel-foto-dua" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carousel-foto-dua" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carousel-foto-dua" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            <button type="button" data-bs-target="#carousel-image-two" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carousel-image-two" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carousel-image-two" data-bs-slide-to="2" aria-label="Slide 3"></button>
                         </div>
 
                         <div class="carousel-inner rounded-4">
@@ -395,12 +395,12 @@
                             </div>
                         </div>
 
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-foto-dua" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-image-two" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
 
-                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-foto-dua" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-image-two" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -414,7 +414,7 @@
             <path fill="#111111" fill-opacity="1" d="M0,96L30,106.7C60,117,120,139,180,154.7C240,171,300,181,360,186.7C420,192,480,192,540,181.3C600,171,660,149,720,154.7C780,160,840,192,900,208C960,224,1020,224,1080,208C1140,192,1200,160,1260,138.7C1320,117,1380,107,1410,101.3L1440,96L1440,0L1410,0C1380,0,1320,0,1260,0C1200,0,1140,0,1080,0C1020,0,960,0,900,0C840,0,780,0,720,0C660,0,600,0,540,0C480,0,420,0,360,0C300,0,240,0,180,0C120,0,60,0,30,0L0,0Z"></path>
         </svg>
 
-        <!-- Hadiah -->
+        <!-- Love Gift -->
         <div class="container">
             <div class="py-4">
 
@@ -436,8 +436,8 @@
                                 <p class="card-text mt-3 mb-0" style="font-size: 0.9rem;">No. Rekening 123456789</p>
                                 <p class="card-text" style="font-size: 0.9rem;">a.n Lorem ipsum dolor</p>
 
-                                <!-- Ubah juga data-nomer sesuai dengan no rekening -->
-                                <button class="btn btn-light btn-sm rounded-3" data-nomer="123456789" onclick="util.salin(this)" autofocus>Salin No. Rekening</button>
+                                <!-- Ubah juga data-copy sesuai dengan no rekening -->
+                                <button class="btn btn-light btn-sm rounded-3" data-copy="123456789" onclick="util.copy(this, 'Tersalin')" autofocus>Salin No. Rekening</button>
                             </div>
 
                             <div class="col-5 card-body border rounded-4 shadow p-3 m-3" data-aos="fade-down" data-aos-duration="1500">
@@ -446,8 +446,8 @@
                                 <p class="card-text mt-3 mb-0" style="font-size: 0.9rem;">No. Rekening 123456789</p>
                                 <p class="card-text" style="font-size: 0.9rem;">a.n Lorem ipsum dolor</p>
 
-                                <!-- Ubah juga data-nomer sesuai dengan no rekening -->
-                                <button class="btn btn-light btn-sm rounded-3" data-nomer="123456789" onclick="util.salin(this)" autofocus>Salin No. Rekening</button>
+                                <!-- Ubah juga data-copy sesuai dengan no rekening -->
+                                <button class="btn btn-light btn-sm rounded-3" data-copy="123456789" onclick="util.copy(this, 'Tersalin')" autofocus>Salin No. Rekening</button>
                             </div>
                         </div>
                     </div>
@@ -455,7 +455,7 @@
             </div>
         </div>
 
-        <!-- Ucapan -->
+        <!-- Comments -->
         <section class="m-0 p-0" id="ucapan">
             <div class="container">
 
@@ -464,13 +464,13 @@
                     <div class="mb-1" id="balasan"></div>
 
                     <div class="mb-3">
-                        <label for="form-nama" class="form-label">Nama</label>
-                        <input type="text" class="form-control shadow-sm" id="form-nama" placeholder="Isikan Nama Anda">
+                        <label for="form-name" class="form-label">Nama</label>
+                        <input type="text" class="form-control shadow-sm" id="form-name" placeholder="Isikan Nama Anda">
                     </div>
 
                     <div class="mb-3">
-                        <label for="form-kehadiran" class="form-label" id="label-kehadiran">Kehadiran</label>
-                        <select class="form-select shadow-sm" id="form-kehadiran">
+                        <label for="form-presence" class="form-label" id="label-kehadiran">Kehadiran</label>
+                        <select class="form-select shadow-sm" id="form-presence">
                             <option value="0" selected>Konfirmasi Kehadiran</option>
                             <option value="1">Hadir</option>
                             <option value="2">Berhalangan</option>
@@ -478,46 +478,37 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="form-pesan" class="form-label">Ucapan & Doa</label>
-                        <div id="alertDiv" class="alert alert-info alert-dismissible fade show" role="alert">
+                        <label for="form-comment" class="form-label">Ucapan & Doa</label>
+                        <div id="information" class="alert alert-info alert-dismissible fade show" role="alert">
                             <p style="font-size: 1.5rem;">Bestieee!!!</p>
                             <p class="m-0">Sekarang bisa format text seperti whatsapp lohh... cobainn sekaranggg, makaciwww bestieee</p>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="localStorage.setItem('alertClosed', 'true'); document.getElementById('alertDiv').style.display = 'none';"></button>
                         </div>
-                        <textarea class="form-control shadow-sm" id="form-pesan" rows="4" placeholder="Tulis Ucapan & Doa"></textarea>
+                        <textarea class="form-control shadow-sm" id="form-comment" rows="4" placeholder="Tulis Ucapan & Doa"></textarea>
                     </div>
 
-                    <div class="d-flex">
-                        <button class="flex-fill btn btn-danger btn-sm rounded-3 shadow m-1" style="display: none;" onclick="comment.batal()" id="batal">
-                            Batal<i class="fa-solid fa-xmark ms-1"></i>
-                        </button>
-                        <button class="flex-fill btn btn-success btn-sm rounded-3 shadow m-1" style="display: none;" onclick="comment.balas()" id="balas">
-                            Balas<i class="fa-solid fa-reply ms-1"></i>
-                        </button>
-                        <button class="flex-fill btn btn-warning btn-sm rounded-3 shadow m-1" style="display: none;" onclick="comment.ubah()" id="ubah">
-                            Ubah<i class="fa-solid fa-pen-to-square ms-1"></i>
-                        </button>
-                        <button class="flex-fill btn btn-primary btn-sm rounded-3 shadow m-1" onclick="comment.kirim()" id="kirim">
-                            Kirim<i class="fa-solid fa-paper-plane ms-1"></i>
+                    <div class="d-grid">
+                        <button class="btn btn-primary btn-sm rounded-3 shadow m-1" onclick="comment.send(this)">
+                            <i class="fa-solid fa-paper-plane me-1"></i>Send
                         </button>
                     </div>
                 </div>
 
-                <div class="rounded-4 mt-4 mb-2" id="daftar-ucapan"></div>
+                <div class="mt-4 mb-2" id="comments"></div>
 
                 <nav class="d-flex justify-content-center mb-0">
                     <ul class="pagination mb-0">
                         <li class="page-item disabled" id="previous">
-                            <button class="page-link" onclick="pagination.previous(this)" aria-label="Sebelumnya">
-                                <i class="fa-solid fa-circle-left me-1"></i>Sebelumnya
+                            <button class="page-link" onclick="pagination.previous(this)">
+                                <i class="fa-solid fa-circle-left me-1"></i>Previous
                             </button>
                         </li>
                         <li class="page-item disabled">
                             <span class="page-link text-light" id="page">1</span>
                         </li>
                         <li class="page-item" id="next">
-                            <button class="page-link" onclick="pagination.next(this)" aria-label="Selanjutnya">
-                                Selanjutnya<i class="fa-solid fa-circle-right ms-1"></i>
+                            <button class="page-link" onclick="pagination.next(this)">
+                                Next<i class="fa-solid fa-circle-right ms-1"></i>
                             </button>
                         </li>
                     </ul>
@@ -542,7 +533,7 @@
                 </p>
 
                 <h1 class="font-esthetic" data-aos="fade-up" data-aos-duration="2000">Wassalamualaikum Warahmatullahi Wabarakatuh</h1>
-                <h1 class="font-arabic py-4 px-2" data-aos="fade-up" data-aos-duration="2000" style="font-size: 2rem">اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَۙ</h1>
+                <h1 class="font-arabic py-4 px-2" data-aos="fade-up" data-aos-duration="2000" style="font-size: 2rem;">اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَۙ</h1>
 
                 <hr class="mt-3 mb-2">
 
@@ -555,6 +546,8 @@
                     <div class="col-auto">
                         <small>
                             <i class="fa-brands fa-github me-1"></i><a target="_blank" href="https://github.com/dewanakl/undangan">dewanakl</a>
+                        </small>
+                        <small>
                             <i class="fa-brands fa-youtube me-1"></i><a target="_blank" href="https://www.youtube.com/watch?v=1WCIrw85zbQ">I Wanna Grow Old with You</a>
                         </small>
                     </div>
@@ -566,56 +559,51 @@
     <!-- Welcome Page -->
     <div class="loading-page" id="welcome" style="opacity: 1;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100vh !important;">
-
             <div class="text-center">
                 <h1 class="font-esthetic mb-4" style="font-size: 2.5rem;">The Wedding Of</h1>
 
                 <div class="img-crop border border-3 border-light shadow mb-4 mx-auto">
-                    <img src="./assets/images/bg.jpeg" alt="bg">
+                    <img src="./assets/images/bg.jpeg" alt="background">
                 </div>
 
                 <h1 class="font-esthetic my-4" style="font-size: 2.5rem;">Wahyu & Riski</h1>
-                <div id="nama-tamu"></div>
+                <div id="guest-name"></div>
 
-                <button type="button" class="btn btn-light shadow rounded-4 mt-4" onclick="util.buka(this)">
-                    <i class="fa-solid fa-envelope-open me-2"></i>Buka Undangan
+                <button type="button" class="btn btn-light shadow rounded-4 mt-4" onclick="util.open(this)">
+                    <i class="fa-solid fa-envelope-open me-2"></i>Open Invitation
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Audio Button -->
-    <button type="button" id="tombol-musik" style="display: none;" class="btn btn-light btn-sm rounded-circle btn-music" onclick="util.music(this)" data-status="true" data-url="./assets/music/sound.mp3">
+    <button type="button" id="button-music" style="display: none;" class="btn btn-light btn-sm rounded-circle btn-music" onclick="audio.button(this)" data-status="true" data-url="./assets/music/sound.mp3">
         <i class="fa-solid fa-circle-pause spin-button"></i>
     </button>
 
     <!-- Loading page -->
     <div class="loading-page" id="loading" style="opacity: 1;">
         <div class="d-flex justify-content-center align-items-center" style="height: 100vh !important;">
-            <div class="text-center w-75">
+            <div class="w-75 text-center">
                 <img class="img-fluid mb-3" src="./assets/images/icon-192x192.png" alt="icon" style="width: 3.5rem;">
                 <div class="progress" role="progressbar" style="height: 0.5rem;">
-                    <div class="progress-bar" id="bar" style="width: 0%"></div>
+                    <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
                 </div>
                 <small class="mt-1 text-light" id="progress-info" style="display: none;">Loading asset</small>
-
-                <script>
-                    document.getElementById('progress-info').style.display = 'block';
-                </script>
                 <noscript>
-                    <small class="mt-1 text-danger">Maaf, undangan ini perlu javascript</small>
+                    <small class="mt-1 text-danger">Sorry, this invitation requires javascript to work</small>
                 </noscript>
             </div>
         </div>
     </div>
 
-    <!-- Modal Foto Large -->
+    <!-- Modal Image Large -->
     <div class="modal fade" id="modal-image" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
+            <div class="modal-content rounded-4">
                 <div class="modal-body p-0">
                     <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
-                        <img src="./assets/images/bg.jpeg" class="w-100" alt="foto" id="show-modal-image">
+                        <img src="./assets/images/bg.jpeg" class="w-100" alt="image" id="show-modal-image">
                     </div>
                 </div>
             </div>
