@@ -169,12 +169,14 @@ export const util = (() => {
 
     const storeConfig = async (token) => {
         const config = storage('config');
-        await request(HTTP_GET, '/api/config')
+        return await request(HTTP_GET, '/api/config')
             .token(token)
             .then((res) => {
                 for (let [key, value] of Object.entries(res.data)) {
                     config.set(key, value);
                 }
+
+                return res.code;
             });
     };
 
@@ -197,8 +199,10 @@ export const util = (() => {
 
         const token = document.querySelector('body').getAttribute('data-key');
         storage('session').set('token', token);
-        await storeConfig(token);
-        await comment.comment();
+        const status = await storeConfig(token);
+        if (status === 200) {
+            await comment.comment();
+        }
     };
 
     return {
