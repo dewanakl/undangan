@@ -28,10 +28,10 @@ export const user = (() => {
 
     const getStatUser = () => {
         request(HTTP_GET, '/api/stats').token(token.get('token')).then((res) => {
-            document.getElementById('count-comment').innerHTML = res.data.comments;
-            document.getElementById('count-like').innerHTML = res.data.likes;
-            document.getElementById('count-present').innerHTML = res.data.present;
-            document.getElementById('count-absent').innerHTML = res.data.absent;
+            document.getElementById('count-comment').innerHTML = res.data.comments.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            document.getElementById('count-like').innerHTML = res.data.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            document.getElementById('count-present').innerHTML = res.data.present.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            document.getElementById('count-absent').innerHTML = res.data.absent.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         });
     };
 
