@@ -40,7 +40,7 @@ export const user = (() => {
 
         const label = document.querySelector(`label[for="${checkbox.id}"]`);
         const tmp = label.innerHTML;
-        label.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+        label.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem"></div> ${tmp}`;
 
         return {
             restore: () => {
@@ -53,7 +53,7 @@ export const user = (() => {
     const addLoadingButton = (button) => {
         button.disabled = true;
         const tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem" role="status"></div> ${tmp}`;
+        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem"></div> ${tmp}`;
 
         return {
             restore: () => {
@@ -153,15 +153,7 @@ export const user = (() => {
                 old_password: old.value,
                 new_password: newest.value,
             }).
-            then((res) => {
-                if (res.data.status) {
-                    old.value = null;
-                    newest.value = null;
-                    alert('Success change password');
-                }
-
-                return res.data.status;
-            });
+            then((res) => res.data.status);
 
         btn.restore();
 
@@ -169,7 +161,10 @@ export const user = (() => {
         newest.disabled = false;
 
         if (result) {
+            old.value = null;
+            newest.value = null;
             button.disabled = true;
+            alert('Success change password');
         }
     };
 
@@ -190,21 +185,16 @@ export const user = (() => {
             body({
                 name: name.value,
             }).
-            then((res) => {
-                if (res.data.status) {
-                    getUserDetail();
-                    alert('Success change name');
-                }
-
-                return res.data.status;
-            });
+            then((res) => res.data.status);
 
         name.disabled = false;
 
         btn.restore();
 
         if (result) {
+            getUserDetail();
             button.disabled = true;
+            alert('Success change name');
         }
     };
 

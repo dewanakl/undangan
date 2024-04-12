@@ -6,13 +6,12 @@ import { request, HTTP_POST } from './request.mjs';
 
 export const session = (() => {
 
-    const table = storage('session');
-    const now = (new Date()).getTime() / 1000;
+    const session = storage('session');
 
     theme.check();
     comment.renderLoading();
 
-    if (table.get('token')?.split('.').length !== 3 || JSON.parse(atob(table.get('token')?.split('.')[1])).exp < now) {
+    if (session.get('token')?.split('.').length !== 3 || JSON.parse(atob(session.get('token').split('.')[1])).exp < (new Date()).getTime() / 1000) {
         (new bootstrap.Modal('#loginModal')).show();
     } else {
         user.getUserDetail();
@@ -31,8 +30,8 @@ export const session = (() => {
                 password: document.getElementById('loginPassword').value
             })
             .then((res) => {
-                if (res.code == 200) {
-                    table.set('token', res.data.token);
+                if (res.code === 200) {
+                    session.set('token', res.data.token);
                 }
 
                 return res.code === 200;
@@ -54,7 +53,7 @@ export const session = (() => {
             return;
         }
 
-        table.unset('token');
+        session.unset('token');
         (new bootstrap.Modal('#loginModal')).show();
     };
 

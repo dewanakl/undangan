@@ -18,19 +18,16 @@ export const audio = (() => {
         return audio;
     };
 
-    const play = () => getAudio().play();
-    const pause = () => getAudio().pause();
-
     const button = (button) => {
         if (button.getAttribute('data-status') !== 'true') {
             button.setAttribute('data-status', 'true');
-            play();
+            getAudio().play();
             button.innerHTML = '<i class="fa-solid fa-circle-pause spin-button"></i>';
             return;
         }
 
         button.setAttribute('data-status', 'false');
-        pause();
+        getAudio().pause();
         button.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
     };
 
@@ -39,8 +36,6 @@ export const audio = (() => {
     };
 
     return {
-        play,
-        pause,
         button,
         showButton,
     };

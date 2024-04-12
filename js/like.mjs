@@ -7,13 +7,13 @@ export const like = (() => {
     const session = storage('session');
 
     const like = async (button) => {
-        let id = button.getAttribute('data-uuid');
+        const id = button.getAttribute('data-uuid');
 
-        let heart = button.firstElementChild.lastElementChild;
-        let info = button.firstElementChild.firstElementChild;
+        const heart = button.firstElementChild.lastElementChild;
+        const info = button.firstElementChild.firstElementChild;
 
         button.disabled = true;
-        let tmp = info.innerText;
+        const tmp = info.innerText;
         info.innerText = 'Loading..';
 
         if (likes.has(id)) {
@@ -48,7 +48,6 @@ export const like = (() => {
                     info.setAttribute('data-count-like', (parseInt(info.getAttribute('data-count-like')) + 1).toString());
                 }
             });
-
 
         info.innerText = info.getAttribute('data-count-like') + ' ' + tmp.split(' ')[1];
         button.disabled = false;

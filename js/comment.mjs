@@ -17,7 +17,7 @@ export const comment = (() => {
 
         const id = button.getAttribute('data-uuid');
 
-        if (session.get('token').split('.').length === 3) {
+        if (session.get('token')?.split('.').length === 3) {
             owns.set(id, button.getAttribute('data-own'));
         }
 
@@ -92,7 +92,7 @@ export const comment = (() => {
         const id = button.getAttribute('data-uuid');
 
         const name = document.getElementById('form-name');
-        if (name && name.value.length == 0) {
+        if (name.value.length == 0) {
             alert('Please fill name');
             return;
         }
@@ -121,7 +121,7 @@ export const comment = (() => {
             .token(session.get('token'))
             .body({
                 id: id,
-                name: name?.value ?? '---',
+                name: name.value,
                 presence: presence ? presence.value === "1" : true,
                 comment: form.value
             })

@@ -44,25 +44,44 @@ export const card = (() => {
         return input;
     };
 
+    const renderLike = (comment) => {
+        return `
+        <button style="font-size: 0.8rem;" onclick="like.like(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-2 p-0">
+            <div class="d-flex justify-content-start align-items-center">
+                <p class="my-0 mx-1" data-count-like="${comment.like.love}">${comment.like.love} like</p>
+                <i class="me-1 ${likes.has(comment.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
+            </div>
+        </button>`;
+    };
+
+    const renderAction = (comment) => {
+        let action = '';
+
+        if (config.get('can_reply') == true || config.get('can_reply') === undefined) {
+            action += `<button style="font-size: 0.8rem;" onclick="comment.reply(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Reply</button>`;
+        }
+
+        if (owns.has(comment.uuid) && (config.get('can_edit') == true || config.get('can_edit') === undefined)) {
+            action += `<button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Edit</button>`;
+        }
+
+        if (session.get('token')?.split('.').length === 3) {
+            action += `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0" data-own="${comment.own}">Delete</button>`;
+        } else if (owns.has(comment.uuid) && (config.get('can_delete') == true || config.get('can_delete') === undefined)) {
+            action += `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0">Delete</button>`;
+        }
+
+        return action;
+    };
+
     const renderButton = (comment) => {
         return `
         <div class="d-flex flex-wrap justify-content-between align-items-center" id="button-${comment.uuid}">
             <div class="d-flex flex-wrap justify-content-start align-items-center">
-                ${config.get('can_reply') == true || config.get('can_reply') === undefined ? `<button style="font-size: 0.8rem;" onclick="comment.reply(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Reply</button>` : ''}
-                ${owns.has(comment.uuid) && (config.get('can_edit') == true || config.get('can_edit') === undefined)
-                ? `<button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Edit</button>` : ''}
-
-                ${session.get('token').split('.').length === 3
-                ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" data-own="${comment.own}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0">Delete</button>`
-                : (owns.has(comment.uuid) && (config.get('can_delete') == true || config.get('can_delete') === undefined) ? `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0">Delete</button>` : '')}
+                ${renderAction(comment)}
             </div>
             <div class="ms-auto">
-                <button style="font-size: 0.8rem;" onclick="like.like(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-2 p-0">
-                    <div class="d-flex justify-content-start align-items-center">
-                        <p class="my-0 mx-1" data-count-like="${comment.like.love}">${comment.like.love} like</p>
-                        <i class="py-1 me-1 px-0 pb-0 ${likes.has(comment.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
-                    </div>
-                </button>
+                ${renderLike(comment)}
             </div>
         </div>`;
     };
@@ -74,8 +93,8 @@ export const card = (() => {
 
         return `
         <div class="p-2 my-2 rounded-3 border">
-        <p class="text-${theme.isDarkMode('light', 'dark')} mb-1 mx-0 p-0" style="font-size: 0.7rem;" id="ip-${comment.uuid}"><i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + (tracker.has(comment.ip) ? ' ' + tracker.get(comment.ip) : `<span class="ms-2 mb-1 placeholder col-2 rounded-3"></span>`)}</p>
-        <p class="text-${theme.isDarkMode('light', 'dark')} m-0 p-0" style="font-size: 0.7rem;"><i class="fa-solid fa-mobile-screen-button me-1"></i>${util.escapeHtml(comment.user_agent)}</p>
+            <p class="text-${theme.isDarkMode('light', 'dark')} mb-1 mx-0 mt-0 p-0" style="font-size: 0.7rem;" id="ip-${comment.uuid}"><i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} ${tracker.has(comment.ip) ? `<strong>${tracker.get(comment.ip)}</strong>` : `<span class="mb-1 placeholder col-2 rounded-3"></span>`}</p>
+            <p class="text-${theme.isDarkMode('light', 'dark')} m-0 p-0" style="font-size: 0.7rem;"><i class="fa-solid fa-mobile-screen-button me-1"></i>${util.escapeHtml(comment.user_agent)}</p>
         </div>`;
     };
 
@@ -109,7 +128,7 @@ export const card = (() => {
         <p class="text-${theme.isDarkMode('light', 'dark')} mt-0 mb-1 mx-0 p-0" style="white-space: pre-wrap !important" id="content-${comment.uuid}">${convertMarkdownToHTML(util.escapeHtml(comment.comment))}</p>`;
     };
 
-    const renderContent = (comment, is_parent = true) => {
+    const renderContent = (comment, is_parent) => {
         return `
         <div ${renderHeader(is_parent)} id="${comment.uuid}">
             ${renderBody(comment, is_parent)}
@@ -122,7 +141,7 @@ export const card = (() => {
     const fetchTracker = (comment) => {
         comment.comments.map((c) => fetchTracker(c));
 
-        if (comment.ip === undefined || tracker.has(comment.ip) || comment.user_agent === undefined || comment.is_admin) {
+        if (comment.ip === undefined || comment.user_agent === undefined || comment.is_admin || tracker.has(comment.ip)) {
             return;
         }
 
@@ -133,8 +152,8 @@ export const card = (() => {
                     res = 'Localhost';
                 }
 
-                tracker.set(comment.ip, res);
-                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip) + ' ' + res}`;
+                tracker.set(comment.ip, util.escapeHtml(res));
+                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${util.escapeHtml(res)}</strong>`;
             })
             .catch((err) => console.error(err));
     };
@@ -142,7 +161,7 @@ export const card = (() => {
     return {
         fetchTracker,
         renderLoading,
-        renderContent,
+        renderContent: (comment) => renderContent(comment, true),
         convertMarkdownToHTML
     }
 })();

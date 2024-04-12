@@ -103,7 +103,13 @@ export const theme = (() => {
                 toggle.checked = true;
             }
         } else {
+            onLight();
+            document.documentElement.setAttribute(THEME_BS_DATA, THEME_LIGHT);
             theme.set('active', THEME_LIGHT);
+            const toggle = document.getElementById('darkMode');
+            if (toggle) {
+                toggle.checked = false;
+            }
         }
     };
 
