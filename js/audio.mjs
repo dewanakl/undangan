@@ -36,6 +36,7 @@ export const audio = (() => {
     };
 
     return {
+        play: () => getAudio().play(),
         button,
         showButton,
     };
