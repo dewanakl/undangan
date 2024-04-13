@@ -145,15 +145,13 @@ export const card = (() => {
             return;
         }
 
-        fetch(`https://ipapi.co/${comment.ip}/city`)
-            .then((res) => res.text())
+        fetch(`https://freeipapi.com/api/json/${comment.ip}`)
+            .then((res) => res.json())
             .then((res) => {
-                if (res == 'Undefined') {
-                    res = 'Localhost';
-                }
+                const result = res.cityName + ' - ' + res.regionName;
 
-                tracker.set(comment.ip, util.escapeHtml(res));
-                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${util.escapeHtml(res)}</strong>`;
+                tracker.set(comment.ip, result);
+                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${result}</strong>`;
             })
             .catch((err) => console.error(err));
     };
