@@ -35,11 +35,11 @@ export const util = (() => {
     const disableButton = (button) => {
 
         button.disabled = true;
-        let tmp = button.innerText;
-        button.innerText = 'Loading..';
+        let tmp = button.innerHTML;
+        button.innerHTML = 'Loading..';
 
         const restore = () => {
-            button.innerText = tmp;
+            button.innerHTML = tmp;
             button.disabled = false;
         };
 
