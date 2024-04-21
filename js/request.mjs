@@ -51,7 +51,7 @@ export const request = (method, path) => {
                 return this;
             }
 
-            req.headers.append('X_ACCESS_KEY', token);
+            req.headers.append('x-access-key', token);
             return this;
         },
         body(body) {
