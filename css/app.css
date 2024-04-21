@@ -10,12 +10,10 @@ body {
 
 .font-esthetic {
     font-family: 'Sacramento', cursive !important;
-    color: #ffffff !important;
 }
 
 .font-arabic {
     font-family: 'Noto Naskh Arabic', serif !important;
-    color: #ffffff !important;
 }
 
 .img-crop {
@@ -40,12 +38,18 @@ body {
     z-index: 1055 !important;
 }
 
+.btn-theme {
+    position: fixed;
+    bottom: 15vh !important;
+    right: 2vh !important;
+    z-index: 1055 !important;
+}
+
 .loading-page {
     position: fixed;
     inset: 0 !important;
     width: 100%;
     height: 100%;
-    background-color: #111111;
     z-index: 1056 !important;
 }
 
@@ -56,7 +60,6 @@ body {
 .mouse-animation {
     padding: 0.25rem 0.625rem;
     height: 2rem;
-    border: 0.1rem solid #ffffff;
     border-radius: 1.4rem;
     opacity: 0.75;
     box-sizing: content-box;
@@ -64,6 +67,7 @@ body {
 
 @keyframes scroll {
     0% {
+        transform: translateY(1rem);
         opacity: 0;
     }
 
@@ -73,7 +77,7 @@ body {
     }
 
     100% {
-        transform: translateY(1rem);
+        transform: translateY(0);
         opacity: 0;
     }
 }
@@ -82,7 +86,7 @@ body {
     width: 0.25rem;
     height: 0.625rem;
     border-radius: 25%;
-    background-color: #ffffff;
+    background-color: #808080;
     animation-name: scroll;
     animation-duration: 2.5s;
     animation-timing-function: linear;
@@ -114,13 +118,27 @@ body {
 }
 
 .dark-section {
-    background-color: #111111 !important;
     margin-top: -0.5rem;
     margin-bottom: -0.5rem;
 }
 
 footer {
-    background-color: #111111 !important;
     margin-top: -0.5rem;
     padding-bottom: 5rem;
+}
+
+.bg-theme-light {
+    background-color: var(--bs-gray-100);
+}
+
+.bg-theme-dark {
+    background-color: var(--bs-gray-800);
+}
+
+.color-theme-white {
+    color: white;
+}
+
+.color-theme-black {
+    color: black;
 }

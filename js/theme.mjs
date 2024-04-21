@@ -9,7 +9,7 @@ export const theme = (() => {
     const theme = storage('theme');
 
     const onLight = () => {
-        const elements = document.querySelectorAll('.text-light, .btn-theme-light, .bg-dark, .bg-theme-dark, .btn-outline-light');
+        const elements = document.querySelectorAll('.text-light, .btn-theme-light, .bg-dark, .bg-black, .bg-theme-dark, .color-theme-black, .btn-outline-light');
         elements.forEach((element) => {
             if (element.classList.contains('text-light')) {
                 element.classList.remove('text-light');
@@ -26,9 +26,19 @@ export const theme = (() => {
                 element.classList.add('bg-theme-light');
             }
 
+            if (element.classList.contains('bg-black')) {
+                element.classList.remove('bg-black');
+                element.classList.add('bg-white');
+            }
+
             if (element.classList.contains('bg-theme-dark')) {
                 element.classList.remove('bg-theme-dark');
                 element.classList.add('bg-theme-light');
+            }
+
+            if (element.classList.contains('color-theme-black')) {
+                element.classList.remove('color-theme-black');
+                element.classList.add('color-theme-white');
             }
 
             if (element.classList.contains('btn-outline-light')) {
@@ -39,7 +49,7 @@ export const theme = (() => {
     };
 
     const onDark = () => {
-        const elements = document.querySelectorAll('.text-dark, .btn-theme-dark, .bg-light, .bg-theme-light, .btn-outline-dark');
+        const elements = document.querySelectorAll('.text-dark, .btn-theme-dark, .bg-light, .bg-white, .bg-theme-light, .color-theme-white, .btn-outline-dark');
         elements.forEach((element) => {
             if (element.classList.contains('text-dark')) {
                 element.classList.remove('text-dark');
@@ -56,9 +66,19 @@ export const theme = (() => {
                 element.classList.add('bg-theme-dark');
             }
 
+            if (element.classList.contains('bg-white')) {
+                element.classList.remove('bg-white');
+                element.classList.add('bg-black');
+            }
+
             if (element.classList.contains('bg-theme-light')) {
                 element.classList.remove('bg-theme-light');
                 element.classList.add('bg-theme-dark');
+            }
+
+            if (element.classList.contains('color-theme-white')) {
+                element.classList.remove('color-theme-white');
+                element.classList.add('color-theme-black');
             }
 
             if (element.classList.contains('btn-outline-dark')) {

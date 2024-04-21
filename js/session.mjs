@@ -1,3 +1,4 @@
+import { util } from './util.mjs';
 import { user } from './user.mjs';
 import { theme } from './theme.mjs';
 import { storage } from './storage.mjs';
@@ -9,9 +10,9 @@ export const session = (() => {
     const session = storage('session');
 
     theme.check();
-    comment.renderLoading();
 
     if (session.get('token')?.split('.').length !== 3 || JSON.parse(atob(session.get('token').split('.')[1])).exp < (new Date()).getTime() / 1000) {
+        comment.renderLoading();
         (new bootstrap.Modal('#loginModal')).show();
     } else {
         user.getUserDetail();
@@ -20,9 +21,8 @@ export const session = (() => {
     }
 
     const login = async (button) => {
-        button.disabled = true;
-        let tmp = button.innerHTML;
-        button.innerHTML = '<div class="spinner-border spinner-border-sm me-1" role="status"></div>Loading..';
+
+        const btn = util.disableButton(button, '<div class="spinner-border spinner-border-sm me-1" role="status"></div>Loading..');
 
         const res = await request(HTTP_POST, '/api/session')
             .body({
@@ -44,8 +44,7 @@ export const session = (() => {
             comment.comment();
         }
 
-        button.innerHTML = tmp;
-        button.disabled = false;
+        btn.restore();
     };
 
     const logout = () => {

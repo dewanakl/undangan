@@ -35,7 +35,7 @@
 
     <!-- App -->
     <link rel="stylesheet" href="./css/dashboard.css">
-    <script src="./js/dashboard.mjs" type="module"></script>
+    <script src="./js/dashboard.mjs" type="module" defer></script>
 </head>
 
 <body data-url="https://api.ulems.my.id/">
@@ -92,7 +92,7 @@
                             <hr class="my-2">
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="btn-theme-dark logout nav-link w-100 text-start fw-semibold mt-1 rounded-3" onclick="session.logout()" id="button-logout">
+                            <button class="btn-theme-dark logout nav-link w-100 text-start fw-semibold mt-1 rounded-3" onclick="session.logout()">
                                 <i class="fa-solid fa-right-from-bracket ms-3 me-2"></i>Logout
                             </button>
                         </li>
@@ -333,6 +333,7 @@
                             </div>
                         </div>
 
+                        <!-- Logout -->
                         <div class="d-md-none d-lg-none d-xl-none">
                             <div class="p-3 bg-light mb-3 rounded-4 shadow">
                                 <button type="button" class="btn btn-danger btn-sm w-100 text-center fw-semibold rounded-3" onclick="session.logout()">

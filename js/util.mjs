@@ -32,11 +32,11 @@ export const util = (() => {
             .replace(/'/g, '&#039;');
     };
 
-    const disableButton = (button) => {
+    const disableButton = (button, message = 'Loading..') => {
 
         button.disabled = true;
         let tmp = button.innerHTML;
-        button.innerHTML = 'Loading..';
+        button.innerHTML = message;
 
         const restore = () => {
             button.innerHTML = tmp;
@@ -135,11 +135,6 @@ export const util = (() => {
             matrix: [0.03333333333333333, 0, 0, 0.03333333333333333, -5.566666666666666, -5.533333333333333]
         });
 
-        confetti({
-            origin: { y: 1 },
-            zIndex: 1057
-        });
-
         (function frame() {
             const timeLeft = animationEnd - Date.now();
 
@@ -168,6 +163,8 @@ export const util = (() => {
     };
 
     const storeConfig = async (token) => {
+        storage('session').set('token', token);
+
         const config = storage('config');
         return await request(HTTP_GET, '/api/config')
             .token(token)
@@ -182,6 +179,10 @@ export const util = (() => {
 
     const open = async (button) => {
         button.disabled = true;
+        confetti({
+            origin: { y: 1 },
+            zIndex: 1057
+        });
 
         theme.check();
         AOS.init();
@@ -193,15 +194,15 @@ export const util = (() => {
         }
 
         opacity('welcome', 0.025);
-        animation();
         countDownDate();
         audio.showButton();
+        document.getElementById('button-theme').style.display = 'block';
 
         const token = document.querySelector('body').getAttribute('data-key');
-        storage('session').set('token', token);
         const status = await storeConfig(token);
         if (status === 200) {
-            await comment.comment();
+            animation();
+            comment.comment();
         }
     };
 
