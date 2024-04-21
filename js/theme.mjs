@@ -23,7 +23,7 @@ export const theme = (() => {
 
             if (element.classList.contains('bg-dark')) {
                 element.classList.remove('bg-dark');
-                element.classList.add('bg-theme-light');
+                element.classList.add('bg-light');
             }
 
             if (element.classList.contains('bg-black')) {
@@ -63,7 +63,7 @@ export const theme = (() => {
 
             if (element.classList.contains('bg-light')) {
                 element.classList.remove('bg-light');
-                element.classList.add('bg-theme-dark');
+                element.classList.add('bg-dark');
             }
 
             if (element.classList.contains('bg-white')) {
@@ -111,8 +111,12 @@ export const theme = (() => {
     };
 
     const check = () => {
-        if (!theme.has('active') && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            theme.set('active', THEME_DARK);
+        if (!theme.has('active')) {
+            theme.set('active', THEME_LIGHT);
+
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                theme.set('active', THEME_DARK);
+            }
         }
 
         if (isDarkMode()) {
