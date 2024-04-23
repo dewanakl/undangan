@@ -2,7 +2,7 @@
 
 ![Thumbnail](/assets/images/banner.png)
 ![Thumbnail2](/assets/images/banner2.png)
-![pages-build-deployment](https://github.com/dewanakl/undangan/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)
+[![pages-build-deployment](https://github.com/dewanakl/undangan/actions/workflows/pages/pages-build-deployment/badge.svg?branch=3.x)](https://github.com/dewanakl/undangan/actions/workflows/pages/pages-build-deployment)
 ![Hits](https://badge.dikit.my.id/undangan?label=hits&color=brightgreen)
 
 ## Demo
