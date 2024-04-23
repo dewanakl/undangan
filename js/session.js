@@ -1,9 +1,9 @@
-import { util } from './util.mjs';
-import { user } from './user.mjs';
-import { theme } from './theme.mjs';
-import { storage } from './storage.mjs';
-import { comment } from './comment.mjs';
-import { request, HTTP_POST } from './request.mjs';
+import { util } from './util.js';
+import { user } from './user.js';
+import { theme } from './theme.js';
+import { storage } from './storage.js';
+import { comment } from './comment.js';
+import { request, HTTP_POST } from './request.js';
 
 export const session = (() => {
 

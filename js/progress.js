@@ -1,4 +1,4 @@
-import { util } from "./util.mjs";
+import { util } from './util.js';
 
 export const progress = (() => {
 

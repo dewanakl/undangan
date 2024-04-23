@@ -1,7 +1,7 @@
-import { util } from './util.mjs';
-import { theme } from './theme.mjs';
-import { storage } from './storage.mjs';
-import { pagination } from './pagination.mjs';
+import { util } from './util.js';
+import { theme } from './theme.js';
+import { storage } from './storage.js';
+import { pagination } from './pagination.js';
 
 export const card = (() => {
 

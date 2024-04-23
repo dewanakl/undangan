@@ -1,8 +1,8 @@
-import { audio } from "./audio.mjs";
-import { theme } from "./theme.mjs";
-import { comment } from "./comment.mjs";
-import { storage } from "./storage.mjs";
-import { request, HTTP_GET } from "./request.mjs";
+import { audio } from './audio.js';
+import { theme } from './theme.js';
+import { comment } from './comment.js';
+import { storage } from './storage.js';
+import { request, HTTP_GET } from './request.js';
 
 export const util = (() => {
 

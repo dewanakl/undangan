@@ -1,6 +1,6 @@
-import { util } from './util.mjs';
-import { storage } from './storage.mjs';
-import { request, HTTP_GET, HTTP_PATCH, HTTP_PUT } from './request.mjs';
+import { util } from './util.js';
+import { storage } from './storage.js';
+import { request, HTTP_GET, HTTP_PATCH, HTTP_PUT } from './request.js';
 
 export const user = (() => {
 

@@ -1,5 +1,5 @@
-import { storage } from "./storage.mjs";
-import { request, HTTP_PATCH, HTTP_POST } from "./request.mjs";
+import { storage } from './storage.js';
+import { request, HTTP_PATCH, HTTP_POST } from './request.js';
 
 export const like = (() => {
 

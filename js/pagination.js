@@ -1,4 +1,4 @@
-import { comment } from "./comment.mjs";
+import { comment } from './comment.js';
 
 export const pagination = (() => {
 

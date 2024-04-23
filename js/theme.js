@@ -1,4 +1,4 @@
-import { storage } from "./storage.mjs";
+import { storage } from './storage.js';
 
 export const THEME_DARK = 'dark';
 export const THEME_LIGHT = 'light';

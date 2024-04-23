@@ -1,9 +1,9 @@
-import { card } from './card.mjs';
-import { util } from './util.mjs';
-import { theme } from './theme.mjs';
-import { storage } from './storage.mjs';
-import { pagination } from './pagination.mjs';
-import { request, HTTP_GET, HTTP_POST, HTTP_DELETE, HTTP_PUT } from "./request.mjs";
+import { card } from './card.js';
+import { util } from './util.js';
+import { theme } from './theme.js';
+import { storage } from './storage.js';
+import { pagination } from './pagination.js';
+import { request, HTTP_GET, HTTP_POST, HTTP_DELETE, HTTP_PUT } from './request.js';
 
 export const comment = (() => {
 
