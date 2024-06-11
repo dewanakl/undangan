@@ -184,32 +184,48 @@ export const util = (() => {
             zIndex: 1057
         });
 
-        theme.check();
-        AOS.init();
-        audio.play();
         document.querySelector('body').style.overflowY = 'scroll';
-
-        if (localStorage.getItem('alertClosed')) {
-            document.getElementById('information').style.display = 'none';
+        if (storage('information').get('info')) {
+            document.getElementById('information').remove();
         }
 
-        opacity('welcome', 0.025);
-        countDownDate();
-        audio.showButton();
-        document.getElementById('button-theme').style.display = 'block';
-
         const token = document.querySelector('body').getAttribute('data-key');
+        if (!token || token.length === 0) {
+            document.getElementById('ucapan').remove();
+            document.querySelector('a.nav-link[href="#ucapan"]').closest('li.nav-item').remove();
+        }
+
+        AOS.init();
+
+        countDownDate();
+        opacity('welcome', 0.025);
+
+        audio.play();
+        audio.showButton();
+
+        theme.check();
+        theme.showButtonChangeTheme();
+
+        if (!token || token.length === 0) {
+            return;
+        }
+
         const status = await storeConfig(token);
         if (status === 200) {
             animation();
-            comment.comment();
+            await comment.comment();
         }
+    };
+
+    const close = () => {
+        storage('information').set('info', true);
     };
 
     return {
         open,
         copy,
         show,
+        close,
         modal,
         opacity,
         animate,

@@ -137,9 +137,14 @@ export const theme = (() => {
         }
     };
 
+    const showButtonChangeTheme = () => {
+        document.getElementById('button-theme').style.display = 'block';
+    };
+
     return {
         change,
         check,
-        isDarkMode
+        isDarkMode,
+        showButtonChangeTheme
     };
 })();

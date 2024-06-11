@@ -11,11 +11,8 @@
 
 ### Deployment API
 
-- Vercel
-[https://dikit.my.id/DeploymentApiVercel](https://dikit.my.id/DeploymentApiVercel)
-
-- Hosting
-[https://dikit.my.id/DeploymentApiHosting](https://dikit.my.id/DeploymentApiHosting)
+- Presentation
+    [https://docs.google.com/presentation/d/1EY2YmWdZUI7ASoo0f2wvU7ec_Yt0uZanYa8YLbfNysk/edit](https://docs.google.com/presentation/d/1EY2YmWdZUI7ASoo0f2wvU7ec_Yt0uZanYa8YLbfNysk/edit)
 
 ### Tech stack
 

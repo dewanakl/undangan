@@ -69,6 +69,7 @@
 </head>
 
 <body data-key="bfb9cfea33ab7ae21a315fbd6f065a815d3e20ff2f007aa2ca" data-url="https://api.ulems.my.id/" style="overflow-y: hidden;">
+    <!-- If not using comments, you can remove the data-key and data-url attributes -->
 
     <!-- Navbar Bottom -->
     <nav class="navbar bg-dark navbar-expand fixed-bottom rounded-top-4 p-0" id="navbar-menu">
@@ -482,7 +483,7 @@
                         <div id="information" class="alert alert-info alert-dismissible fade show" role="alert">
                             <p style="font-size: 1.5rem;">Bestieee!!!</p>
                             <p class="m-0">Sekarang bisa format text seperti whatsapp lohh... cobainn sekaranggg, makaciwww bestieee</p>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="localStorage.setItem('alertClosed', 'true');"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="util.close()"></button>
                         </div>
                         <textarea class="form-control shadow-sm" id="form-comment" rows="4" placeholder="Tulis Ucapan & Doa"></textarea>
                     </div>
