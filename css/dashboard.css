@@ -28,7 +28,7 @@ body {
     overflow-x: hidden;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (width <= 767px) {
     html {
         scrollbar-width: none !important;
         width: 100%;

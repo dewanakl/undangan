@@ -34,10 +34,10 @@ export const card = (() => {
         if (lists.size === 0) {
             const text = theme.isDarkMode('light', 'dark');
             const data = [
-                ['\*', `<strong class="text-${text}">$1</strong>`],
-                ['\_', `<em class="text-${text}">$1</em>`],
-                ['\~', `<del class="text-${text}">$1</del>`],
-                ['\`\`\`', `<code class="font-monospace text-${text}">$1</code>`]
+                ['*', `<strong class="text-${text}">$1</strong>`],
+                ['_', `<em class="text-${text}">$1</em>`],
+                ['~', `<del class="text-${text}">$1</del>`],
+                ['```', `<code class="font-monospace text-${text}">$1</code>`]
             ];
 
             data.forEach((v) => {

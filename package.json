@@ -1,0 +1,13 @@
+{
+    "devDependencies": {
+        "eslint": "^9.5.0",
+        "htmlhint": "^1.1.4",
+        "stylelint": "^16.6.1",
+        "stylelint-config-recommended": "^14.0.0"
+    },
+    "scripts": {
+        "lint:js": "eslint js",
+        "lint:css": "stylelint css",
+        "lint:html": "htmlhint **/*.html"
+    }
+}

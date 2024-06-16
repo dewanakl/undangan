@@ -238,7 +238,7 @@ export const user = (() => {
     const copyAccessKey = async (button) => {
         try {
             await navigator.clipboard.writeText(user.get('access_key'));
-        } catch (err) {
+        } catch {
             alert('Failed to copy access key');
             return;
         }

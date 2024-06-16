@@ -1,0 +1,28 @@
+name: Code Analysis
+
+on: [push, pull_request]
+
+jobs:
+  analyze-code:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run ESLint (JavaScript)
+      run: npx eslint js
+
+    - name: Run stylelint (CSS)
+      run: npx stylelint css
+
+    - name: Run HTMLHint (HTML)
+      run: npx htmlhint "**/*.html"

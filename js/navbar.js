@@ -1,3 +1,5 @@
+import { bootstrap } from './bootstrap.js';
+
 export const navbar = (() => {
 
     const buttonNavHome = (btn) => {
