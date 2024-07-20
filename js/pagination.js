@@ -7,7 +7,7 @@ export const pagination = (() => {
     let resultData = 0;
 
     const page = document.getElementById('page');
-    const buttonPrev = document.getElementById('previous');
+    const buttonPrev = document.getElementById('prev');
     const buttonNext = document.getElementById('next');
 
     const disabledPrevious = () => {
@@ -54,7 +54,7 @@ export const pagination = (() => {
         }
     };
 
-    const previous = async (button) => {
+    const prev = async (button) => {
         if (pageNow < 0) {
             disabledPrevious();
         } else {
@@ -89,7 +89,7 @@ export const pagination = (() => {
         getNext,
         reset,
         setResultData,
-        previous,
+        prev,
         next,
     };
 })();
