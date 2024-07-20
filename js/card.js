@@ -12,6 +12,7 @@ export const card = (() => {
     const tracker = storage('tracker');
     const session = storage('session');
 
+    const showMoreComment = true;
     const lists = new Map();
 
     const renderLoading = () => {
@@ -90,6 +91,7 @@ export const card = (() => {
             <div class="d-flex flex-wrap justify-content-start align-items-center">
                 ${renderAction(comment)}
             </div>
+            ${comment.comments.length > 0 && showMoreComment ? `<a style="font-size: 0.8rem;" onclick="comment.showOrHide(this)" data-uuids="${comment.comments.map((c) => c.uuid).join(',')}" data-show="false" class="me-auto ms-1 py-0">Show replies (${comment.comments.length})</a>` : ''}
             <div class="ms-auto">
                 ${renderLike(comment)}
             </div>
@@ -116,7 +118,7 @@ export const card = (() => {
             return `class="card-body bg-theme-${btn} shadow p-3 mx-0 mt-0 mb-3 rounded-4" data-parent="true"`;
         }
 
-        return `class="card-body border-start bg-theme-${btn} py-2 ps-2 pe-0 my-2 ms-2 me-0"`;
+        return `class="${showMoreComment ? 'd-none' : ''} card-body overflow-x-scroll mw-100 border-start bg-theme-${btn} py-2 ps-2 pe-0 my-2 ms-2 me-0"`;
     };
 
     const renderTitle = (comment, is_parent) => {

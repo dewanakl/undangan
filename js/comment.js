@@ -240,6 +240,27 @@ export const comment = (() => {
             });
     };
 
+    const showOrHide = (button) => {
+        const ids = button.getAttribute('data-uuids').split(',');
+        const show = button.getAttribute('data-show') === 'true';
+
+        if (show) {
+            button.setAttribute('data-show', 'false');
+            button.innerText = 'Show replies' + ' (' + ids.length + ')';
+        } else {
+            button.setAttribute('data-show', 'true');
+            button.innerText = 'Hide replies' + ' (' + ids.length + ')';
+        }
+
+        for (const id of ids) {
+            if (!show) {
+                document.getElementById(id).classList.remove('d-none');
+            } else {
+                document.getElementById(id).classList.add('d-none');
+            }
+        }
+    };
+
     return {
         cancel,
         send,
@@ -248,6 +269,7 @@ export const comment = (() => {
         remove,
         update,
         comment,
+        showOrHide,
         renderLoading: card.renderLoading,
     }
 })();
