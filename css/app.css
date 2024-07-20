@@ -1,6 +1,14 @@
+* {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+    display: none;
+}
+
 html {
     scroll-behavior: smooth !important;
-    scrollbar-width: none !important;
 }
 
 body {

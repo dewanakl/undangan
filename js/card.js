@@ -91,7 +91,7 @@ export const card = (() => {
             <div class="d-flex flex-wrap justify-content-start align-items-center">
                 ${renderAction(comment)}
             </div>
-            ${comment.comments.length > 0 && showMoreComment ? `<a style="font-size: 0.8rem;" onclick="comment.showOrHide(this)" data-uuids="${comment.comments.map((c) => c.uuid).join(',')}" data-show="false" class="me-auto ms-1 py-0">Show replies (${comment.comments.length})</a>` : ''}
+            ${comment.comments.length > 0 && showMoreComment ? `<a style="font-size: 0.8rem;" onclick="comment.showOrHide(this)" data-uuids="${comment.comments.map((c) => c.uuid).join(',')}" data-show="false" role="button" class="me-auto ms-1 py-0">Show replies (${comment.comments.length})</a>` : ''}
             <div class="ms-auto">
                 ${renderLike(comment)}
             </div>
