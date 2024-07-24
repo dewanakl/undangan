@@ -11,8 +11,8 @@ export const card = (() => {
     const config = storage('config');
     const tracker = storage('tracker');
     const session = storage('session');
+    const showHide = storage('comment');
 
-    const showMoreComment = true;
     const lists = new Map();
 
     const renderLoading = () => {
@@ -91,7 +91,9 @@ export const card = (() => {
             <div class="d-flex flex-wrap justify-content-start align-items-center">
                 ${renderAction(comment)}
             </div>
-            ${comment.comments.length > 0 && showMoreComment ? `<a style="font-size: 0.8rem;" onclick="comment.showOrHide(this)" data-uuids="${comment.comments.map((c) => c.uuid).join(',')}" data-show="false" role="button" class="me-auto ms-1 py-0">Show replies (${comment.comments.length})</a>` : ''}
+                ${comment.comments.length > 0 ?
+                `<a style="font-size: 0.8rem;" onclick="comment.showOrHide(this)" data-uuid="${comment.uuid}" data-uuids="${comment.comments.map((c) => c.uuid).join(',')}" data-show="${showHide.get('show').includes(comment.uuid) ? 'true' : 'false'}" role="button" class="me-auto ms-1 py-0">${showHide.get('show').includes(comment.uuid) ? 'Hide replies' : `Show replies (${comment.comments.length})`}</a>` :
+                ''}
             <div class="ms-auto">
                 ${renderLike(comment)}
             </div>
@@ -111,14 +113,14 @@ export const card = (() => {
         </div>`;
     };
 
-    const renderHeader = (is_parent) => {
+    const renderHeader = (comment, is_parent) => {
         const btn = theme.isDarkMode('dark', 'light');
 
         if (is_parent) {
             return `class="card-body bg-theme-${btn} shadow p-3 mx-0 mt-0 mb-3 rounded-4" data-parent="true"`;
         }
 
-        return `class="${showMoreComment ? 'd-none' : ''} card-body overflow-x-scroll mw-100 border-start bg-theme-${btn} py-2 ps-2 pe-0 my-2 ms-2 me-0"`;
+        return `class="${!showHide.get('hidden').find((item) => item.uuid === comment.uuid)['show'] ? 'd-none' : ''} card-body overflow-x-scroll mw-100 border-start bg-theme-${btn} py-2 ps-2 pe-0 my-2 ms-2 me-0"`;
     };
 
     const renderTitle = (comment, is_parent) => {
@@ -147,8 +149,10 @@ export const card = (() => {
 
     const renderContent = (comment, is_parent) => {
         return `
-        <div ${renderHeader(is_parent)} id="${comment.uuid}">
+        <div ${renderHeader(comment, is_parent)} id="${comment.uuid}">
+            <div id="body-content-${comment.uuid}">
             ${renderBody(comment, is_parent)}
+            </div>
             ${renderTracker(comment)}
             ${renderButton(comment)}
             ${comment.comments.map((c) => renderContent(c, false)).join('')}

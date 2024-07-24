@@ -1,5 +1,6 @@
 import { card } from './card.js';
 import { util } from './util.js';
+import { like } from './like.js';
 import { theme } from './theme.js';
 import { storage } from './storage.js';
 import { pagination } from './pagination.js';
@@ -9,6 +10,15 @@ export const comment = (() => {
 
     const owns = storage('owns');
     const session = storage('session');
+    const showHide = storage('comment');
+
+    if (!showHide.has('hidden')) {
+        showHide.set('hidden', []);
+    }
+
+    if (!showHide.has('show')) {
+        showHide.set('show', []);
+    }
 
     const remove = async (button) => {
         if (!confirm('Are you sure?')) {
@@ -235,7 +245,23 @@ export const comment = (() => {
                     return;
                 }
 
+                const uuids = util.extractUUIDs(res.data);
+                const arr = showHide.get('hidden');
+                uuids.map((c) => {
+                    if (!arr.find((item) => item.uuid === c)) {
+                        arr.push({
+                            uuid: c,
+                            show: false,
+                        });
+                    }
+                });
+                showHide.set('hidden', arr);
+
                 comments.innerHTML = res.data.map((comment) => card.renderContent(comment)).join('');
+
+                uuids.forEach((c) => {
+                    like.setTapTap(c);
+                });
                 res.data.map((c) => card.fetchTracker(c));
             });
     };
@@ -243,16 +269,29 @@ export const comment = (() => {
     const showOrHide = (button) => {
         const ids = button.getAttribute('data-uuids').split(',');
         const show = button.getAttribute('data-show') === 'true';
+        const uuid = button.getAttribute('data-uuid');
 
         if (show) {
             button.setAttribute('data-show', 'false');
             button.innerText = 'Show replies' + ' (' + ids.length + ')';
+
+            showHide.set('show', showHide.get('show').filter((item) => item !== uuid));
         } else {
             button.setAttribute('data-show', 'true');
-            button.innerText = 'Hide replies' + ' (' + ids.length + ')';
+            button.innerText = 'Hide replies';
+
+            showHide.set('show', [...showHide.get('show'), uuid]);
         }
 
         for (const id of ids) {
+            showHide.set('hidden', showHide.get('hidden').map((item) => {
+                if (item.uuid === id) {
+                    return { uuid: id, show: !show };
+                }
+
+                return item;
+            }));
+
             if (!show) {
                 document.getElementById(id).classList.remove('d-none');
             } else {

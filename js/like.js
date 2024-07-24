@@ -53,5 +53,69 @@ export const like = (() => {
         button.disabled = false;
     };
 
-    return { like };
+    const animation = () => {
+        const end = Date.now() + 50;
+        const colors = ['#bb0000', '#ffffff'];
+
+        const heart = confetti.shapeFromPath({
+            path: 'M167 72c19,-38 37,-56 75,-56 42,0 76,33 76,75 0,76 -76,151 -151,227 -76,-76 -151,-151 -151,-227 0,-42 33,-75 75,-75 38,0 57,18 76,56z',
+            matrix: [0.03333333333333333, 0, 0, 0.03333333333333333, -5.566666666666666, -5.533333333333333]
+        });
+
+        (function frame() {
+
+            colors.forEach((color) => {
+                confetti({
+                    particleCount: 2,
+                    angle: 60,
+                    spread: 55,
+                    shapes: [heart],
+                    origin: { x: 0 },
+                    zIndex: 1057,
+                    colors: [color]
+                });
+                confetti({
+                    particleCount: 2,
+                    angle: 120,
+                    spread: 55,
+                    shapes: [heart],
+                    origin: { x: 1 },
+                    zIndex: 1057,
+                    colors: [color]
+                });
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+    };
+
+    const setTapTap = (uuid) => {
+        const id = document.getElementById(`body-content-${uuid}`);
+
+        const action = () => {
+            if (!id.getAttribute('data-tapTime')) {
+                id.setAttribute('data-tapTime', 0);
+            }
+
+            const currentTime = (new Date()).getTime();
+            const tapLength = currentTime - parseInt(id.getAttribute('data-tapTime'));
+
+            if (tapLength < 300 && tapLength > 0 && !likes.has(uuid)) {
+                like(document.querySelector(`[onclick="like.like(this)"][data-uuid="${uuid}"]`));
+                animation();
+            }
+
+            id.setAttribute('data-tapTime', currentTime);
+        };
+
+        id.removeEventListener('touchend', action);
+        id.addEventListener('touchend', action);
+    };
+
+    return {
+        like,
+        setTapTap,
+    };
 })();

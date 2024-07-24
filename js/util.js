@@ -222,6 +222,28 @@ export const util = (() => {
         storage('information').set('info', true);
     };
 
+    const extractUUIDs = (data) => {
+        let uuids = [];
+
+        const traverseComments = (comments) => {
+            comments.forEach((comment) => {
+                uuids.push(comment.uuid);
+                if (comment.comments && comment.comments.length > 0) {
+                    traverseComments(comment.comments);
+                }
+            });
+        };
+
+        data.forEach((item) => {
+            uuids.push(item.uuid);
+            if (item.comments && item.comments.length > 0) {
+                traverseComments(item.comments);
+            }
+        });
+
+        return uuids;
+    };
+
     return {
         open,
         copy,
@@ -232,6 +254,7 @@ export const util = (() => {
         animate,
         animation,
         escapeHtml,
+        extractUUIDs,
         countDownDate,
         disableButton,
     }
