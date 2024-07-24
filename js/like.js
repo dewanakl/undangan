@@ -1,4 +1,5 @@
 import { storage } from './storage.js';
+import { confetti } from './confetti.js';
 import { request, HTTP_PATCH, HTTP_POST } from './request.js';
 
 export const like = (() => {
