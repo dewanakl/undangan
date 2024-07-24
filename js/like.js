@@ -54,9 +54,11 @@ export const like = (() => {
         button.disabled = false;
     };
 
-    const animation = () => {
-        const end = Date.now() + 50;
+    const animation = (card) => {
+        const end = Date.now() + 30;
         const colors = ['#ff69b4', '#ff1493'];
+
+        const yPosition = Math.max(0.4, Math.min(0.8, card.getBoundingClientRect().top / window.innerHeight));
 
         const heart = confetti.shapeFromPath({
             path: 'M167 72c19,-38 37,-56 75,-56 42,0 76,33 76,75 0,76 -76,151 -151,227 -76,-76 -151,-151 -151,-227 0,-42 33,-75 75,-75 38,0 57,18 76,56z',
@@ -71,7 +73,7 @@ export const like = (() => {
                     angle: 60,
                     spread: 55,
                     shapes: [heart],
-                    origin: { x: 0 },
+                    origin: { x: 0, y: yPosition },
                     zIndex: 1057,
                     colors: [color]
                 });
@@ -80,7 +82,7 @@ export const like = (() => {
                     angle: 120,
                     spread: 55,
                     shapes: [heart],
-                    origin: { x: 1 },
+                    origin: { x: 1, y: yPosition },
                     zIndex: 1057,
                     colors: [color]
                 });
@@ -95,7 +97,7 @@ export const like = (() => {
     const setTapTap = (uuid) => {
         const id = document.getElementById(`body-content-${uuid}`);
 
-        const action = () => {
+        const action = async () => {
             if (!id.getAttribute('data-tapTime')) {
                 id.setAttribute('data-tapTime', 0);
             }
@@ -104,8 +106,8 @@ export const like = (() => {
             const tapLength = currentTime - parseInt(id.getAttribute('data-tapTime'));
 
             if (tapLength < 300 && tapLength > 0 && !likes.has(uuid)) {
-                like(document.querySelector(`[onclick="like.like(this)"][data-uuid="${uuid}"]`));
-                animation();
+                animation(id);
+                await like(document.querySelector(`[onclick="like.like(this)"][data-uuid="${uuid}"]`));
             }
 
             id.setAttribute('data-tapTime', currentTime);
