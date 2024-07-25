@@ -105,9 +105,11 @@ export const like = (() => {
             const currentTime = (new Date()).getTime();
             const tapLength = currentTime - parseInt(id.getAttribute('data-tapTime'));
 
-            if (tapLength < 300 && tapLength > 0 && !likes.has(uuid)) {
+            if (tapLength < 300 && tapLength > 0 && !likes.has(uuid) && id.getAttribute('data-liked') !== 'true') {
                 animation(id);
+                id.setAttribute('data-liked', 'true');
                 await like(document.querySelector(`[onclick="like.like(this)"][data-uuid="${uuid}"]`));
+                id.setAttribute('data-liked', 'false');
             }
 
             id.setAttribute('data-tapTime', currentTime);
