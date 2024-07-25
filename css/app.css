@@ -25,15 +25,15 @@ body {
 }
 
 .img-crop {
-    width: 14rem;
-    height: 14rem;
+    width: 60vw;
+    height: 60vw;
     position: relative;
     overflow: hidden;
     border-radius: 50%;
 }
 
 .img-crop>img {
-    display: inline;
+    display: block;
     margin: 0 auto;
     height: auto;
     width: 100%;
