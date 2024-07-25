@@ -58,7 +58,7 @@ export const like = (() => {
         const end = Date.now() + 30;
         const colors = ['#ff69b4', '#ff1493'];
 
-        const yPosition = Math.max(0.4, Math.min(1, (card.getBoundingClientRect().top / window.innerHeight) + 1));
+        const yPosition = Math.max(0.4, Math.min(1, (card.getBoundingClientRect().top / window.innerHeight) + 0.2));
 
         const heart = confetti.shapeFromPath({
             path: 'M167 72c19,-38 37,-56 75,-56 42,0 76,33 76,75 0,76 -76,151 -151,227 -76,-76 -151,-151 -151,-227 0,-42 33,-75 75,-75 38,0 57,18 76,56z',

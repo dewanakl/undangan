@@ -154,7 +154,15 @@ export const comment = (() => {
             if (presence) {
                 presence.value = "0";
             }
-            comment();
+
+            if (!id) {
+                await pagination.reset();
+                document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            if (id) {
+                await comment();
+            }
         }
     };
 
