@@ -96,10 +96,6 @@ export const like = (() => {
         const id = document.getElementById(`body-content-${uuid}`);
 
         const action = async () => {
-            if (!id.getAttribute('data-tapTime')) {
-                id.setAttribute('data-tapTime', 0);
-            }
-
             const currentTime = (new Date()).getTime();
             const tapLength = currentTime - parseInt(id.getAttribute('data-tapTime'));
 
