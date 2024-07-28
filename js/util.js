@@ -187,13 +187,13 @@ export const util = (() => {
 
         document.querySelector('body').style.overflowY = 'scroll';
         if (storage('information').get('info')) {
-            document.getElementById('information').remove();
+            document.getElementById('information')?.remove();
         }
 
         const token = document.querySelector('body').getAttribute('data-key');
         if (!token || token.length === 0) {
-            document.getElementById('ucapan').remove();
-            document.querySelector('a.nav-link[href="#ucapan"]').closest('li.nav-item').remove();
+            document.getElementById('ucapan')?.remove();
+            document.querySelector('a.nav-link[href="#ucapan"]')?.closest('li.nav-item')?.remove();
         }
 
         AOS.init();

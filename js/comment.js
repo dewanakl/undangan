@@ -187,7 +187,7 @@ export const comment = (() => {
         inner.id = `inner-${id}`;
         inner.innerHTML = `
         <label for="form-inner-${id}" class="form-label">Reply</label>
-        <textarea class="form-control shadow-sm rounded-3 mb-2" id="form-inner-${id}" placeholder="Type reply comment"></textarea>
+        <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" placeholder="Type reply comment"></textarea>
         <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
             <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Cancel</button>
             <button style="font-size: 0.8rem;" onclick="comment.send(this)" data-uuid="${id}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0">Send</button>
@@ -218,11 +218,11 @@ export const comment = (() => {
             inner.innerHTML = `
             <label for="form-inner-${id}" class="form-label">Edit</label>
             ${document.getElementById(id).getAttribute('data-parent') === 'true' ? `
-            <select class="form-select shadow-sm mb-2" id="form-inner-presence-${id}">
-                <option value="1" ${status.data.presence ? 'selected' : ''}>Hadir</option>
+            <select class="form-select shadow-sm mb-2 rounded-4" id="form-inner-presence-${id}">
+                <option value="1" ${status.data.presence ? 'selected' : ''}>Datang</option>
                 <option value="2" ${status.data.presence ? '' : 'selected'}>Berhalangan</option>
             </select>` : ''}
-            <textarea class="form-control shadow-sm rounded-3 mb-2" id="form-inner-${id}" placeholder="Type update comment"></textarea>
+            <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" placeholder="Type update comment"></textarea>
             <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
                 <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0 me-1">Cancel</button>
                 <button style="font-size: 0.8rem;" onclick="comment.update(this)" data-uuid="${id}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 py-0">Update</button>

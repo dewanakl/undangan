@@ -53,7 +53,7 @@ export const like = (() => {
     };
 
     const animation = (card) => {
-        const end = Date.now() + 30;
+        const end = Date.now() + 25;
         const colors = ['#ff69b4', '#ff1493'];
 
         const yPosition = Math.max(0.3, Math.min(1, (card.getBoundingClientRect().top / window.innerHeight) + 0.2));

@@ -462,18 +462,17 @@
 
                 <div class="card-body border rounded-4 shadow p-3">
                     <h1 class="font-esthetic text-center mb-3" style="font-size: 3rem;">Ucapan &amp; Doa</h1>
-                    <div class="mb-1" id="balasan"></div>
 
                     <div class="mb-3">
                         <label for="form-name" class="form-label">Nama</label>
-                        <input type="text" class="form-control shadow-sm" id="form-name" placeholder="Isikan Nama Anda">
+                        <input type="text" class="form-control shadow-sm rounded-4" id="form-name" placeholder="Isikan Nama Anda">
                     </div>
 
                     <div class="mb-3">
-                        <label for="form-presence" class="form-label" id="label-kehadiran">Kehadiran</label>
-                        <select class="form-select shadow-sm" id="form-presence">
-                            <option value="0" selected>Konfirmasi Kehadiran</option>
-                            <option value="1">Hadir</option>
+                        <label for="form-presence" class="form-label">Presensi</label>
+                        <select class="form-select shadow-sm rounded-4" id="form-presence">
+                            <option value="0" selected>Konfirmasi Presensi</option>
+                            <option value="1">Datang</option>
                             <option value="2">Berhalangan</option>
                         </select>
                     </div>
@@ -487,7 +486,7 @@
                             <p class="m-0">Sama bisa format text seperti Whatsapp lohh... cobainn jugaaa, makaciwww bestieee</p>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="util.close()"></button>
                         </div>
-                        <textarea class="form-control shadow-sm" id="form-comment" rows="4" placeholder="Tulis Ucapan dan Doa"></textarea>
+                        <textarea class="form-control shadow-sm rounded-4" id="form-comment" rows="4" placeholder="Tulis Ucapan dan Doa"></textarea>
                     </div>
 
                     <div class="d-grid">
@@ -501,7 +500,7 @@
 
                 <nav class="d-flex justify-content-center mb-0 pt-2">
                     <ul class="pagination mb-0">
-                        <li class="page-item disabled" id="previous">
+                        <li class="page-item disabled rounded-start-4" id="previous">
                             <button class="page-link" onclick="pagination.previous(this)">
                                 <i class="fa-solid fa-circle-left me-1"></i>Prev
                             </button>
@@ -509,7 +508,7 @@
                         <li class="page-item disabled">
                             <span class="page-link text-light" id="page">1</span>
                         </li>
-                        <li class="page-item" id="next">
+                        <li class="page-item rounded-end-4" id="next">
                             <button class="page-link" onclick="pagination.next(this)">
                                 Next<i class="fa-solid fa-circle-right ms-1"></i>
                             </button>
@@ -532,7 +531,7 @@
 
                 <p style="font-size: 0.9rem;" class="pt-2 pb-1 px-2" data-aos="fade-up" data-aos-duration="1500">
                     Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila, Bapak / Ibu / Saudara / i.
-                    berkenan hadir untuk memberikan do'a restunya kami ucapkan terimakasih.
+                    berkenan untuk memberikan do'a restunya kami ucapkan terimakasih.
                 </p>
 
                 <h1 class="font-esthetic" data-aos="fade-up" data-aos-duration="2000">Wassalamualaikum Warahmatullahi Wabarakatuh</h1>
