@@ -254,23 +254,28 @@ export const comment = (() => {
                 }
 
                 const uuids = util.extractUUIDs(res.data);
-                const arr = showHide.get('hidden');
-                uuids.map((c) => {
-                    if (!arr.find((item) => item.uuid === c)) {
-                        arr.push({
-                            uuid: c,
-                            show: false,
-                        });
-                    }
-                });
-                showHide.set('hidden', arr);
+                showHide.set('hidden', (() => {
+                    let arrHidden = showHide.get('hidden');
+                    uuids.forEach((c) => {
+                        if (!arrHidden.find((item) => item.uuid === c)) {
+                            arrHidden.push({
+                                uuid: c,
+                                show: false,
+                            });
+                        }
+                    });
+
+                    return arrHidden;
+                })());
 
                 comments.innerHTML = res.data.map((comment) => card.renderContent(comment)).join('');
 
                 uuids.forEach((c) => {
                     like.setTapTap(c);
                 });
-                res.data.map((c) => card.fetchTracker(c));
+                res.data.forEach((c) => {
+                    card.fetchTracker(c);
+                });
             });
     };
 

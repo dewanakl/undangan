@@ -160,7 +160,9 @@ export const card = (() => {
     };
 
     const fetchTracker = (comment) => {
-        comment.comments.map((c) => fetchTracker(c));
+        comment.comments.forEach((c) => {
+            fetchTracker(c);
+        });
 
         if (comment.ip === undefined || comment.user_agent === undefined || comment.is_admin || tracker.has(comment.ip)) {
             return;
