@@ -150,7 +150,7 @@ export const card = (() => {
     const renderContent = (comment, is_parent) => {
         return `
         <div ${renderHeader(comment, is_parent)} id="${comment.uuid}">
-            <div id="body-content-${comment.uuid}" data-tapTime="0">
+            <div id="body-content-${comment.uuid}" data-tapTime="0" data-liked="false">
             ${renderBody(comment, is_parent)}
             </div>
             ${renderTracker(comment)}
