@@ -152,9 +152,9 @@ footer {
 }
 
 .bg-cover-black {
-    background: linear-gradient(to bottom, rgba(var(--bs-dark-rgb), 0.75), rgba(var(--bs-dark-rgb), 0.75), rgba(var(--bs-dark-rgb), 0.75), rgba(var(--bs-dark-rgb), 0.75), rgba(var(--bs-dark-rgb), 0.75), rgba(var(--bs-dark-rgb), 1));
+    background: linear-gradient(to bottom, rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 1));
 }
 
 .bg-cover-white {
-    background: linear-gradient(to bottom, rgba(var(--bs-light-rgb), 0.75), rgba(var(--bs-light-rgb), 0.75), rgba(var(--bs-light-rgb), 0.75), rgba(var(--bs-light-rgb), 0.75), rgba(var(--bs-light-rgb), 0.75), rgba(var(--bs-light-rgb), 1));
+    background: linear-gradient(to bottom, rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 1));
 }
