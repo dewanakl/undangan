@@ -79,12 +79,12 @@
                 <div class="pe-3">
                     <ul class="nav flex-column w-100 nav-pills" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="btn-theme-dark nav-link w-100 text-start fw-semibold mb-1 rounded-3 active" data-bs-toggle="pill" data-bs-target="#pills-home" id="button-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                            <button class="btn-theme-dark nav-link w-100 text-start fw-semibold mb-1 rounded-4 active" data-bs-toggle="pill" data-bs-target="#pills-home" id="button-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
                                 <i class="fa-solid fa-house ms-3 me-2"></i>Home
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="btn-theme-dark nav-link w-100 text-start fw-semibold my-1 rounded-3" data-bs-toggle="pill" data-bs-target="#pills-setting" id="button-setting" type="button" role="tab" aria-controls="pills-setting" aria-selected="false">
+                            <button class="btn-theme-dark nav-link w-100 text-start fw-semibold my-1 rounded-4" data-bs-toggle="pill" data-bs-target="#pills-setting" id="button-setting" type="button" role="tab" aria-controls="pills-setting" aria-selected="false">
                                 <i class="fa-solid fa-gear ms-3 me-2"></i>Setting
                             </button>
                         </li>
@@ -92,7 +92,7 @@
                             <hr class="my-2">
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="btn-theme-dark logout nav-link w-100 text-start fw-semibold mt-1 rounded-3" onclick="session.logout()">
+                            <button class="btn-theme-dark logout nav-link w-100 text-start fw-semibold mt-1 rounded-4" onclick="session.logout()">
                                 <i class="fa-solid fa-right-from-bracket ms-3 me-2"></i>Logout
                             </button>
                         </li>
@@ -213,10 +213,10 @@
                         <!-- Form -->
                         <div class="bg-theme-light p-3 my-2 rounded-4 shadow">
                             <label for="form-comment" class="form-label fw-bold"><i class="fa-solid fa-comment me-1"></i>Comment</label>
-                            <textarea class="form-control shadow-sm mb-3 rounded-3" id="form-comment" name="form-comment" placeholder="Type to comment"></textarea>
+                            <textarea class="form-control shadow-sm mb-3 rounded-4" id="form-comment" name="form-comment" placeholder="Type to comment"></textarea>
 
                             <div class="d-flex justify-content-end mb-0">
-                                <button onclick="comment.send(this)" class="btn btn-primary btn-sm rounded-3"><i class="fa-solid fa-paper-plane me-1"></i>Send</button>
+                                <button onclick="comment.send(this)" class="btn btn-primary btn-sm rounded-4" style="font-size: 0.8rem;"><i class="fa-solid fa-paper-plane me-1"></i>Send</button>
                             </div>
                         </div>
 
@@ -262,13 +262,12 @@
                             <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-person me-1"></i>Name</p>
                             <form>
                                 <div class="mb-3">
-                                    <input type="text" class="form-control form-control-sm rounded-3" id="form-name" name="form-name" onchange="user.enableButtonName()">
+                                    <input type="text" class="form-control form-control-sm rounded-4" id="form-name" name="form-name" oninput="user.enableButtonName()">
                                 </div>
                             </form>
-                            <hr class="text-dark mt-3 mb-2">
 
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-3" id="button-change-name" onclick="user.changeName(this)" disabled>Change</button>
+                                <button type="button" class="btn btn-sm btn-primary rounded-4" id="button-change-name" onclick="user.changeName(this)" disabled>Change</button>
                             </div>
                         </div>
 
@@ -276,15 +275,13 @@
                         <div class="p-3 bg-theme-light mb-3 rounded-4 shadow">
                             <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-key me-1"></i>Access Key</p>
 
-                            <div class="input-group input-group-sm rounded-3 mb-3">
-                                <input type="text" class="form-control form-control-sm rounded-start-3" id="dashboard-accesskey" readonly>
-                                <button class="btn btn-sm btn-outline-secondary rounded-end-3" type="button" onclick="user.copyAccessKey(this)"><i class="fa-solid fa-copy"></i></button>
+                            <div class="input-group input-group-sm rounded-4 mb-3">
+                                <input type="text" class="form-control form-control-sm rounded-start-4" id="dashboard-accesskey" readonly>
+                                <button class="btn btn-sm btn-outline-secondary rounded-end-4" type="button" onclick="user.copyAccessKey(this)"><i class="fa-solid fa-copy"></i></button>
                             </div>
 
-                            <hr class="text-dark mt-3 mb-2">
-
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-3" onclick="user.regenerate(this)">Regenerate</button>
+                                <button type="button" class="btn btn-sm btn-primary rounded-4" onclick="user.regenerate(this)">Regenerate</button>
                             </div>
                         </div>
 
@@ -320,23 +317,22 @@
                             <form>
                                 <input hidden type="text" name="username" autocomplete="username" value="...">
                                 <div class="mb-2">
-                                    <input type="password" class="form-control form-control-sm rounded-3" id="old_password" name="old_password" placeholder="Old Password" autocomplete="current-password">
+                                    <input type="password" class="form-control form-control-sm rounded-4" id="old_password" name="old_password" placeholder="Old Password" autocomplete="current-password">
                                 </div>
-                                <div class="mb-0">
-                                    <input type="password" class="form-control form-control-sm rounded-3" id="new_password" name="new_password" onchange="user.enableButtonPassword()" placeholder="New Password" autocomplete="new-password">
+                                <div class="mb-3">
+                                    <input type="password" class="form-control form-control-sm rounded-4" id="new_password" name="new_password" oninput="user.enableButtonPassword()" placeholder="New Password" autocomplete="new-password">
                                 </div>
                             </form>
-                            <hr class="text-dark mt-3 mb-2">
 
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-3" id="button-change-password" onclick="user.changePassword(this)" disabled>Change</button>
+                                <button type="button" class="btn btn-sm btn-primary rounded-4" id="button-change-password" onclick="user.changePassword(this)" disabled>Change</button>
                             </div>
                         </div>
 
                         <!-- Logout -->
                         <div class="d-md-none d-lg-none d-xl-none">
                             <div class="p-3 bg-theme-light mb-3 rounded-4 shadow">
-                                <button type="button" class="btn btn-danger btn-sm w-100 text-center fw-semibold rounded-3" onclick="session.logout()">
+                                <button type="button" class="btn btn-danger btn-sm w-100 text-center fw-semibold rounded-4" onclick="session.logout()">
                                     <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
                                 </button>
                             </div>
@@ -365,19 +361,19 @@
     <!-- Modal login -->
     <div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content rounded-4">
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label"><i class="fa-solid fa-envelope me-1"></i>Email</label>
-                            <input type="email" class="form-control rounded-3" id="loginEmail" autocomplete="email">
+                            <input type="email" class="form-control rounded-4" id="loginEmail" autocomplete="email">
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label"><i class="fa-solid fa-lock me-1"></i>Password</label>
-                            <input type="password" class="form-control rounded-3" id="loginPassword" autocomplete="current-password">
+                            <input type="password" class="form-control rounded-4" id="loginPassword" autocomplete="current-password">
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary rounded-3" onclick="session.login(this)"><i class="fa-solid fa-right-to-bracket me-1"></i>Login</button>
+                            <button type="submit" class="btn btn-primary rounded-4" onclick="session.login(this)"><i class="fa-solid fa-right-to-bracket me-1"></i>Login</button>
                         </div>
                     </form>
                 </div>
