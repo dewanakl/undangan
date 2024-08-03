@@ -53,6 +53,10 @@ export const like = (() => {
     };
 
     const animation = (card) => {
+        if (!confetti) {
+            return;
+        }
+        
         const end = Date.now() + 25;
         const colors = ['#ff69b4', '#ff1493'];
 
