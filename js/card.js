@@ -13,8 +13,6 @@ export const card = (() => {
     const session = storage('session');
     const showHide = storage('comment');
 
-    const lists = new Map();
-
     const renderLoading = () => {
         document.getElementById('comments').innerHTML = `
         <div class="card-body bg-theme-${theme.isDarkMode('dark', 'light')} shadow p-3 mx-0 mt-0 mb-3 rounded-4">
@@ -32,23 +30,19 @@ export const card = (() => {
     };
 
     const convertMarkdownToHTML = (input) => {
-        if (lists.size === 0) {
-            const text = theme.isDarkMode('light', 'dark');
-            const data = [
-                ['*', `<strong class="text-${text}">$1</strong>`],
-                ['_', `<em class="text-${text}">$1</em>`],
-                ['~', `<del class="text-${text}">$1</del>`],
-                ['```', `<code class="font-monospace text-${text}">$1</code>`]
-            ];
+        const text = theme.isDarkMode('light', 'dark');
+        const lists = [
+            ['*', `<strong class="text-${text}">$1</strong>`],
+            ['_', `<em class="text-${text}">$1</em>`],
+            ['~', `<del class="text-${text}">$1</del>`],
+            ['```', `<code class="font-monospace text-${text}">$1</code>`]
+        ];
 
-            data.forEach((v) => {
-                lists.set(v[0], v[1]);
-            });
-        }
+        lists.forEach((data) => {
+            const v = data[1];
+            const k = data[0];
 
-        lists.forEach((v, k) => {
-            const regex = new RegExp(`\\${k}(?=\\S)(.*?)(?<!\\s)\\${k}`, 'gs');
-            input = input.replace(regex, v);
+            input = input.replace(new RegExp(`\\${k}(?=\\S)(.*?)(?<!\\s)\\${k}`, 'gs'), v);
         });
 
         return input;
