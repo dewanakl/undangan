@@ -73,12 +73,6 @@ export const util = (() => {
         guest.appendChild(div);
     };
 
-    const show = () => {
-        guest();
-        opacity('loading', 0.025);
-        window.scrollTo(0, 0);
-    };
-
     const modal = (img) => {
         document.getElementById('show-modal-image').src = img.src;
         (new bootstrap.Modal('#modal-image')).show();
@@ -169,7 +163,8 @@ export const util = (() => {
             zIndex: 1057
         });
 
-        document.querySelector('body').style.overflowY = 'scroll';
+        document.body.style.overflowY = 'scroll';
+        document.getElementById('home').scrollIntoView({ behavior: 'instant' });
         opacity('welcome', 0.025);
 
         audio.play();
@@ -209,13 +204,14 @@ export const util = (() => {
         const token = document.querySelector('body').getAttribute('data-key');
 
         countDownDate();
+
         if (storage('information').get('info')) {
             document.getElementById('information')?.remove();
         }
 
         if (!token || token.length === 0) {
-            document.getElementById('ucapan')?.remove();
-            document.querySelector('a.nav-link[href="#ucapan"]')?.closest('li.nav-item')?.remove();
+            document.getElementById('comment')?.remove();
+            document.querySelector('a.nav-link[href="#comment"]')?.closest('li.nav-item')?.remove();
             return;
         }
 
@@ -238,9 +234,9 @@ export const util = (() => {
         init,
         open,
         copy,
-        show,
         close,
         modal,
+        guest,
         opacity,
         animate,
         animation,

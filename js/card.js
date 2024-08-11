@@ -14,7 +14,13 @@ export const card = (() => {
     const showHide = storage('comment');
 
     const renderLoading = () => {
-        document.getElementById('comments').innerHTML = `
+        const comments = document.getElementById('comments');
+        if (comments.getAttribute('data-loading') === 'true') {
+            return;
+        }
+
+        comments.setAttribute('data-loading', 'true');
+        comments.innerHTML = `
         <div class="card-body bg-theme-${theme.isDarkMode('dark', 'light')} shadow p-3 mx-0 mt-0 mb-3 rounded-4">
             <div class="d-flex flex-wrap justify-content-between align-items-center placeholder-wave">
                 <span class="placeholder bg-secondary col-4 rounded-3"></span>

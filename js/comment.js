@@ -229,6 +229,7 @@ export const comment = (() => {
 
     const comment = async () => {
         card.renderLoading();
+        const onNullComment = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
 
         await request(HTTP_GET, `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
             .token(session.get('token'))
@@ -241,7 +242,7 @@ export const comment = (() => {
                 pagination.setResultData(res.data.length);
 
                 if (res.data.length === 0) {
-                    comments.innerHTML = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
+                    comments.innerHTML = onNullComment;
                     return;
                 }
 
@@ -260,6 +261,7 @@ export const comment = (() => {
                     return arrHidden;
                 })());
 
+                comments.setAttribute('data-loading', 'false');
                 comments.innerHTML = res.data.map((comment) => card.renderContent(comment)).join('');
 
                 uuids.forEach((c) => {

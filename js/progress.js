@@ -14,8 +14,13 @@ export const progress = (() => {
         bar.style.width = Math.min((loaded / total) * 100, 100).toString() + "%";
         info.innerText = `Loading assets (${loaded}/${total}) [${parseInt((loaded / total) * 100).toFixed(0)}%]`;
 
-        if (loaded == total) {
-            util.show();
+        if (loaded === total) {
+            util.guest();
+            util.opacity('loading', 0.025);
+            window.scroll({
+                top: 0,
+                behavior: 'instant',
+            });
         }
     };
 
@@ -32,7 +37,7 @@ export const progress = (() => {
             if (asset.complete && asset.naturalWidth !== 0) {
                 progress();
             } else {
-                asset.addEventListener('load', () => progress());
+                asset.addEventListener('load', progress);
             }
         });
     };
