@@ -74,6 +74,30 @@ export const util = (() => {
     };
 
     const show = () => {
+        const duration = 2 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = {
+            startVelocity: 30,
+            spread: 360,
+            zIndex: 1057
+        };
+
+        const randomInRange = (min, max) => {
+            return Math.random() * (max - min) + min;
+        };
+
+        let interval = setInterval(() => {
+            const timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            const particleCount = 50 * (timeLeft / duration);
+            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+        }, 250);
+
         guest();
         opacity('loading', 0.025);
         window.scrollTo(0, 0);
@@ -176,7 +200,7 @@ export const util = (() => {
         audio.showButton();
 
         theme.showButtonChangeTheme();
-        animation();
+        setTimeout(animation, 1000);
     };
 
     const close = () => {
