@@ -1,6 +1,5 @@
 import { util } from './util.js';
 import { user } from './user.js';
-import { theme } from './theme.js';
 import { storage } from './storage.js';
 import { comment } from './comment.js';
 import { bootstrap } from './bootstrap.js';
