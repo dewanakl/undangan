@@ -170,7 +170,12 @@ export const card = (() => {
                 tracker.set(comment.ip, result);
                 document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${result}</strong>`;
             })
-            .catch((err) => console.error(err));
+            .catch((err) => {
+                const result = util.escapeHtml(err.message);
+
+                tracker.set(comment.ip, result);
+                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${result}</strong>`;
+            });
     };
 
     return {
