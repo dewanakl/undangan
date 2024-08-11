@@ -16,10 +16,10 @@ export const audio = (() => {
         audio.volume = 1;
     };
 
-    const button = (button) => {
+    const button = async (button) => {
         if (button.getAttribute('data-status') !== 'true') {
+            await audio.play();
             button.setAttribute('data-status', 'true');
-            audio.play();
             button.innerHTML = '<i class="fa-solid fa-circle-pause spin-button"></i>';
             return;
         }
