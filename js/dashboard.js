@@ -6,10 +6,17 @@ import { session } from './session.js';
 import { comment } from './comment.js';
 import { pagination } from './pagination.js';
 
-window.like = like;
-window.user = user;
-window.theme = theme;
-window.navbar = navbar;
-window.session = session;
-window.comment = comment;
-window.pagination = pagination;
+document.addEventListener('DOMContentLoaded', () => {
+    theme.check();
+    comment.init();
+    session.init();
+    pagination.init();
+
+    window.like = like;
+    window.user = user;
+    window.theme = theme;
+    window.navbar = navbar;
+    window.session = session;
+    window.comment = comment;
+    window.pagination = pagination;
+});

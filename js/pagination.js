@@ -2,13 +2,17 @@ import { comment } from './comment.js';
 
 export const pagination = (() => {
 
-    const perPage = 10;
+    let perPage = 10;
     let pageNow = 0;
     let resultData = 0;
 
-    const page = document.getElementById('page');
-    const buttonPrev = document.getElementById('previous');
-    const buttonNext = document.getElementById('next');
+    let page = null;
+    let buttonPrev = null;
+    let buttonNext = null;
+
+    const setPer = (num) => {
+        perPage = Number(num);
+    };
 
     const disabledPrevious = () => {
         buttonPrev.classList.add('disabled');
@@ -84,7 +88,15 @@ export const pagination = (() => {
         }
     };
 
+    const init = () => {
+        page = document.getElementById('page');
+        buttonPrev = document.getElementById('previous');
+        buttonNext = document.getElementById('next');
+    };
+
     return {
+        init,
+        setPer,
         getPer,
         getNext,
         reset,

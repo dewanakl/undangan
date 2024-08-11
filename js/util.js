@@ -1,4 +1,3 @@
-import { AOS } from './aos.js';
 import { audio } from './audio.js';
 import { theme } from './theme.js';
 import { comment } from './comment.js';
@@ -163,22 +162,7 @@ export const util = (() => {
         })();
     };
 
-    const storeConfig = async (token) => {
-        storage('session').set('token', token);
-
-        const config = storage('config');
-        return await request(HTTP_GET, '/api/config')
-            .token(token)
-            .then((res) => {
-                for (let [key, value] of Object.entries(res.data)) {
-                    config.set(key, value);
-                }
-
-                return res.code;
-            });
-    };
-
-    const open = async (button) => {
+    const open = (button) => {
         button.disabled = true;
         confetti({
             origin: { y: 1 },
@@ -186,36 +170,13 @@ export const util = (() => {
         });
 
         document.querySelector('body').style.overflowY = 'scroll';
-        if (storage('information').get('info')) {
-            document.getElementById('information')?.remove();
-        }
-
-        const token = document.querySelector('body').getAttribute('data-key');
-        if (!token || token.length === 0) {
-            document.getElementById('ucapan')?.remove();
-            document.querySelector('a.nav-link[href="#ucapan"]')?.closest('li.nav-item')?.remove();
-        }
-
-        AOS.init();
-
-        countDownDate();
         opacity('welcome', 0.025);
 
         audio.play();
         audio.showButton();
 
-        theme.check();
         theme.showButtonChangeTheme();
-
-        if (!token || token.length === 0) {
-            return;
-        }
-
-        const status = await storeConfig(token);
-        if (status === 200) {
-            animation();
-            await comment.comment();
-        }
+        animation();
     };
 
     const close = () => {
@@ -244,7 +205,37 @@ export const util = (() => {
         return uuids;
     };
 
+    const init = () => {
+        const token = document.querySelector('body').getAttribute('data-key');
+
+        countDownDate();
+        if (storage('information').get('info')) {
+            document.getElementById('information')?.remove();
+        }
+
+        if (!token || token.length === 0) {
+            document.getElementById('ucapan')?.remove();
+            document.querySelector('a.nav-link[href="#ucapan"]')?.closest('li.nav-item')?.remove();
+            return;
+        }
+
+        const config = storage('config');
+
+        request(HTTP_GET, '/api/config')
+            .token(token)
+            .then((res) => {
+                for (let [key, value] of Object.entries(res.data)) {
+                    config.set(key, value);
+                }
+
+                comment.comment();
+            });
+
+        storage('session').set('token', token);
+    };
+
     return {
+        init,
         open,
         copy,
         show,

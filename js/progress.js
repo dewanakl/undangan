@@ -2,11 +2,10 @@ import { util } from './util.js';
 
 export const progress = (() => {
 
-    const assets = document.querySelectorAll('img');
-    const info = document.getElementById('progress-info');
-    const bar = document.getElementById('progress-bar');
+    let info = null;
+    let bar = null;
 
-    const total = assets.length;
+    let total = 0;
     let loaded = 0;
 
     const progress = () => {
@@ -20,12 +19,25 @@ export const progress = (() => {
         }
     };
 
-    info.style.display = 'block';
-    assets.forEach((asset) => {
-        if (asset.complete && asset.naturalWidth !== 0) {
-            progress();
-        } else {
-            asset.addEventListener('load', () => progress());
-        }
-    });
+    const init = () => {
+        const assets = document.querySelectorAll('img');
+
+        info = document.getElementById('progress-info');
+        bar = document.getElementById('progress-bar');
+
+        info.style.display = 'block';
+        total = assets.length;
+
+        assets.forEach((asset) => {
+            if (asset.complete && asset.naturalWidth !== 0) {
+                progress();
+            } else {
+                asset.addEventListener('load', () => progress());
+            }
+        });
+    };
+
+    return {
+        init
+    };
 })();

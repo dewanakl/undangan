@@ -10,17 +10,6 @@ export const session = (() => {
 
     const session = storage('session');
 
-    theme.check();
-
-    if (session.get('token')?.split('.').length !== 3 || JSON.parse(atob(session.get('token').split('.')[1])).exp < (new Date()).getTime() / 1000) {
-        comment.renderLoading();
-        (new bootstrap.Modal('#loginModal')).show();
-    } else {
-        user.getUserDetail();
-        user.getStatUser();
-        comment.comment();
-    }
-
     const login = async (button) => {
 
         const btn = util.disableButton(button, '<div class="spinner-border spinner-border-sm me-1" role="status"></div>Loading..');
@@ -64,7 +53,22 @@ export const session = (() => {
         (new bootstrap.Modal('#loginModal')).show();
     };
 
+    const init = () => {
+        const token = session.get('token');
+
+        if (token?.split('.').length !== 3 || JSON.parse(atob(token.split('.')[1])).exp < ((new Date()).getTime() / 1000)) {
+            comment.renderLoading();
+            (new bootstrap.Modal('#loginModal')).show();
+            return;
+        }
+
+        user.getUserDetail();
+        user.getStatUser();
+        comment.comment();
+    };
+
     return {
+        init,
         login,
         logout
     };

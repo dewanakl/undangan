@@ -1,33 +1,31 @@
 export const audio = (() => {
 
-    const music = document.getElementById('button-music');
+    let music = null;
     let audio = null;
 
-    const getAudio = () => {
-        if (!audio) {
-            audio = new Audio();
-            audio.src = music.getAttribute('data-url');
-            audio.load();
-            audio.currentTime = 0;
-            audio.autoplay = true;
-            audio.muted = false;
-            audio.loop = true;
-            audio.volume = 1;
-        }
+    const init = () => {
+        music = document.getElementById('button-music');
 
-        return audio;
+        audio = new Audio();
+        audio.src = music.getAttribute('data-url');
+        audio.load();
+        audio.currentTime = 0;
+        audio.autoplay = true;
+        audio.muted = false;
+        audio.loop = true;
+        audio.volume = 1;
     };
 
     const button = (button) => {
         if (button.getAttribute('data-status') !== 'true') {
             button.setAttribute('data-status', 'true');
-            getAudio().play();
+            audio.play();
             button.innerHTML = '<i class="fa-solid fa-circle-pause spin-button"></i>';
             return;
         }
 
         button.setAttribute('data-status', 'false');
-        getAudio().pause();
+        audio.pause();
         button.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
     };
 
@@ -36,7 +34,8 @@ export const audio = (() => {
     };
 
     return {
-        play: () => getAudio().play(),
+        init,
+        play: () => audio.play(),
         button,
         showButton,
     };

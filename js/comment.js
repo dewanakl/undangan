@@ -12,14 +12,6 @@ export const comment = (() => {
     const session = storage('session');
     const showHide = storage('comment');
 
-    if (!showHide.has('hidden')) {
-        showHide.set('hidden', []);
-    }
-
-    if (!showHide.has('show')) {
-        showHide.set('show', []);
-    }
-
     const remove = async (button) => {
         if (!confirm('Are you sure?')) {
             return;
@@ -313,7 +305,18 @@ export const comment = (() => {
         }
     };
 
+    const init = () => {
+        if (!showHide.has('hidden')) {
+            showHide.set('hidden', []);
+        }
+
+        if (!showHide.has('show')) {
+            showHide.set('show', []);
+        }
+    };
+
     return {
+        init,
         cancel,
         send,
         edit,
