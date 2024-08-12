@@ -229,16 +229,12 @@ export const comment = (() => {
 
     const comment = async () => {
         card.renderLoading();
+        const comments = document.getElementById('comments');
         const onNullComment = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
 
         await request(HTTP_GET, `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
             .token(session.get('token'))
             .then((res) => {
-                if (res.code !== 200) {
-                    return;
-                }
-
-                const comments = document.getElementById('comments');
                 pagination.setResultData(res.data.length);
 
                 if (res.data.length === 0) {
@@ -246,15 +242,11 @@ export const comment = (() => {
                     return;
                 }
 
-                const uuids = util.extractUUIDs(res.data);
                 showHide.set('hidden', (() => {
                     let arrHidden = showHide.get('hidden');
-                    uuids.forEach((c) => {
+                    util.extractUUIDs(res.data).forEach((c) => {
                         if (!arrHidden.find((item) => item.uuid === c)) {
-                            arrHidden.push({
-                                uuid: c,
-                                show: false,
-                            });
+                            arrHidden.push({ uuid: c, show: false });
                         }
                     });
 
@@ -263,13 +255,7 @@ export const comment = (() => {
 
                 comments.setAttribute('data-loading', 'false');
                 comments.innerHTML = res.data.map((comment) => card.renderContent(comment)).join('');
-
-                uuids.forEach((c) => {
-                    like.setTapTap(c);
-                });
-                res.data.forEach((c) => {
-                    card.fetchTracker(c);
-                });
+                res.data.forEach(card.fetchTracker);
             });
     };
 
@@ -280,20 +266,21 @@ export const comment = (() => {
 
         if (show) {
             button.setAttribute('data-show', 'false');
-            button.innerText = 'Show replies' + ' (' + ids.length + ')';
+            button.innerText = 'Show replies';
+            button.innerText += ' (' + ids.length + ')';
 
             showHide.set('show', showHide.get('show').filter((item) => item !== uuid));
         } else {
             button.setAttribute('data-show', 'true');
             button.innerText = 'Hide replies';
 
-            showHide.set('show', [...showHide.get('show'), uuid]);
+            showHide.set('show', showHide.get('show').concat([uuid]));
         }
 
         for (const id of ids) {
             showHide.set('hidden', showHide.get('hidden').map((item) => {
                 if (item.uuid === id) {
-                    return { uuid: id, show: !show };
+                    item.show = !show;
                 }
 
                 return item;

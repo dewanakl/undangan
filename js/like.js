@@ -56,7 +56,7 @@ export const like = (() => {
         if (!confetti) {
             return;
         }
-        
+
         const end = Date.now() + 25;
         const colors = ['#ff69b4', '#ff1493'];
 
@@ -96,29 +96,23 @@ export const like = (() => {
         }());
     };
 
-    const setTapTap = (uuid) => {
-        const id = document.getElementById(`body-content-${uuid}`);
+    const tapTap = async (id) => {
+        const currentTime = (new Date()).getTime();
+        const tapLength = currentTime - parseInt(id.getAttribute('data-tapTime'));
+        const uuid = id.id.replace('body-content-', '');
 
-        const action = async () => {
-            const currentTime = (new Date()).getTime();
-            const tapLength = currentTime - parseInt(id.getAttribute('data-tapTime'));
+        if (tapLength < 300 && tapLength > 0 && !likes.has(uuid) && id.getAttribute('data-liked') !== 'true') {
+            animation(id);
+            id.setAttribute('data-liked', 'true');
+            await like(document.querySelector(`[onclick="like.like(this)"][data-uuid="${uuid}"]`));
+            id.setAttribute('data-liked', 'false');
+        }
 
-            if (tapLength < 300 && tapLength > 0 && !likes.has(uuid) && id.getAttribute('data-liked') !== 'true') {
-                animation(id);
-                id.setAttribute('data-liked', 'true');
-                await like(document.querySelector(`[onclick="like.like(this)"][data-uuid="${uuid}"]`));
-                id.setAttribute('data-liked', 'false');
-            }
-
-            id.setAttribute('data-tapTime', currentTime);
-        };
-
-        id.removeEventListener('touchend', action);
-        id.addEventListener('touchend', action);
+        id.setAttribute('data-tapTime', currentTime);
     };
 
     return {
         like,
-        setTapTap,
+        tapTap,
     };
 })();
