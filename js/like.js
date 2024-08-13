@@ -96,19 +96,19 @@ export const like = (() => {
         }());
     };
 
-    const tapTap = async (id) => {
+    const tapTap = async (div) => {
         const currentTime = (new Date()).getTime();
-        const tapLength = currentTime - parseInt(id.getAttribute('data-tapTime'));
-        const uuid = id.id.replace('body-content-', '');
+        const tapLength = currentTime - parseInt(div.getAttribute('data-tapTime'));
+        const uuid = div.id.replace('body-content-', '');
 
-        if (tapLength < 300 && tapLength > 0 && !likes.has(uuid) && id.getAttribute('data-liked') !== 'true') {
-            animation(id);
-            id.setAttribute('data-liked', 'true');
+        if (tapLength < 300 && tapLength > 0 && !likes.has(uuid) && div.getAttribute('data-liked') !== 'true') {
+            animation(div);
+            div.setAttribute('data-liked', 'true');
             await like(document.querySelector(`[onclick="like.like(this)"][data-uuid="${uuid}"]`));
-            id.setAttribute('data-liked', 'false');
+            div.setAttribute('data-liked', 'false');
         }
 
-        id.setAttribute('data-tapTime', currentTime);
+        div.setAttribute('data-tapTime', currentTime);
     };
 
     return {

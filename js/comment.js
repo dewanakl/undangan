@@ -24,16 +24,28 @@ export const comment = (() => {
 
         const btn = util.disableButton(button);
 
-        await request(HTTP_DELETE, '/api/comment/' + owns.get(id))
+        const status = await request(HTTP_DELETE, '/api/comment/' + owns.get(id))
             .token(session.get('token'))
-            .then((res) => {
-                if (res.data.status) {
-                    owns.unset(id);
-                    document.getElementById(id).remove();
-                }
-            });
+            .then((res) => res.data.status);
 
-        btn.restore();
+        if (!status) {
+            btn.restore();
+            return;
+        }
+
+        owns.unset(id);
+        document.getElementById(id).remove();
+
+        document.querySelectorAll('[data-uuids]').forEach((n) => {
+            if (n.getAttribute('data-uuids').split(',').find((i) => i === id)) {
+                const uuids = n.getAttribute('data-uuids').split(',').filter((i) => i !== id).join(',');
+                n.setAttribute('data-uuids', uuids);
+
+                if (uuids.length === 0) {
+                    n.remove();
+                }
+            }
+        });
     };
 
     const changeButton = (id, disabled) => {
@@ -152,6 +164,8 @@ export const comment = (() => {
             }
 
             if (id) {
+                showHide.set('hidden', showHide.get('hidden').concat([{ uuid: response.data.uuid, show: true }]));
+                showHide.set('show', showHide.get('show').concat([id]));
                 await comment();
             }
         }
