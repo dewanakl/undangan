@@ -164,14 +164,14 @@ export const util = (() => {
         });
 
         document.body.style.overflowY = 'scroll';
-        document.getElementById('home').scrollIntoView({ behavior: 'instant' });
+        document.body.scrollIntoView({ behavior: 'instant' });
         opacity('welcome', 0.025);
 
         audio.play();
         audio.showButton();
 
         theme.showButtonChangeTheme();
-        setTimeout(animation, 1000);
+        setTimeout(animation, 1500);
     };
 
     const close = () => {
@@ -201,33 +201,31 @@ export const util = (() => {
     };
 
     const init = () => {
-        const token = document.querySelector('body').getAttribute('data-key');
-
         countDownDate();
 
         if (storage('information').get('info')) {
             document.getElementById('information')?.remove();
         }
 
+        const token = document.querySelector('body').getAttribute('data-key');
         if (!token || token.length === 0) {
             document.getElementById('comment')?.remove();
             document.querySelector('a.nav-link[href="#comment"]')?.closest('li.nav-item')?.remove();
             return;
         }
 
-        const config = storage('config');
-
+        storage('session').set('token', token);
         request(HTTP_GET, '/api/config')
             .token(token)
             .then((res) => {
+                const config = storage('config');
+
                 for (let [key, value] of Object.entries(res.data)) {
                     config.set(key, value);
                 }
 
                 comment.comment();
             });
-
-        storage('session').set('token', token);
     };
 
     return {

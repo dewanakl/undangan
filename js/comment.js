@@ -37,8 +37,10 @@ export const comment = (() => {
         document.getElementById(id).remove();
 
         document.querySelectorAll('[data-uuids]').forEach((n) => {
-            if (n.getAttribute('data-uuids').split(',').find((i) => i === id)) {
-                const uuids = n.getAttribute('data-uuids').split(',').filter((i) => i !== id).join(',');
+            const oldUuids = n.getAttribute('data-uuids').split(',');
+
+            if (oldUuids.find((i) => i === id)) {
+                const uuids = oldUuids.filter((i) => i !== id).join(',');
                 n.setAttribute('data-uuids', uuids);
 
                 if (uuids.length === 0) {

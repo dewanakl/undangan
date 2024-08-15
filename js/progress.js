@@ -17,10 +17,6 @@ export const progress = (() => {
         if (loaded === total) {
             util.guest();
             util.opacity('loading', 0.025);
-            window.scroll({
-                top: 0,
-                behavior: 'instant',
-            });
         }
     };
 
