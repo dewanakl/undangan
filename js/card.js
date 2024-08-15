@@ -56,7 +56,7 @@ export const card = (() => {
 
     const renderLike = (comment) => {
         return `
-        <button style="font-size: 0.8rem;" onclick="like.like(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-3 p-0">
+        <button style="font-size: 0.8rem;" onclick="like.like(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} ms-auto rounded-3 p-0">
             <div class="d-flex justify-content-start align-items-center">
                 <p class="my-0 mx-1" data-count-like="${comment.like.love}">${comment.like.love}</p>
                 <i class="me-1 ${likes.has(comment.uuid) ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'}"></i>
@@ -66,7 +66,8 @@ export const card = (() => {
 
     const renderAction = (comment) => {
         const btn = theme.isDarkMode('light', 'dark');
-        let action = '';
+
+        let action = '<div class="d-flex flex-wrap justify-content-start align-items-center">';
 
         if (config.get('can_reply') == true || config.get('can_reply') === undefined) {
             action += `<button style="font-size: 0.8rem;" onclick="comment.reply(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${btn} rounded-4 py-0 me-1">Reply</button>`;
@@ -82,21 +83,22 @@ export const card = (() => {
             action += `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${btn} rounded-4 py-0">Delete</button>`;
         }
 
+        action += '</div>';
+
         return action;
+    };
+
+    const renderReadMore = (uuid, comments) => {
+        const hasId = showHide.get('show').includes(uuid);
+        return `<a style="font-size: 0.8rem;" onclick="comment.showOrHide(this)" data-uuid="${uuid}" data-uuids="${comments.join(',')}" data-show="${hasId ? 'true' : 'false'}" role="button" class="me-auto ms-1 py-0">${hasId ? 'Hide replies' : `Show replies (${comments.length})`}</a>`;
     };
 
     const renderButton = (comment) => {
         return `
         <div class="d-flex flex-wrap justify-content-between align-items-center" id="button-${comment.uuid}">
-            <div class="d-flex flex-wrap justify-content-start align-items-center">
-                ${renderAction(comment)}
-            </div>
-                ${comment.comments.length > 0 ?
-                `<a style="font-size: 0.8rem;" onclick="comment.showOrHide(this)" data-uuid="${comment.uuid}" data-uuids="${comment.comments.map((c) => c.uuid).join(',')}" data-show="${showHide.get('show').includes(comment.uuid) ? 'true' : 'false'}" role="button" class="me-auto ms-1 py-0">${showHide.get('show').includes(comment.uuid) ? 'Hide replies' : `Show replies (${comment.comments.length})`}</a>` :
-                ''}
-            <div class="ms-auto">
-                ${renderLike(comment)}
-            </div>
+            ${renderAction(comment)}
+            ${comment.comments.length > 0 ? renderReadMore(comment.uuid, comment.comments.map((c) => c.uuid)) : ''}
+            ${renderLike(comment)}
         </div>`;
     };
 
@@ -129,7 +131,7 @@ export const card = (() => {
         }
 
         if (is_parent) {
-            return `<strong class="me-1">${util.escapeHtml(comment.name)}</strong><i class="fa-solid ${comment.presence ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'}"></i>`;
+            return `<strong class="me-1">${util.escapeHtml(comment.name)}</strong><i id="badge-${comment.uuid}" class="fa-solid ${comment.presence ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger'}"></i>`;
         }
 
         return `<strong>${util.escapeHtml(comment.name)}</strong>`;
@@ -155,8 +157,12 @@ export const card = (() => {
             </div>
             ${renderTracker(comment)}
             ${renderButton(comment)}
-            ${comment.comments.map((c) => renderContent(c, false)).join('')}
+            ${comment.comments.map((c) => renderInnerContent(c)).join('')}
         </div>`;
+    };
+
+    const renderInnerContent = (comment) => {
+        return renderContent(comment, false);
     };
 
     const fetchTracker = (comment) => {
@@ -185,6 +191,8 @@ export const card = (() => {
     return {
         fetchTracker,
         renderLoading,
+        renderReadMore,
+        renderInnerContent,
         renderContent: (comment) => renderContent(comment, true),
         convertMarkdownToHTML
     }
