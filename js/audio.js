@@ -6,14 +6,13 @@ export const audio = (() => {
     const init = () => {
         music = document.getElementById('button-music');
 
-        audio = new Audio();
-        audio.src = music.getAttribute('data-url');
-        audio.load();
+        audio = new Audio(music.getAttribute('data-url'));
         audio.currentTime = 0;
         audio.autoplay = true;
         audio.muted = false;
         audio.loop = true;
         audio.volume = 1;
+        audio.load();
     };
 
     const button = async (button) => {

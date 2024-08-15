@@ -112,13 +112,17 @@ export const comment = (() => {
             return;
         }
 
+        if (!id && name) {
+            name.disabled = true;
+        }
+
         const presence = document.getElementById('form-presence');
         if (!id && presence && presence.value == "0") {
             alert('Please select presence');
             return;
         }
 
-        if (presence) {
+        if (presence && presence.value != "0") {
             presence.disabled = true;
         }
 
@@ -142,6 +146,10 @@ export const comment = (() => {
             })
             .then();
 
+        if (name) {
+            name.disabled = false;
+        }
+
         form.disabled = false;
         if (cancel) {
             cancel.disabled = false;
@@ -156,6 +164,7 @@ export const comment = (() => {
         if (response?.code === 201) {
             owns.set(response.data.uuid, response.data.own);
             form.value = null;
+
             if (presence) {
                 presence.value = "0";
             }
