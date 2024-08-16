@@ -203,6 +203,15 @@ export const util = (() => {
     const init = () => {
         countDownDate();
 
+        const session = storage('session');
+        if (session.get('token')?.split('.').length === 3) {
+            storage('user').clear();
+            storage('owns').clear();
+            storage('likes').clear();
+            storage('comment').clear();
+            storage('tracker').clear();
+        }
+
         if (storage('information').get('info')) {
             document.getElementById('information')?.remove();
         }
@@ -214,7 +223,7 @@ export const util = (() => {
             return;
         }
 
-        storage('session').set('token', token);
+        session.set('token', token);
         request(HTTP_GET, '/api/config')
             .token(token)
             .then((res) => {

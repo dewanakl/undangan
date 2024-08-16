@@ -8,8 +8,8 @@ import { pagination } from './pagination.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     theme.check();
-    comment.init();
     session.init();
+    comment.init();
     pagination.init();
 
     window.like = like;

@@ -55,6 +55,13 @@ export const session = (() => {
     const init = () => {
         const token = session.get('token');
 
+        if (token?.split('.').length !== 3) {
+            storage('owns').clear();
+            storage('likes').clear();
+            storage('config').clear();
+            storage('comment').clear();
+        }
+
         if (token?.split('.').length !== 3 || JSON.parse(atob(token.split('.')[1])).exp < ((new Date()).getTime() / 1000)) {
             comment.renderLoading();
             (new bootstrap.Modal('#loginModal')).show();
