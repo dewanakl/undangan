@@ -200,8 +200,14 @@ export const util = (() => {
         return uuids;
     };
 
+    const convert = (el) => {
+        el.innerText = el.getAttribute('data-text').normalize('NFC');
+    };
+
     const init = () => {
         countDownDate();
+        convert(document.getElementById('basmalah'));
+        convert(document.getElementById('hamdalah'));
 
         const session = storage('session');
         if (session.get('token')?.split('.').length === 3) {
