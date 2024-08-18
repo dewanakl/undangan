@@ -7,12 +7,17 @@ export const progress = (() => {
 
     let total = 0;
     let loaded = 0;
+    let valid = true;
 
-    const progress = () => {
+    const complete = (type) => {
+        if (!valid) {
+            return;
+        }
+
         loaded += 1;
 
         bar.style.width = Math.min((loaded / total) * 100, 100).toString() + "%";
-        info.innerText = `Loading assets (${loaded}/${total}) [${parseInt((loaded / total) * 100).toFixed(0)}%]`;
+        info.innerText = `Complete loading ${type} (${loaded}/${total}) [${parseInt((loaded / total) * 100).toFixed(0)}%]`;
 
         if (loaded === total) {
             util.guest();
@@ -20,25 +25,44 @@ export const progress = (() => {
         }
     };
 
+    const add = () => {
+        total = total + 1;
+    };
+
+    const invalid = (type) => {
+        info.innerText = `Error loading ${type} (${loaded}/${total}) [${parseInt((loaded / total) * 100).toFixed(0)}%]`;
+        bar.style.backgroundColor = 'red';
+        valid = false;
+    };
+
     const init = () => {
         const assets = document.querySelectorAll('img');
 
         info = document.getElementById('progress-info');
         bar = document.getElementById('progress-bar');
-
         info.style.display = 'block';
-        total = assets.length;
 
+        assets.forEach(add);
         assets.forEach((asset) => {
-            if (asset.complete && asset.naturalWidth !== 0) {
-                progress();
-            } else {
-                asset.addEventListener('load', progress);
+            asset.onerror = () => {
+                invalid('image');
+            };
+            asset.onload = () => {
+                complete('image');
+            };
+
+            if (asset.complete && asset.naturalWidth !== 0 && asset.naturalHeight !== 0) {
+                complete('image');
+            } else if (asset.complete) {
+                invalid('image');
             }
         });
     };
 
     return {
-        init
+        init,
+        add,
+        invalid,
+        complete,
     };
 })();

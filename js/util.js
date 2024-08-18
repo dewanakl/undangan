@@ -3,6 +3,7 @@ import { theme } from './theme.js';
 import { comment } from './comment.js';
 import { storage } from './storage.js';
 import { confetti } from './confetti.js';
+import { progress } from './progress.js';
 import { bootstrap } from './bootstrap.js';
 import { request, HTTP_GET } from './request.js';
 
@@ -224,9 +225,11 @@ export const util = (() => {
         }
 
         session.set('token', token);
+        progress.add();
         request(HTTP_GET, '/api/config')
             .token(token)
             .then((res) => {
+                progress.complete('request');
                 const config = storage('config');
 
                 for (let [key, value] of Object.entries(res.data)) {
@@ -234,6 +237,8 @@ export const util = (() => {
                 }
 
                 comment.comment();
+            }).catch(() => {
+                progress.invalid('request')
             });
     };
 

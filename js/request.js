@@ -20,7 +20,7 @@ export const request = (method, path) => {
     }
 
     return {
-        then(...params) {
+        then(resolve = null, reject = null) {
             return fetch(url + path, req)
                 .then((res) => res.json())
                 .then((res) => {
@@ -30,10 +30,13 @@ export const request = (method, path) => {
 
                     return res;
                 })
-                .then(...params)
-                .catch((err) => alert(err));
+                .then(resolve, reject)
+                .catch((err) => {
+                    alert(err);
+                    throw err;
+                });
         },
-        download(...params) {
+        download(resolve = null, reject = null) {
             return fetch(url + path, req)
                 .then((res) => {
                     if (res.status === 200) {
@@ -42,8 +45,11 @@ export const request = (method, path) => {
 
                     return null;
                 })
-                .then(...params)
-                .catch((err) => alert(err));
+                .then(resolve, reject)
+                .catch((err) => {
+                    alert(err);
+                    throw err;
+                });
         },
         token(token) {
             if (token.split('.').length === 3) {
