@@ -8,11 +8,12 @@ export const audio = (() => {
 
         audio = new Audio(music.getAttribute('data-url'));
         audio.currentTime = 0;
-        audio.autoplay = true;
+        audio.autoplay = false;
         audio.muted = false;
         audio.loop = true;
         audio.volume = 1;
-        audio.load();
+        audio.controls = false;
+        audio.preload = 'auto';
     };
 
     const button = async (button) => {
