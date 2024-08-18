@@ -25,7 +25,7 @@ export const pagination = (() => {
     const buttonAction = async (button, type) => {
         let tmp = button.innerHTML;
         button.disabled = true;
-        button.innerHTML = `${type == 'Next' ? type : ''}<span class="spinner-border spinner-border-sm mx-1"></span>${type == 'Previous' ? type : ''}`;
+        button.innerHTML = `${type == 'Next' ? type : ''}<span class="spinner-border spinner-border-sm mx-1"></span>${type == 'Prev' ? type : ''}`;
 
         await comment.comment();
         document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });
@@ -65,7 +65,7 @@ export const pagination = (() => {
             pageNow -= perPage;
             disabledNext();
 
-            await buttonAction(button, 'Previous');
+            await buttonAction(button, 'Prev');
             page.innerText = parseInt(page.innerText) - 1;
             buttonNext.classList.remove('disabled');
 
