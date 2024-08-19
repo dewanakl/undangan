@@ -8,6 +8,7 @@ export const progress = (() => {
     let total = 0;
     let loaded = 0;
     let valid = true;
+    let push = true;
 
     const complete = (type) => {
         if (!valid) {
@@ -26,7 +27,11 @@ export const progress = (() => {
     };
 
     const add = () => {
-        total = total + 1;
+        if (!push) {
+            return;
+        }
+
+        total += 1;
     };
 
     const invalid = (type) => {
@@ -35,15 +40,8 @@ export const progress = (() => {
         valid = false;
     };
 
-    const init = () => {
-        const assets = document.querySelectorAll('img');
-
-        info = document.getElementById('progress-info');
-        bar = document.getElementById('progress-bar');
-        info.style.display = 'block';
-
-        assets.forEach(add);
-        assets.forEach((asset) => {
+    const run = async () => {
+        document.querySelectorAll('img').forEach((asset) => {
             asset.onerror = () => {
                 invalid('image');
             };
@@ -57,6 +55,17 @@ export const progress = (() => {
                 invalid('image');
             }
         });
+    };
+
+    const init = () => {
+        document.querySelectorAll('img').forEach(add);
+
+        info = document.getElementById('progress-info');
+        bar = document.getElementById('progress-bar');
+        info.style.display = 'block';
+        
+        push = false;
+        run();
     };
 
     return {

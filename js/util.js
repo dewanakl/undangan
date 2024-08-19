@@ -224,11 +224,11 @@ export const util = (() => {
             return;
         }
 
-        session.set('token', token);
         progress.add();
         request(HTTP_GET, '/api/config')
             .token(token)
             .then((res) => {
+                session.set('token', token);
                 progress.complete('request');
                 const config = storage('config');
 
