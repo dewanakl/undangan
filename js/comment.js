@@ -1,3 +1,4 @@
+import { dto } from './dto.js';
 import { card } from './card.js';
 import { util } from './util.js';
 import { theme } from './theme.js';
@@ -8,6 +9,7 @@ import { request, HTTP_GET, HTTP_POST, HTTP_DELETE, HTTP_PUT } from './request.j
 export const comment = (() => {
 
     const owns = storage('owns');
+    const user = storage('user');
     const session = storage('session');
     const showHide = storage('comment');
 
@@ -37,6 +39,7 @@ export const comment = (() => {
         owns.unset(id);
         document.getElementById(id).remove();
 
+        // todo
         document.querySelectorAll('[data-uuids]').forEach((n) => {
             const oldUuids = n.getAttribute('data-uuids').split(',');
 
@@ -101,7 +104,23 @@ export const comment = (() => {
         btn.restore();
 
         if (status) {
-            comment();
+            changeButton(id, false);
+            document.getElementById(`inner-${id}`).remove();
+            document.getElementById(`content-${id}`).innerHTML = card.convertMarkdownToHTML(util.escapeHtml(form.value));
+
+            const badge = document.getElementById(`badge-${id}`);
+            if (!presence || !badge) {
+                return;
+            }
+
+            if (presence.value === "1") {
+                badge.classList.remove('fa-circle-xmark', 'text-danger');
+                badge.classList.add('fa-circle-check', 'text-success');
+                return;
+            }
+
+            badge.classList.remove('fa-circle-check', 'text-success');
+            badge.classList.add('fa-circle-xmark', 'text-danger');
         }
     };
 
@@ -109,12 +128,18 @@ export const comment = (() => {
         const id = button.getAttribute('data-uuid');
 
         const name = document.getElementById('form-name');
-        if (name.value.length == 0) {
+        let nameValue = name.value;
+
+        if (session.get('token')?.split('.').length === 3) {
+            nameValue = user.get('name');
+        }
+
+        if (nameValue.length == 0) {
             alert('Please fill name');
             return;
         }
 
-        if (!id && name) {
+        if (!id && name && session.get('token')?.split('.').length !== 3) {
             name.disabled = true;
         }
 
@@ -140,12 +165,7 @@ export const comment = (() => {
 
         const response = await request(HTTP_POST, '/api/comment')
             .token(session.get('token'))
-            .body({
-                id: id,
-                name: name.value,
-                presence: presence ? presence.value === "1" : true,
-                comment: form.value
-            })
+            .body(dto.postCommentRequest(id, nameValue, presence ? presence.value === "1" : true, form.value))
             .send()
             .then((res) => res, () => null);
 
@@ -164,25 +184,59 @@ export const comment = (() => {
 
         btn.restore();
 
-        if (response?.code === 201) {
-            owns.set(response.data.uuid, response.data.own);
-            form.value = null;
-
-            if (presence) {
-                presence.value = "0";
-            }
-
-            if (!id) {
-                await pagination.reset();
-                document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });
-            }
-
-            if (id) {
-                showHide.set('hidden', showHide.get('hidden').concat([{ uuid: response.data.uuid, show: true }]));
-                showHide.set('show', showHide.get('show').concat([id]));
-                await comment();
-            }
+        if (response?.code !== 201) {
+            return;
         }
+
+        owns.set(response.data.uuid, response.data.own);
+        form.value = null;
+
+        if (presence) {
+            presence.value = "0";
+        }
+
+        if (!id) {
+            const newPage = await pagination.reset();
+            if (newPage) {
+                document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            const dtoPostComment = dto.postCommentResponse(response.data);
+            dtoPostComment.is_admin = session.get('token')?.split('.').length === 3;
+            const newComment = card.renderContent(dtoPostComment);
+
+            document.getElementById('comments').lastElementChild.remove();
+            document.getElementById('comments').innerHTML = newComment + document.getElementById('comments').innerHTML;
+            document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        if (id) {
+            showHide.set('hidden', showHide.get('hidden').concat([dto.commentShowMore(response.data.uuid, true)]));
+            showHide.set('show', showHide.get('show').concat([id]));
+
+            changeButton(id, false);
+            document.getElementById(`inner-${id}`).remove();
+
+            const dtoPostComment = dto.postCommentResponse(response.data);
+            dtoPostComment.is_admin = session.get('token')?.split('.').length === 3;
+            document.getElementById(`${id}`).insertAdjacentHTML('beforeend', card.renderInnerContent(dtoPostComment));
+
+            const containerDiv = document.getElementById(`button-${id}`);
+            const anchorTag = containerDiv.querySelector('a');
+            const uuids = [response.data.uuid];
+
+            if (anchorTag) {
+                if (anchorTag.getAttribute('data-show') === 'false') {
+                    showOrHide(anchorTag);
+                }
+
+                anchorTag.remove();
+            }
+
+            containerDiv.querySelector('button.ms-auto').insertAdjacentHTML('beforebegin', card.renderReadMore(id, anchorTag ? anchorTag.getAttribute('data-uuids').split(',').concat(uuids) : uuids));
+        }
+
     };
 
     const cancel = (id) => {
@@ -271,16 +325,13 @@ export const comment = (() => {
                     return;
                 }
 
-                showHide.set('hidden', (() => {
-                    let arrHidden = showHide.get('hidden');
-                    util.extractUUIDs(res.data).forEach((c) => {
-                        if (!arrHidden.find((item) => item.uuid === c)) {
-                            arrHidden.push({ uuid: c, show: false });
-                        }
-                    });
-
-                    return arrHidden;
-                })());
+                let arr = showHide.get('hidden');
+                util.extractUUIDs(res.data).forEach((c) => {
+                    if (!arr.find((i) => i.uuid === c)) {
+                        arr.push(dto.commentShowMore(c));
+                    }
+                });
+                showHide.set('hidden', arr);
 
                 comments.setAttribute('data-loading', 'false');
                 comments.innerHTML = res.data.map((comment) => card.renderContent(comment)).join('');

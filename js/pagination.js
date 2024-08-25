@@ -43,12 +43,18 @@ export const pagination = (() => {
     };
 
     const reset = async () => {
+        if (pageNow == 0) {
+            return false;
+        }
+
         pageNow = 0;
         resultData = 0;
         page.innerText = 1;
         buttonNext.classList.remove('disabled');
         await comment.comment();
         disabledPrevious();
+
+        return true;
     };
 
     const setResultData = (len) => {
