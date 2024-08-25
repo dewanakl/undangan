@@ -240,7 +240,9 @@ export const comment = (() => {
     };
 
     const cancel = (id) => {
-        if (document.getElementById(`form-inner-${id}`).value.length === 0 || confirm('Are you sure?')) {
+        const form = document.getElementById(`form-inner-${id}`);
+
+        if (form.value.length === 0 || form.value === form.getAttribute('data-original') || confirm('Are you sure?')) {
             changeButton(id, false);
             document.getElementById(`inner-${id}`).remove();
         }
@@ -295,7 +297,7 @@ export const comment = (() => {
                         <option value="1" ${res.data.presence ? 'selected' : ''}>Datang</option>
                         <option value="2" ${res.data.presence ? '' : 'selected'}>Berhalangan</option>
                     </select>` : ''}
-                    <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" placeholder="Type update comment"></textarea>
+                    <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" data-original="" placeholder="Type update comment"></textarea>
                     <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
                         <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0 me-1">Cancel</button>
                         <button style="font-size: 0.8rem;" onclick="comment.update(this)" data-uuid="${id}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0">Update</button>
@@ -303,6 +305,7 @@ export const comment = (() => {
         
                     document.getElementById(`button-${id}`).insertAdjacentElement('afterend', inner);
                     document.getElementById(`form-inner-${id}`).value = res.data.comment;
+                    document.getElementById(`form-inner-${id}`).setAttribute('data-original', res.data.comment);
                 }
             });
 
