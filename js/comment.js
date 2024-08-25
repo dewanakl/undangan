@@ -74,6 +74,16 @@ export const comment = (() => {
         }
 
         const form = document.getElementById(`form-${id ? `inner-${id}` : 'comment'}`);
+        if (id && form.value === form.getAttribute('data-original')) {
+            if (presence) {
+                presence.disabled = false;
+            }
+
+            changeButton(id, false);
+            document.getElementById(`inner-${id}`).remove();
+            return;
+        }
+
         form.disabled = true;
 
         const cancel = document.querySelector(`[onclick="comment.cancel('${id}')"]`);
