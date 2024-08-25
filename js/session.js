@@ -23,13 +23,13 @@ export const session = (() => {
                 email: formEmail.value,
                 password: formPassword.value
             })
+            .send()
             .then((res) => {
                 if (res.code === 200) {
                     session.set('token', res.data.token);
                 }
-
-                return res.code === 200;
-            });
+            })
+            .then((res) => res.code === 200, () => false);
 
         if (res) {
             bootstrap.Modal.getOrCreateInstance('#loginModal').hide();

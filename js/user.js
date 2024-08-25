@@ -8,7 +8,7 @@ export const user = (() => {
     const token = storage('session');
 
     const getUserDetail = () => {
-        request(HTTP_GET, '/api/user').token(token.get('token')).then((res) => {
+        request(HTTP_GET, '/api/user').token(token.get('token')).send().then((res) => {
 
             for (let [key, value] of Object.entries(res.data)) {
                 user.set(key, value);
@@ -27,7 +27,7 @@ export const user = (() => {
     };
 
     const getStatUser = () => {
-        request(HTTP_GET, '/api/stats').token(token.get('token')).then((res) => {
+        request(HTTP_GET, '/api/stats').token(token.get('token')).send().then((res) => {
             document.getElementById('count-comment').innerHTML = res.data.comments.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             document.getElementById('count-like').innerHTML = res.data.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             document.getElementById('count-present').innerHTML = res.data.present.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -71,7 +71,7 @@ export const user = (() => {
             body({
                 filter: Boolean(checkbox.checked)
             }).
-            then();
+            send();
 
         label.restore();
     };
@@ -84,7 +84,7 @@ export const user = (() => {
             body({
                 can_reply: Boolean(checkbox.checked)
             }).
-            then();
+            send();
 
         label.restore();
     };
@@ -97,7 +97,7 @@ export const user = (() => {
             body({
                 can_edit: Boolean(checkbox.checked)
             }).
-            then();
+            send();
 
         label.restore();
     };
@@ -110,7 +110,7 @@ export const user = (() => {
             body({
                 can_delete: Boolean(checkbox.checked)
             }).
-            then();
+            send();
 
         label.restore();
     };
@@ -124,6 +124,7 @@ export const user = (() => {
 
         await request(HTTP_PUT, '/api/key').
             token(token.get('token')).
+            send().
             then((res) => {
                 if (res.data.status) {
                     getUserDetail();
@@ -153,7 +154,8 @@ export const user = (() => {
                 old_password: old.value,
                 new_password: newest.value,
             }).
-            then((res) => res.data.status);
+            send().
+            then((res) => res.data.status, () => false);
 
         btn.restore();
 
@@ -185,7 +187,8 @@ export const user = (() => {
             body({
                 name: name.value,
             }).
-            then((res) => res.data.status);
+            send().
+            then((res) => res.data.status, () => false);
 
         name.disabled = false;
 

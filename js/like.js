@@ -18,6 +18,7 @@ export const like = (() => {
         if (likes.has(id)) {
             await request(HTTP_PATCH, '/api/comment/' + likes.get(id))
                 .token(session.get('token'))
+                .send()
                 .then((res) => {
                     if (res.data.status) {
                         likes.unset(id);
@@ -37,6 +38,7 @@ export const like = (() => {
 
         await request(HTTP_POST, '/api/comment/' + id)
             .token(session.get('token'))
+            .send()
             .then((res) => {
                 if (res.code == 201) {
                     likes.set(id, res.data.uuid);

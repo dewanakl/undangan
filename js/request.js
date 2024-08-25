@@ -20,7 +20,7 @@ export const request = (method, path) => {
     }
 
     return {
-        then(resolve = null, reject = null) {
+        send() {
             return fetch(url + path, req)
                 .then((res) => res.json())
                 .then((res) => {
@@ -30,13 +30,12 @@ export const request = (method, path) => {
 
                     return res;
                 })
-                .then(resolve, reject)
                 .catch((err) => {
                     alert(err);
                     throw err;
                 });
         },
-        download(resolve = null, reject = null) {
+        download() {
             return fetch(url + path, req)
                 .then((res) => {
                     if (res.status === 200) {
@@ -45,7 +44,6 @@ export const request = (method, path) => {
 
                     return null;
                 })
-                .then(resolve, reject)
                 .catch((err) => {
                     alert(err);
                     throw err;

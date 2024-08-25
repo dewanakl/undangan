@@ -26,7 +26,8 @@ export const comment = (() => {
 
         const status = await request(HTTP_DELETE, '/api/comment/' + owns.get(id))
             .token(session.get('token'))
-            .then((res) => res.data.status);
+            .send()
+            .then((res) => res.data.status, () => false);
 
         if (!status) {
             btn.restore();
@@ -85,7 +86,8 @@ export const comment = (() => {
                 presence: presence ? presence.value === "1" : null,
                 comment: form.value
             })
-            .then((res) => res.data.status);
+            .send()
+            .then((res) => res.data.status, () => false);
 
         form.disabled = false;
         if (cancel) {
@@ -144,7 +146,8 @@ export const comment = (() => {
                 presence: presence ? presence.value === "1" : true,
                 comment: form.value
             })
-            .then();
+            .send()
+            .then((res) => res, () => null);
 
         if (name) {
             name.disabled = false;
@@ -223,30 +226,31 @@ export const comment = (() => {
         const tmp = button.innerText;
         button.innerText = 'Loading..';
 
-        const status = await request(HTTP_GET, '/api/comment/' + id)
+        await request(HTTP_GET, '/api/comment/' + id)
             .token(session.get('token'))
-            .then((res) => res);
-
-        if (status?.code === 200) {
-            const inner = document.createElement('div');
-            inner.classList.add('my-2');
-            inner.id = `inner-${id}`;
-            inner.innerHTML = `
-            <label for="form-inner-${id}" class="form-label">Edit</label>
-            ${document.getElementById(id).getAttribute('data-parent') === 'true' ? `
-            <select class="form-select shadow-sm mb-2 rounded-4" id="form-inner-presence-${id}">
-                <option value="1" ${status.data.presence ? 'selected' : ''}>Datang</option>
-                <option value="2" ${status.data.presence ? '' : 'selected'}>Berhalangan</option>
-            </select>` : ''}
-            <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" placeholder="Type update comment"></textarea>
-            <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
-                <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0 me-1">Cancel</button>
-                <button style="font-size: 0.8rem;" onclick="comment.update(this)" data-uuid="${id}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0">Update</button>
-            </div>`;
-
-            document.getElementById(`button-${id}`).insertAdjacentElement('afterend', inner);
-            document.getElementById(`form-inner-${id}`).value = status.data.comment;
-        }
+            .send()
+            .then((res) => {
+                if (res.code === 200) {
+                    const inner = document.createElement('div');
+                    inner.classList.add('my-2');
+                    inner.id = `inner-${id}`;
+                    inner.innerHTML = `
+                    <label for="form-inner-${id}" class="form-label">Edit</label>
+                    ${document.getElementById(id).getAttribute('data-parent') === 'true' && session.get('token')?.split('.').length !== 3 ? `
+                    <select class="form-select shadow-sm mb-2 rounded-4" id="form-inner-presence-${id}">
+                        <option value="1" ${res.data.presence ? 'selected' : ''}>Datang</option>
+                        <option value="2" ${res.data.presence ? '' : 'selected'}>Berhalangan</option>
+                    </select>` : ''}
+                    <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" placeholder="Type update comment"></textarea>
+                    <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
+                        <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0 me-1">Cancel</button>
+                        <button style="font-size: 0.8rem;" onclick="comment.update(this)" data-uuid="${id}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0">Update</button>
+                    </div>`;
+        
+                    document.getElementById(`button-${id}`).insertAdjacentElement('afterend', inner);
+                    document.getElementById(`form-inner-${id}`).value = res.data.comment;
+                }
+            });
 
         button.innerText = tmp;
     };
@@ -256,8 +260,9 @@ export const comment = (() => {
         const comments = document.getElementById('comments');
         const onNullComment = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
 
-        await request(HTTP_GET, `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
+        return await request(HTTP_GET, `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
             .token(session.get('token'))
+            .send()
             .then((res) => {
                 pagination.setResultData(res.data.length);
 

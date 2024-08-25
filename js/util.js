@@ -227,6 +227,7 @@ export const util = (() => {
         progress.add();
         request(HTTP_GET, '/api/config')
             .token(token)
+            .send()
             .then((res) => {
                 session.set('token', token);
                 progress.complete('request');
