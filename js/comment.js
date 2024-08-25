@@ -39,16 +39,16 @@ export const comment = (() => {
         owns.unset(id);
         document.getElementById(id).remove();
 
-        // todo
-        document.querySelectorAll('[data-uuids]').forEach((n) => {
+        document.querySelectorAll('a[onclick="comment.showOrHide(this)"]').forEach((n) => {
             const oldUuids = n.getAttribute('data-uuids').split(',');
 
             if (oldUuids.find((i) => i === id)) {
                 const uuids = oldUuids.filter((i) => i !== id).join(',');
-                n.setAttribute('data-uuids', uuids);
-
+                
                 if (uuids.length === 0) {
                     n.remove();
+                } else {
+                    n.setAttribute('data-uuids', uuids);
                 }
             }
         });
@@ -234,7 +234,7 @@ export const comment = (() => {
                 anchorTag.remove();
             }
 
-            containerDiv.querySelector('button.ms-auto').insertAdjacentHTML('beforebegin', card.renderReadMore(id, anchorTag ? anchorTag.getAttribute('data-uuids').split(',').concat(uuids) : uuids));
+            containerDiv.querySelector(`button[onclick="like.like(this)"][data-uuid="${id}"]`).insertAdjacentHTML('beforebegin', card.renderReadMore(id, anchorTag ? anchorTag.getAttribute('data-uuids').split(',').concat(uuids) : uuids));
         }
 
     };
