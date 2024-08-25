@@ -28,6 +28,8 @@ export const session = (() => {
                 if (res.code === 200) {
                     session.set('token', res.data.token);
                 }
+
+                return res;
             })
             .then((res) => res.code === 200, () => false);
 
