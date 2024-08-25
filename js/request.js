@@ -6,7 +6,7 @@ export const HTTP_DELETE = 'DELETE';
 
 export const request = (method, path) => {
 
-    let url = document.querySelector('body').getAttribute('data-url');
+    let url = document.body.getAttribute('data-url');
     let req = {
         method: method,
         headers: new Headers({

@@ -217,7 +217,7 @@ export const util = (() => {
             document.getElementById('information')?.remove();
         }
 
-        const token = document.querySelector('body').getAttribute('data-key');
+        const token = document.body.getAttribute('data-key');
         if (!token || token.length === 0) {
             document.getElementById('comment')?.remove();
             document.querySelector('a.nav-link[href="#comment"]')?.closest('li.nav-item')?.remove();
