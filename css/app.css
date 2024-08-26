@@ -12,8 +12,9 @@ html {
 }
 
 body {
-    font-family: 'Josefin Sans', sans-serif !important;
+    font-family: "Josefin Sans", sans-serif !important;
     padding: 0 !important;
+    overflow-x: hidden;
 }
 
 .font-esthetic {
@@ -21,7 +22,11 @@ body {
 }
 
 .font-arabic {
-    font-family: 'Noto Naskh Arabic', serif !important;
+    font-family: "Noto Naskh Arabic", serif !important;
+}
+
+.font-mistrully {
+    font-family: "mistrully";
 }
 
 .img-crop {
@@ -32,7 +37,7 @@ body {
     border-radius: 50%;
 }
 
-.img-crop>img {
+.img-crop > img {
     display: inline;
     margin: 0 auto;
     height: auto;
@@ -90,7 +95,7 @@ body {
     }
 }
 
-.mouse-animation>.scroll-animation {
+.mouse-animation > .scroll-animation {
     width: 0.25rem;
     height: 0.625rem;
     border-radius: 25%;
@@ -151,10 +156,92 @@ footer {
     color: black;
 }
 
-.bg-cover-black {
-    background: linear-gradient(to bottom, rgba(var(--bs-dark-rgb), 0.9), rgba(var(--bs-dark-rgb), 0.9), rgba(var(--bs-dark-rgb), 0.9), rgba(var(--bs-dark-rgb), 0.9), rgba(var(--bs-dark-rgb), 0.9), rgba(var(--bs-dark-rgb), 1));
+.bg-cover-white {
+    background: red;
 }
 
-.bg-cover-white {
-    background: linear-gradient(to bottom, rgba(var(--bs-light-rgb), 0.9), rgba(var(--bs-light-rgb), 0.9), rgba(var(--bs-light-rgb), 0.9), rgba(var(--bs-light-rgb), 0.9), rgba(var(--bs-light-rgb), 0.9), rgba(var(--bs-light-rgb), 1));
+.mandatory-scroll-snapping {
+    scroll-snap-type: y mandatory;
+}
+
+main {
+    background-color: #fff5ec;
+}
+
+.section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.home-image-container {
+    position: relative;
+    display: flex;
+    left: 8vh;
+}
+
+.home-image {
+    width: auto; /* Adjust image size as needed */
+    height: 100vh;
+    position: relative;
+    z-index: 2;
+}
+
+.decoration-front {
+    z-index: 3; /* Place decoration in front of the image */
+}
+
+.decoration-back {
+    z-index: 1; /* Place decoration behind the image */
+}
+
+.decoration {
+    /* ... (existing properties) ... */
+    /* Adjust position and size as needed */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: float 20s infinite ease-in-out;
+}
+
+.decoration img {
+    /* Adjust size and position for individual images */
+    width: 50px;
+    height: 50px;
+}
+/* ... and so on for other shapes ... */
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.decoration-1 {
+    top: 10%;
+    left: 20%;
+}
+
+.decoration-2 {
+    top: 30%;
+    left: 40%;
+}
+
+.decoration-3 {
+    top: 50%;
+    left: 60%;
+}
+
+@font-face {
+    font-family: "mistrully";
+    src: url("/assets/font/mistrully.ttf") format("truetype");
 }
