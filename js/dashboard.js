@@ -7,11 +7,10 @@ import { comment } from './comment.js';
 import { pagination } from './pagination.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    theme.check();
-    comment.init();
-    pagination.init();
-    
     admin.init();
+
+    theme.check();
+    pagination.init();
 
     window.like = like;
     window.admin = admin;

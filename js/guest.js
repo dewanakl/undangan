@@ -1,7 +1,7 @@
 import { util } from './util.js';
 import { audio } from './audio.js';
 import { theme } from './theme.js';
-import { session } from "./session.js";
+import { session } from './session.js';
 import { storage } from './storage.js';
 import { confetti } from './confetti.js';
 
@@ -96,6 +96,7 @@ export const guest = (() => {
             storage('user').clear();
             storage('owns').clear();
             storage('likes').clear();
+            storage('session').clear();
             storage('comment').clear();
             storage('tracker').clear();
         }

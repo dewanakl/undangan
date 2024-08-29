@@ -384,7 +384,7 @@ export const comment = (() => {
         }
     };
 
-    const init = () => {
+    const setEmpty = () => {
         if (!showHide.has('hidden')) {
             showHide.set('hidden', []);
         }
@@ -395,7 +395,7 @@ export const comment = (() => {
     };
 
     return {
-        init,
+        setEmpty,
         cancel,
         send,
         edit,

@@ -270,6 +270,7 @@ export const admin = (() => {
             storage('likes').clear();
             storage('config').clear();
             storage('comment').clear();
+            storage('session').clear();
         }
 
         if (!session.isAdmin() || JSON.parse(atob(token.get('token').split('.')[1])).exp < ((new Date()).getTime() / 1000)) {
@@ -280,6 +281,7 @@ export const admin = (() => {
 
         getUserDetail();
         getStatUser();
+        comment.setEmpty();
         comment.comment();
     };
 
