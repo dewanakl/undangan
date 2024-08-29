@@ -72,7 +72,6 @@ export const session = (() => {
                     config.set(key, value);
                 }
 
-                comment.setEmpty();
                 await comment.comment();
                 progress.complete('request');
             }).catch(() => {

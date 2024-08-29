@@ -281,7 +281,6 @@ export const admin = (() => {
 
         getUserDetail();
         getStatUser();
-        comment.setEmpty();
         comment.comment();
     };
 

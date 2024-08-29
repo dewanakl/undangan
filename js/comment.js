@@ -320,6 +320,14 @@ export const comment = (() => {
     };
 
     const comment = async () => {
+        if (!showHide.has('hidden')) {
+            showHide.set('hidden', []);
+        }
+
+        if (!showHide.has('show')) {
+            showHide.set('show', []);
+        }
+        
         card.renderLoading();
         const comments = document.getElementById('comments');
         const onNullComment = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
@@ -384,18 +392,7 @@ export const comment = (() => {
         }
     };
 
-    const setEmpty = () => {
-        if (!showHide.has('hidden')) {
-            showHide.set('hidden', []);
-        }
-
-        if (!showHide.has('show')) {
-            showHide.set('show', []);
-        }
-    };
-
     return {
-        setEmpty,
         cancel,
         send,
         edit,
