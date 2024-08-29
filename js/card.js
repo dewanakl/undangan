@@ -157,7 +157,7 @@ export const card = (() => {
             </div>
             ${renderTracker(comment)}
             ${renderButton(comment)}
-            ${comment.comments.map((c) => renderInnerContent(c)).join('')}
+            <div id="reply-content-${comment.uuid}">${comment.comments.map((c) => renderInnerContent(c)).join('')}</div>
         </div>`;
     };
 

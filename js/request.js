@@ -1,3 +1,5 @@
+import { dto } from "./dto.js";
+
 export const HTTP_GET = 'GET';
 export const HTTP_POST = 'POST';
 export const HTTP_PUT = 'PUT';
@@ -20,7 +22,12 @@ export const request = (method, path) => {
     }
 
     return {
-        send() {
+        /**
+         * @template T
+         * @param {((data: any) => T)=} transform
+         * @returns {Promise<ReturnType<typeof dto.baseResponse<T>>>}
+         */
+        send(transform = null) {
             return fetch(url + path, req)
                 .then((res) => res.json())
                 .then((res) => {
@@ -28,7 +35,11 @@ export const request = (method, path) => {
                         throw res.error[0];
                     }
 
-                    return res;
+                    if (transform) {
+                        res.data = transform(res.data);
+                    }
+
+                    return dto.baseResponse(res.code, res.data, res.error);
                 })
                 .catch((err) => {
                     alert(err);

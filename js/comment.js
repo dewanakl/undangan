@@ -176,7 +176,7 @@ export const comment = (() => {
         const response = await request(HTTP_POST, '/api/comment')
             .token(session.get('token'))
             .body(dto.postCommentRequest(id, nameValue, presence ? presence.value === "1" : true, form.value))
-            .send()
+            .send(dto.postCommentResponse)
             .then((res) => res, () => null);
 
         if (name) {
@@ -212,12 +212,10 @@ export const comment = (() => {
                 return;
             }
 
-            const dtoPostComment = dto.postCommentResponse(response.data);
-            dtoPostComment.is_admin = session.get('token')?.split('.').length === 3;
-            const newComment = card.renderContent(dtoPostComment);
+            response.data.is_admin = session.get('token')?.split('.').length === 3;
 
             document.getElementById('comments').lastElementChild.remove();
-            document.getElementById('comments').innerHTML = newComment + document.getElementById('comments').innerHTML;
+            document.getElementById('comments').innerHTML = card.renderContent(response.data) + document.getElementById('comments').innerHTML;
             document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -228,9 +226,8 @@ export const comment = (() => {
             changeButton(id, false);
             document.getElementById(`inner-${id}`).remove();
 
-            const dtoPostComment = dto.postCommentResponse(response.data);
-            dtoPostComment.is_admin = session.get('token')?.split('.').length === 3;
-            document.getElementById(`${id}`).insertAdjacentHTML('beforeend', card.renderInnerContent(dtoPostComment));
+            response.data.is_admin = session.get('token')?.split('.').length === 3;
+            document.getElementById(`reply-content-${id}`).insertAdjacentHTML('beforeend', card.renderInnerContent(response.data));
 
             const containerDiv = document.getElementById(`button-${id}`);
             const anchorTag = containerDiv.querySelector('a');
