@@ -1,3 +1,4 @@
+import { util } from './util.js';
 import { audio } from './audio.js';
 import { theme } from './theme.js';
 import { session } from "./session";
@@ -70,7 +71,7 @@ export const guest = (() => {
 
         document.body.style.overflowY = 'scroll';
         document.body.scrollIntoView({ behavior: 'instant' });
-        opacity('welcome', 0.025);
+        util.opacity('welcome', 0.025);
 
         audio.play();
         audio.showButton();

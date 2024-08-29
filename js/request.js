@@ -1,4 +1,5 @@
 import { dto } from "./dto.js";
+import { session } from "./session.js";
 
 export const HTTP_GET = 'GET';
 export const HTTP_POST = 'POST';
@@ -61,7 +62,7 @@ export const request = (method, path) => {
                 });
         },
         token(token) {
-            if (token.split('.').length === 3) {
+            if (session.isAdmin()) {
                 req.headers.append('Authorization', 'Bearer ' + token);
                 return this;
             }
