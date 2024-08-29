@@ -114,7 +114,7 @@
                         <div class="rounded-4 p-2 mb-4 shadow" style="background-color: var(--bs-gray-200)">
                             <div class="d-flex justify-content-between">
                                 <p class="fw-semibold m-1" style="color: var(--bs-gray-900);"><i class="fa-solid fa-home mx-2"></i>Home</p>
-                                <button class="btn btn-success rounded-3 btn-sm m-0 pb-0" onclick="user.download(this)">
+                                <button class="btn btn-success rounded-3 btn-sm m-0 pb-0" onclick="admin.download(this)">
                                     <i class="fa-solid fa-download"></i>
                                     <span class="d-none d-sm-inline ms-1">Download</span>
                                 </button>
@@ -265,12 +265,12 @@
                             <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-person me-1"></i>Name</p>
                             <form>
                                 <div class="mb-3">
-                                    <input type="text" class="form-control form-control-sm rounded-4" id="form-name" name="form-name" oninput="user.enableButtonName()">
+                                    <input type="text" class="form-control form-control-sm rounded-4" id="form-name" name="form-name" oninput="admin.enableButtonName()">
                                 </div>
                             </form>
 
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-4" id="button-change-name" onclick="user.changeName(this)" disabled>Change</button>
+                                <button type="button" class="btn btn-sm btn-primary rounded-4" id="button-change-name" onclick="admin.changeName(this)" disabled>Change</button>
                             </div>
                         </div>
 
@@ -280,11 +280,11 @@
 
                             <div class="input-group input-group-sm rounded-4 mb-3">
                                 <input type="text" class="form-control form-control-sm rounded-start-4" id="dashboard-accesskey" readonly>
-                                <button class="btn btn-sm btn-outline-secondary rounded-end-4" type="button" onclick="user.copyAccessKey(this)"><i class="fa-solid fa-copy"></i></button>
+                                <button class="btn btn-sm btn-outline-secondary rounded-end-4" type="button" onclick="admin.copyAccessKey(this)"><i class="fa-solid fa-copy"></i></button>
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-4" onclick="user.regenerate(this)">Regenerate</button>
+                                <button type="button" class="btn btn-sm btn-primary rounded-4" onclick="admin.regenerate(this)">Regenerate</button>
                             </div>
                         </div>
 
@@ -297,19 +297,19 @@
                                 <label class="form-check-label" for="darkMode">Dark Mode</label>
                             </div>
                             <div class="form-check form-switch mb-1">
-                                <input class="form-check-input" type="checkbox" role="button" id="filterBadWord" onchange="user.changeFilterBadWord(this)">
+                                <input class="form-check-input" type="checkbox" role="button" id="filterBadWord" onchange="admin.changeFilterBadWord(this)">
                                 <label class="form-check-label" for="filterBadWord">Filter Bad Word</label>
                             </div>
                             <div class="form-check form-switch mb-1">
-                                <input class="form-check-input" type="checkbox" role="button" id="replyComment" onchange="user.replyComment(this)">
+                                <input class="form-check-input" type="checkbox" role="button" id="replyComment" onchange="admin.replyComment(this)">
                                 <label class="form-check-label" for="replyComment">Can Reply Comment</label>
                             </div>
                             <div class="form-check form-switch mb-1">
-                                <input class="form-check-input" type="checkbox" role="button" id="editComment" onchange="user.editComment(this)">
+                                <input class="form-check-input" type="checkbox" role="button" id="editComment" onchange="admin.editComment(this)">
                                 <label class="form-check-label" for="editComment">Can Edit Comment</label>
                             </div>
                             <div class="form-check form-switch mb-1">
-                                <input class="form-check-input" type="checkbox" role="button" id="deleteComment" onchange="user.deleteComment(this)">
+                                <input class="form-check-input" type="checkbox" role="button" id="deleteComment" onchange="admin.deleteComment(this)">
                                 <label class="form-check-label" for="deleteComment">Can Delete Comment</label>
                             </div>
                         </div>
@@ -323,12 +323,12 @@
                                     <input type="password" class="form-control form-control-sm rounded-4" id="old_password" name="old_password" placeholder="Old Password" autocomplete="current-password">
                                 </div>
                                 <div class="mb-3">
-                                    <input type="password" class="form-control form-control-sm rounded-4" id="new_password" name="new_password" oninput="user.enableButtonPassword()" placeholder="New Password" autocomplete="new-password">
+                                    <input type="password" class="form-control form-control-sm rounded-4" id="new_password" name="new_password" oninput="admin.enableButtonPassword()" placeholder="New Password" autocomplete="new-password">
                                 </div>
                             </form>
 
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-primary rounded-4" id="button-change-password" onclick="user.changePassword(this)" disabled>Change</button>
+                                <button type="button" class="btn btn-sm btn-primary rounded-4" id="button-change-password" onclick="admin.changePassword(this)" disabled>Change</button>
                             </div>
                         </div>
 

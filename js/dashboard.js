@@ -1,5 +1,5 @@
 import { like } from './like.js';
-import { user } from './user.js';
+import { admin } from './admin.js';
 import { theme } from './theme.js';
 import { navbar } from './navbar.js';
 import { session } from './session.js';
@@ -8,12 +8,13 @@ import { pagination } from './pagination.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     theme.check();
-    session.init();
     comment.init();
     pagination.init();
+    
+    admin.init();
 
     window.like = like;
-    window.user = user;
+    window.admin = admin;
     window.theme = theme;
     window.navbar = navbar;
     window.session = session;

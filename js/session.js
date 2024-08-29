@@ -1,9 +1,10 @@
 import { util } from './util.js';
-import { user } from './user.js';
+import { admin } from './admin.js';
 import { storage } from './storage.js';
 import { comment } from './comment.js';
+import { progress } from './progress.js';
 import { bootstrap } from './bootstrap.js';
-import { request, HTTP_POST } from './request.js';
+import { request, HTTP_POST, HTTP_GET } from './request.js';
 
 export const session = (() => {
 
@@ -35,8 +36,8 @@ export const session = (() => {
 
         if (res) {
             bootstrap.Modal.getOrCreateInstance('#loginModal').hide();
-            user.getUserDetail();
-            user.getStatUser();
+            admin.getUserDetail();
+            admin.getStatUser();
             comment.comment();
         }
 
@@ -54,29 +55,33 @@ export const session = (() => {
         (new bootstrap.Modal('#loginModal')).show();
     };
 
-    const init = () => {
-        const token = session.get('token');
+    const isAdmin = () => {
+        return session.get('token')?.split('.').length === 3;
+    };
 
-        if (token?.split('.').length !== 3) {
-            storage('owns').clear();
-            storage('likes').clear();
-            storage('config').clear();
-            storage('comment').clear();
-        }
+    const guest = () => {
+        progress.add();
+        request(HTTP_GET, '/api/config')
+            .token(document.body.getAttribute('data-key'))
+            .send()
+            .then(async (res) => {
+                session.set('token', document.body.getAttribute('data-key'));
 
-        if (token?.split('.').length !== 3 || JSON.parse(atob(token.split('.')[1])).exp < ((new Date()).getTime() / 1000)) {
-            comment.renderLoading();
-            (new bootstrap.Modal('#loginModal')).show();
-            return;
-        }
+                const config = storage('config');
+                for (let [key, value] of Object.entries(res.data)) {
+                    config.set(key, value);
+                }
 
-        user.getUserDetail();
-        user.getStatUser();
-        comment.comment();
+                await comment.comment();
+                progress.complete('request');
+            }).catch(() => {
+                progress.invalid('request')
+            });
     };
 
     return {
-        init,
+        isAdmin,
+        guest,
         login,
         logout
     };

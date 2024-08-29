@@ -1,8 +1,10 @@
 import { util } from './util.js';
 import { storage } from './storage.js';
+import { session } from './session.js';
+import { comment } from './comment.js';
 import { request, HTTP_GET, HTTP_PATCH, HTTP_PUT } from './request.js';
 
-export const user = (() => {
+export const admin = (() => {
 
     const user = storage('user');
     const token = storage('session');
@@ -261,7 +263,27 @@ export const user = (() => {
         }, 1500);
     };
 
+    const init = () => {
+        if (!session.isAdmin()) {
+            storage('owns').clear();
+            storage('likes').clear();
+            storage('config').clear();
+            storage('comment').clear();
+        }
+
+        if (!session.isAdmin() || JSON.parse(atob(token.get('token').split('.')[1])).exp < ((new Date()).getTime() / 1000)) {
+            comment.renderLoading();
+            (new bootstrap.Modal('#loginModal')).show();
+            return;
+        }
+
+        getUserDetail();
+        getStatUser();
+        comment.comment();
+    };
+
     return {
+        init,
         getUserDetail,
         getStatUser,
         changeFilterBadWord,
