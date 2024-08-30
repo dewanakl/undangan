@@ -23,14 +23,14 @@ export const card = (() => {
         comments.innerHTML = `
         <div class="card-body bg-theme-${theme.isDarkMode('dark', 'light')} shadow p-3 mx-0 mt-0 mb-3 rounded-4">
             <div class="d-flex flex-wrap justify-content-between align-items-center placeholder-wave">
-                <span class="placeholder bg-secondary col-4 rounded-3"></span>
-                <span class="placeholder bg-secondary col-2 rounded-3"></span>
+                <span class="placeholder bg-secondary col-4 rounded-3 my-1"></span>
+                <span class="placeholder bg-secondary col-2 rounded-3 my-1"></span>
             </div>
             <hr class="text-${theme.isDarkMode('light', 'dark')} my-1">
             <p class="card-text placeholder-wave">
                 <span class="placeholder bg-secondary col-6 rounded-3"></span>
                 <span class="placeholder bg-secondary col-5 rounded-3"></span>
-                <span class="placeholder bg-secondary col-12 rounded-3"></span>
+                <span class="placeholder bg-secondary col-12 rounded-3 my-1"></span>
             </p>
         </div>`.repeat(pagination.getPer());
     };
