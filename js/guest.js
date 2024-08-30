@@ -86,7 +86,7 @@ export const guest = (() => {
             document.getElementById('information')?.remove();
         }
         
-        if (document.body.getAttribute('data-key')?.length === 0) {
+        if ((document.body.getAttribute('data-key') ?? "").length === 0) {
             document.getElementById('comment')?.remove();
             document.querySelector('a.nav-link[href="#comment"]')?.closest('li.nav-item')?.remove();
             return;
