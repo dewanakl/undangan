@@ -8,10 +8,9 @@ import { request, HTTP_GET, HTTP_PATCH, HTTP_PUT } from './request.js';
 export const admin = (() => {
 
     const user = storage('user');
-    const token = storage('session');
 
     const getUserDetail = () => {
-        request(HTTP_GET, '/api/user').token(token.get('token')).send().then((res) => {
+        request(HTTP_GET, '/api/user').token(session.getToken()).send().then((res) => {
 
             for (let [key, value] of Object.entries(res.data)) {
                 user.set(key, value);
@@ -30,7 +29,7 @@ export const admin = (() => {
     };
 
     const getStatUser = () => {
-        request(HTTP_GET, '/api/stats').token(token.get('token')).send().then((res) => {
+        request(HTTP_GET, '/api/stats').token(session.getToken()).send().then((res) => {
             document.getElementById('count-comment').innerHTML = res.data.comments.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             document.getElementById('count-like').innerHTML = res.data.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             document.getElementById('count-present').innerHTML = res.data.present.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -70,7 +69,7 @@ export const admin = (() => {
         const label = addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
-            token(token.get('token')).
+            token(session.getToken()).
             body({
                 filter: Boolean(checkbox.checked)
             }).
@@ -83,7 +82,7 @@ export const admin = (() => {
         const label = addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
-            token(token.get('token')).
+            token(session.getToken()).
             body({
                 can_reply: Boolean(checkbox.checked)
             }).
@@ -96,7 +95,7 @@ export const admin = (() => {
         const label = addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
-            token(token.get('token')).
+            token(session.getToken()).
             body({
                 can_edit: Boolean(checkbox.checked)
             }).
@@ -109,7 +108,7 @@ export const admin = (() => {
         const label = addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
-            token(token.get('token')).
+            token(session.getToken()).
             body({
                 can_delete: Boolean(checkbox.checked)
             }).
@@ -126,7 +125,7 @@ export const admin = (() => {
         const btn = addLoadingButton(button);
 
         await request(HTTP_PUT, '/api/key').
-            token(token.get('token')).
+            token(session.getToken()).
             send().
             then((res) => {
                 if (res.data.status) {
@@ -152,7 +151,7 @@ export const admin = (() => {
         const btn = addLoadingButton(button);
 
         const result = await request(HTTP_PATCH, '/api/user').
-            token(token.get('token')).
+            token(session.getToken()).
             body({
                 old_password: old.value,
                 new_password: newest.value,
@@ -186,7 +185,7 @@ export const admin = (() => {
         const btn = addLoadingButton(button);
 
         const result = await request(HTTP_PATCH, '/api/user').
-            token(token.get('token')).
+            token(session.getToken()).
             body({
                 name: name.value,
             }).
@@ -207,7 +206,7 @@ export const admin = (() => {
     const download = async (button) => {
         const btn = addLoadingButton(button);
 
-        const res = await request(HTTP_GET, '/api/download').token(token.get('token')).download();
+        const res = await request(HTTP_GET, '/api/download').token(session.getToken()).download();
         const data = await res?.blob();
         const filename = res?.headers.get('content-disposition')?.match(/(?<=")(?:\\.|[^"\\])*(?=")/)[0];
 
@@ -273,7 +272,7 @@ export const admin = (() => {
             storage('session').clear();
         }
 
-        if (!session.isAdmin() || JSON.parse(atob(token.get('token').split('.')[1])).exp < ((new Date()).getTime() / 1000)) {
+        if (!session.isAdmin() || JSON.parse(atob(session.getToken().split('.')[1])).exp < ((new Date()).getTime() / 1000)) {
             comment.renderLoading();
             (new bootstrap.Modal('#loginModal')).show();
             return;

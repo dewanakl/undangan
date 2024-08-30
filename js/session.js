@@ -10,6 +10,8 @@ export const session = (() => {
 
     const session = storage('session');
 
+    const getToken = () => session.get('token');
+
     const login = async (button) => {
 
         const btn = util.disableButton(button, '<div class="spinner-border spinner-border-sm me-1" role="status"></div>Loading..');
@@ -56,7 +58,7 @@ export const session = (() => {
     };
 
     const isAdmin = () => {
-        return session.get('token')?.split('.').length === 3;
+        return getToken()?.split('.').length === 3;
     };
 
     const guest = () => {
@@ -80,9 +82,10 @@ export const session = (() => {
     };
 
     return {
-        isAdmin,
         guest,
         login,
-        logout
+        logout,
+        isAdmin,
+        getToken,
     };
 })();

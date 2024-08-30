@@ -2,6 +2,7 @@ import { dto } from './dto.js';
 import { card } from './card.js';
 import { util } from './util.js';
 import { theme } from './theme.js';
+import { session } from './session.js';
 import { storage } from './storage.js';
 import { pagination } from './pagination.js';
 import { request, HTTP_GET, HTTP_POST, HTTP_DELETE, HTTP_PUT } from './request.js';
@@ -10,7 +11,6 @@ export const comment = (() => {
 
     const owns = storage('owns');
     const user = storage('user');
-    const session = storage('session');
     const showHide = storage('comment');
 
     const remove = async (button) => {
@@ -20,14 +20,14 @@ export const comment = (() => {
 
         const id = button.getAttribute('data-uuid');
 
-        if (session.get('token')?.split('.').length === 3) {
+        if (session.isAdmin()) {
             owns.set(id, button.getAttribute('data-own'));
         }
 
         const btn = util.disableButton(button);
 
         const status = await request(HTTP_DELETE, '/api/comment/' + owns.get(id))
-            .token(session.get('token'))
+            .token(session.getToken())
             .send()
             .then((res) => res.data.status, () => false);
 
@@ -94,7 +94,7 @@ export const comment = (() => {
         const btn = util.disableButton(button);
 
         const status = await request(HTTP_PUT, '/api/comment/' + owns.get(id))
-            .token(session.get('token'))
+            .token(session.getToken())
             .body({
                 presence: presence ? presence.value === "1" : null,
                 comment: form.value
@@ -140,7 +140,7 @@ export const comment = (() => {
         const name = document.getElementById('form-name');
         let nameValue = name.value;
 
-        if (session.get('token')?.split('.').length === 3) {
+        if (session.isAdmin()) {
             nameValue = user.get('name');
         }
 
@@ -149,7 +149,7 @@ export const comment = (() => {
             return;
         }
 
-        if (!id && name && session.get('token')?.split('.').length !== 3) {
+        if (!id && name && !session.isAdmin()) {
             name.disabled = true;
         }
 
@@ -174,7 +174,7 @@ export const comment = (() => {
         const btn = util.disableButton(button);
 
         const response = await request(HTTP_POST, '/api/comment')
-            .token(session.get('token'))
+            .token(session.getToken())
             .body(dto.postCommentRequest(id, nameValue, presence ? presence.value === "1" : true, form.value))
             .send(dto.postCommentResponse)
             .then((res) => res, () => null);
@@ -212,7 +212,7 @@ export const comment = (() => {
                 return;
             }
 
-            response.data.is_admin = session.get('token')?.split('.').length === 3;
+            response.data.is_admin = session.isAdmin();
 
             document.getElementById('comments').lastElementChild.remove();
             document.getElementById('comments').innerHTML = card.renderContent(response.data) + document.getElementById('comments').innerHTML;
@@ -226,7 +226,7 @@ export const comment = (() => {
             changeButton(id, false);
             document.getElementById(`inner-${id}`).remove();
 
-            response.data.is_admin = session.get('token')?.split('.').length === 3;
+            response.data.is_admin = session.isAdmin();
             document.getElementById(`reply-content-${id}`).insertAdjacentHTML('beforeend', card.renderInnerContent(response.data));
 
             const containerDiv = document.getElementById(`button-${id}`);
@@ -263,19 +263,7 @@ export const comment = (() => {
         }
 
         changeButton(id, true);
-
-        const inner = document.createElement('div');
-        inner.classList.add('my-2');
-        inner.id = `inner-${id}`;
-        inner.innerHTML = `
-        <label for="form-inner-${id}" class="form-label">Reply</label>
-        <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" placeholder="Type reply comment"></textarea>
-        <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
-            <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0 me-1">Cancel</button>
-            <button style="font-size: 0.8rem;" onclick="comment.send(this)" data-uuid="${id}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0">Send</button>
-        </div>`;
-
-        document.getElementById(`button-${id}`).insertAdjacentElement('afterend', inner);
+        document.getElementById(`button-${id}`).insertAdjacentElement('afterend', card.renderReply(id));
     };
 
     const edit = async (button) => {
@@ -290,30 +278,16 @@ export const comment = (() => {
         button.innerText = 'Loading..';
 
         await request(HTTP_GET, '/api/comment/' + id)
-            .token(session.get('token'))
+            .token(session.getToken())
             .send()
             .then((res) => {
-                if (res.code === 200) {
-                    const inner = document.createElement('div');
-                    inner.classList.add('my-2');
-                    inner.id = `inner-${id}`;
-                    inner.innerHTML = `
-                    <label for="form-inner-${id}" class="form-label">Edit</label>
-                    ${document.getElementById(id).getAttribute('data-parent') === 'true' && session.get('token')?.split('.').length !== 3 ? `
-                    <select class="form-select shadow-sm mb-2 rounded-4" id="form-inner-presence-${id}">
-                        <option value="1" ${res.data.presence ? 'selected' : ''}>Datang</option>
-                        <option value="2" ${res.data.presence ? '' : 'selected'}>Berhalangan</option>
-                    </select>` : ''}
-                    <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" data-original="" placeholder="Type update comment"></textarea>
-                    <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
-                        <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0 me-1">Cancel</button>
-                        <button style="font-size: 0.8rem;" onclick="comment.update(this)" data-uuid="${id}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0">Update</button>
-                    </div>`;
-        
-                    document.getElementById(`button-${id}`).insertAdjacentElement('afterend', inner);
-                    document.getElementById(`form-inner-${id}`).value = res.data.comment;
-                    document.getElementById(`form-inner-${id}`).setAttribute('data-original', res.data.comment);
+                if (res.code !== 200) {
+                    return;
                 }
+                
+                document.getElementById(`button-${id}`).insertAdjacentElement('afterend', card.renderEdit(id, res.data.presence));
+                document.getElementById(`form-inner-${id}`).value = res.data.comment;
+                document.getElementById(`form-inner-${id}`).setAttribute('data-original', res.data.comment);
             });
 
         button.innerText = tmp;
@@ -333,7 +307,7 @@ export const comment = (() => {
         const onNullComment = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
 
         return await request(HTTP_GET, `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
-            .token(session.get('token'))
+            .token(session.getToken())
             .send()
             .then((res) => {
                 pagination.setResultData(res.data.length);

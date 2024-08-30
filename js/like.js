@@ -1,11 +1,11 @@
 import { storage } from './storage.js';
+import { session } from './session.js';
 import { confetti } from './confetti.js';
 import { request, HTTP_PATCH, HTTP_POST } from './request.js';
 
 export const like = (() => {
 
     const likes = storage('likes');
-    const session = storage('session');
 
     const like = async (button) => {
         const id = button.getAttribute('data-uuid');
@@ -17,7 +17,7 @@ export const like = (() => {
 
         if (likes.has(id)) {
             await request(HTTP_PATCH, '/api/comment/' + likes.get(id))
-                .token(session.get('token'))
+                .token(session.getToken())
                 .send()
                 .then((res) => {
                     if (res.data.status) {
@@ -37,7 +37,7 @@ export const like = (() => {
         }
 
         await request(HTTP_POST, '/api/comment/' + id)
-            .token(session.get('token'))
+            .token(session.getToken())
             .send()
             .then((res) => {
                 if (res.code == 201) {

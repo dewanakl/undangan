@@ -1,5 +1,6 @@
 import { util } from './util.js';
 import { theme } from './theme.js';
+import { session } from './session.js';
 import { storage } from './storage.js';
 import { pagination } from './pagination.js';
 
@@ -10,7 +11,6 @@ export const card = (() => {
     const likes = storage('likes');
     const config = storage('config');
     const tracker = storage('tracker');
-    const session = storage('session');
     const showHide = storage('comment');
 
     const renderLoading = () => {
@@ -77,7 +77,7 @@ export const card = (() => {
             action += `<button style="font-size: 0.8rem;" onclick="comment.edit(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${btn} rounded-4 py-0 me-1">Edit</button>`;
         }
 
-        if (session.get('token')?.split('.').length === 3) {
+        if (session.isAdmin()) {
             action += `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${btn} rounded-4 py-0" data-own="${comment.own}">Delete</button>`;
         } else if (owns.has(comment.uuid) && (config.get('can_delete') == true || config.get('can_delete') === undefined)) {
             action += `<button style="font-size: 0.8rem;" onclick="comment.remove(this)" data-uuid="${comment.uuid}" class="btn btn-sm btn-outline-${btn} rounded-4 py-0">Delete</button>`;
@@ -165,6 +165,41 @@ export const card = (() => {
         return renderContent(comment, false);
     };
 
+    const renderReply = (id) => {
+        const inner = document.createElement('div');
+        inner.classList.add('my-2');
+        inner.id = `inner-${id}`;
+        inner.innerHTML = `
+        <label for="form-inner-${id}" class="form-label">Reply</label>
+        <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" placeholder="Type reply comment"></textarea>
+        <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
+            <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0 me-1">Cancel</button>
+            <button style="font-size: 0.8rem;" onclick="comment.send(this)" data-uuid="${id}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0">Send</button>
+        </div>`;
+
+        return inner;
+    };
+
+    const renderEdit = (id, presence) => {
+        const inner = document.createElement('div');
+        inner.classList.add('my-2');
+        inner.id = `inner-${id}`;
+        inner.innerHTML = `
+        <label for="form-inner-${id}" class="form-label">Edit</label>
+        ${document.getElementById(id).getAttribute('data-parent') === 'true' && !session.isAdmin() ? `
+        <select class="form-select shadow-sm mb-2 rounded-4" id="form-inner-presence-${id}">
+            <option value="1" ${presence ? 'selected' : ''}>Datang</option>
+            <option value="2" ${presence ? '' : 'selected'}>Berhalangan</option>
+        </select>` : ''}
+        <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" data-original="" placeholder="Type update comment"></textarea>
+        <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
+            <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0 me-1">Cancel</button>
+            <button style="font-size: 0.8rem;" onclick="comment.update(this)" data-uuid="${id}" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0">Update</button>
+        </div>`;
+
+        return inner;
+    };
+
     const fetchTracker = (comment) => {
         comment.comments.forEach((c) => {
             fetchTracker(c);
@@ -189,6 +224,8 @@ export const card = (() => {
     };
 
     return {
+        renderEdit,
+        renderReply,
         fetchTracker,
         renderLoading,
         renderReadMore,
