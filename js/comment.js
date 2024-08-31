@@ -194,7 +194,7 @@ export const comment = (() => {
 
         btn.restore();
 
-        if (response?.code !== 201) {
+        if (!response || response.code !== 201) {
             return;
         }
 

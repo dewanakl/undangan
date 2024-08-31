@@ -81,16 +81,6 @@ export const guest = (() => {
     };
 
     const init = () => {
-        
-        if (storage('information').get('info')) {
-            document.getElementById('information')?.remove();
-        }
-        
-        if ((document.body.getAttribute('data-key') ?? "").length === 0) {
-            document.getElementById('comment')?.remove();
-            document.querySelector('a.nav-link[href="#comment"]')?.closest('li.nav-item')?.remove();
-            return;
-        }
 
         if (session.isAdmin()) {
             storage('user').clear();
@@ -99,6 +89,28 @@ export const guest = (() => {
             storage('session').clear();
             storage('comment').clear();
             storage('tracker').clear();
+        }
+        
+        const info = document.getElementById('information');
+        if (info && storage('information').get('info')) {
+            info.remove();
+        }
+
+        if ((document.body.getAttribute('data-key') ?? '').length === 0) {
+            const comment = document.getElementById('comment');
+            if (comment) {
+                comment.remove();
+            }
+
+            const nav = document.querySelector('a.nav-link[href="#comment"]');
+            if (nav) {
+                const item = nav.closest('li.nav-item');
+                if (item) {
+                    item.remove();
+                }
+            }
+           
+            return;
         }
         
         countDownDate();

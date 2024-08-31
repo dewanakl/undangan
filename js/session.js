@@ -58,7 +58,7 @@ export const session = (() => {
     };
 
     const isAdmin = () => {
-        return getToken()?.split('.').length === 3;
+        return (getToken() ?? '.').split('.').length === 3;
     };
 
     const guest = () => {

@@ -207,14 +207,24 @@ export const admin = (() => {
         const btn = addLoadingButton(button);
 
         const res = await request(HTTP_GET, '/api/download').token(session.getToken()).download();
-        const data = await res?.blob();
-        const filename = res?.headers.get('content-disposition')?.match(/(?<=")(?:\\.|[^"\\])*(?=")/)[0];
+        if (!res) {
+            btn.restore();
+            return;
+        }
+
+        const data = await res.blob();
+        if (!data) {
+            btn.restore();
+            return;
+        }
+
+        const filename = res.headers.get('content-disposition') ?? 'download.csv';
 
         const link = document.createElement('a');
         const href = window.URL.createObjectURL(data);
 
         link.href = href;
-        link.download = filename;
+        link.download = (filename.match(/(?<=")(?:\\.|[^"\\])*(?=")/) ?? ['download.csv'])[0];
 
         document.body.appendChild(link);
         link.click();
@@ -272,7 +282,7 @@ export const admin = (() => {
             storage('session').clear();
         }
 
-        if (!session.isAdmin() || JSON.parse(atob(session.getToken().split('.')[1])).exp < ((new Date()).getTime() / 1000)) {
+        if (!session.isAdmin() || (JSON.parse(atob((session.getToken() ?? '.').split('.')[1])).exp ?? 0) < ((new Date()).getTime() / 1000)) {
             comment.renderLoading();
             (new bootstrap.Modal('#loginModal')).show();
             return;
