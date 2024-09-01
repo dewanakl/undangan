@@ -16,9 +16,19 @@ export const audio = (() => {
         audio.preload = 'auto';
     };
 
+    const play = async () => {
+        music.disabled = true;
+        try {
+            await audio.play();
+        } catch (err) {
+            alert(err);
+        }
+        music.disabled = false;
+    };
+
     const button = async (button) => {
         if (button.getAttribute('data-status') !== 'true') {
-            await audio.play();
+            await play();
             button.setAttribute('data-status', 'true');
             button.innerHTML = '<i class="fa-solid fa-circle-pause spin-button"></i>';
             return;
@@ -35,7 +45,7 @@ export const audio = (() => {
 
     return {
         init,
-        play: () => audio.play(),
+        play,
         button,
         showButton,
     };
