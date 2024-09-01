@@ -55,6 +55,14 @@ body {
     font-variation-settings: "wdth" 100;
 }
 
+.font-body-semi-bold {
+    font-family: "Open Sans", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
 h2 {
     font-size: 28pt;
     font-family: "Gentium Book Plus", system-ui;
