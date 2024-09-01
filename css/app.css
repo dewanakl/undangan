@@ -93,6 +93,15 @@ body {
     overflow-wrap: break-word !important;
 }
 
+.title {
+    position: absolute;
+    text-align: center;
+    z-index: 3;
+    text-shadow: 0px 0px 7px #ffffff;
+    color: #ffffff;
+    transform: translateY(-70%);
+}
+
 .mouse-animation {
     padding: 0.25rem 0.625rem;
     height: 2rem;
@@ -202,13 +211,12 @@ main {
 .home-image-container {
     position: relative;
     display: flex;
-    left: 8vh;
+    justify-content: center;
+    align-items: center;
 }
 
 .home-image {
-    width: auto; /* Adjust image size as needed */
-    height: 100vh;
-    position: relative;
+    height: 95vh;
     z-index: 2;
 }
 
