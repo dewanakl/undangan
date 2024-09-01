@@ -37,36 +37,8 @@ export const admin = (() => {
         });
     };
 
-    const addLoadingCheckbox = (checkbox) => {
-        checkbox.disabled = true;
-
-        const label = document.querySelector(`label[for="${checkbox.id}"]`);
-        const tmp = label.innerHTML;
-        label.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem"></div> ${tmp}`;
-
-        return {
-            restore: () => {
-                label.innerHTML = tmp;
-                checkbox.disabled = false;
-            },
-        };
-    };
-
-    const addLoadingButton = (button) => {
-        button.disabled = true;
-        const tmp = button.innerHTML;
-        button.innerHTML = `<div class="spinner-border spinner-border-sm m-0 p-0" style="height: 0.8rem; width: 0.8rem"></div> ${tmp}`;
-
-        return {
-            restore: () => {
-                button.disabled = false;
-                button.innerHTML = tmp;
-            },
-        };
-    };
-
     const changeFilterBadWord = async (checkbox) => {
-        const label = addLoadingCheckbox(checkbox);
+        const label = util.addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
             token(session.getToken()).
@@ -79,7 +51,7 @@ export const admin = (() => {
     };
 
     const replyComment = async (checkbox) => {
-        const label = addLoadingCheckbox(checkbox);
+        const label = util.addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
             token(session.getToken()).
@@ -92,7 +64,7 @@ export const admin = (() => {
     };
 
     const editComment = async (checkbox) => {
-        const label = addLoadingCheckbox(checkbox);
+        const label = util.addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
             token(session.getToken()).
@@ -105,7 +77,7 @@ export const admin = (() => {
     };
 
     const deleteComment = async (checkbox) => {
-        const label = addLoadingCheckbox(checkbox);
+        const label = util.addLoadingCheckbox(checkbox);
 
         await request(HTTP_PATCH, '/api/user').
             token(session.getToken()).
@@ -122,7 +94,7 @@ export const admin = (() => {
             return;
         }
 
-        const btn = addLoadingButton(button);
+        const btn = util.disableButton(button);
 
         await request(HTTP_PUT, '/api/key').
             token(session.getToken()).
@@ -148,7 +120,7 @@ export const admin = (() => {
         old.disabled = true;
         newest.disabled = true;
 
-        const btn = addLoadingButton(button);
+        const btn = util.disableButton(button);
 
         const result = await request(HTTP_PATCH, '/api/user').
             token(session.getToken()).
@@ -182,7 +154,7 @@ export const admin = (() => {
 
         name.disabled = true;
 
-        const btn = addLoadingButton(button);
+        const btn = util.disableButton(button);
 
         const result = await request(HTTP_PATCH, '/api/user').
             token(session.getToken()).
@@ -204,7 +176,7 @@ export const admin = (() => {
     };
 
     const download = async (button) => {
-        const btn = addLoadingButton(button);
+        const btn = util.disableButton(button);
 
         const res = await request(HTTP_GET, '/api/download').token(session.getToken()).download();
         if (!res) {

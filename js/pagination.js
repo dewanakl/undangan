@@ -25,7 +25,7 @@ export const pagination = (() => {
     const buttonAction = async (button, type) => {
         let tmp = button.innerHTML;
         button.disabled = true;
-        button.innerHTML = `${type == 'Next' ? type : ''}<span class="spinner-border spinner-border-sm mx-1"></span>${type == 'Prev' ? type : ''}`;
+        button.innerHTML = `${type == 'Next' ? type : ''}<div class="spinner-border spinner-border-sm my-0 mx-1 p-0" style="height: 0.8rem; width: 0.8rem"></div>${type == 'Prev' ? type : ''}`;
 
         await comment.comment();
         document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });

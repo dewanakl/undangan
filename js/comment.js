@@ -24,7 +24,10 @@ export const comment = (() => {
             owns.set(id, button.getAttribute('data-own'));
         }
 
+        changeButton(id, true);
         const btn = util.disableButton(button);
+        const like = document.querySelector(`[onclick="like.like(this)"][data-uuid="${id}"]`);
+        like.disabled = true;
 
         const status = await request(HTTP_DELETE, '/api/comment/' + owns.get(id))
             .token(session.getToken())
@@ -33,11 +36,9 @@ export const comment = (() => {
 
         if (!status) {
             btn.restore();
+            like.disabled = false;
             return;
         }
-
-        owns.unset(id);
-        document.getElementById(id).remove();
 
         document.querySelectorAll('a[onclick="comment.showOrHide(this)"]').forEach((n) => {
             const oldUuids = n.getAttribute('data-uuids').split(',');
@@ -52,6 +53,9 @@ export const comment = (() => {
                 }
             }
         });
+
+        owns.unset(id);
+        document.getElementById(id).remove();
     };
 
     const changeButton = (id, disabled) => {
@@ -68,13 +72,22 @@ export const comment = (() => {
     const update = async (button) => {
         const id = button.getAttribute('data-uuid');
 
+        let isPresent = false;
         const presence = document.getElementById(`form-inner-presence-${id}`);
         if (presence) {
             presence.disabled = true;
+            isPresent = presence.value === "1";
         }
 
         const form = document.getElementById(`form-${id ? `inner-${id}` : 'comment'}`);
-        if (id && form.value === form.getAttribute('data-original')) {
+        
+        let isChecklist = false;
+        const badge = document.getElementById(`badge-${id}`);
+        if (badge) {
+            isChecklist = badge.classList.contains('text-success');
+        }
+
+        if (id && form.value === form.getAttribute('data-original') && isChecklist === isPresent) {
             if (presence) {
                 presence.disabled = false;
             }
@@ -96,7 +109,7 @@ export const comment = (() => {
         const status = await request(HTTP_PUT, '/api/comment/' + owns.get(id))
             .token(session.getToken())
             .body({
-                presence: presence ? presence.value === "1" : null,
+                presence: presence ? isPresent : null,
                 comment: form.value
             })
             .send()
@@ -118,12 +131,11 @@ export const comment = (() => {
             document.getElementById(`inner-${id}`).remove();
             document.getElementById(`content-${id}`).innerHTML = card.convertMarkdownToHTML(util.escapeHtml(form.value));
 
-            const badge = document.getElementById(`badge-${id}`);
             if (!presence || !badge) {
                 return;
             }
 
-            if (presence.value === "1") {
+            if (isPresent) {
                 badge.classList.remove('fa-circle-xmark', 'text-danger');
                 badge.classList.add('fa-circle-check', 'text-success');
                 return;
@@ -249,7 +261,19 @@ export const comment = (() => {
     const cancel = (id) => {
         const form = document.getElementById(`form-inner-${id}`);
 
-        if (form.value.length === 0 || form.value === form.getAttribute('data-original') || confirm('Are you sure?')) {
+        let isPresent = false;
+        const presence = document.getElementById(`form-inner-presence-${id}`);
+        if (presence) {
+            isPresent = presence.value === "1";
+        }
+
+        let isChecklist = false;
+        const badge = document.getElementById(`badge-${id}`);
+        if (badge) {
+            isChecklist = badge.classList.contains('text-success');
+        }
+
+        if (form.value.length === 0 || (form.value === form.getAttribute('data-original') && isChecklist === isPresent) || confirm('Are you sure?')) {
             changeButton(id, false);
             document.getElementById(`inner-${id}`).remove();
         }
@@ -274,8 +298,7 @@ export const comment = (() => {
         }
 
         changeButton(id, true);
-        const tmp = button.innerText;
-        button.innerText = 'Loading..';
+        const btn = util.disableButton(button);
 
         await request(HTTP_GET, '/api/comment/' + id)
             .token(session.getToken())
@@ -290,7 +313,8 @@ export const comment = (() => {
                 document.getElementById(`form-inner-${id}`).setAttribute('data-original', res.data.comment);
             });
 
-        button.innerText = tmp;
+        btn.restore();
+        button.disabled = true;
     };
 
     const comment = () => { 
@@ -314,19 +338,33 @@ export const comment = (() => {
 
                 if (res.data.length === 0) {
                     comments.innerHTML = onNullComment;
-                    return;
+                    return res;
                 }
 
-                let arr = showHide.get('hidden');
-                util.extractUUIDs(res.data).forEach((c) => {
-                    if (!arr.find((i) => i.uuid === c)) {
-                        arr.push(dto.commentShowMore(c));
-                    }
-                });
-                showHide.set('hidden', arr);
+                const traverse = (items, hide) => {
+                    items.forEach((item) => {
+                        if (!hide.find((i) => i.uuid === item.uuid)) {
+                            hide.push(dto.commentShowMore(item.uuid));
+                        }
+
+                        if (item.comments && item.comments.length > 0) {
+                            traverse(item.comments, hide);
+                        }
+                    });
+
+                    return hide;
+                };
+
+                showHide.set('hidden', traverse(res.data, showHide.get('hidden')));
+                return res;
+            })
+            .then((res) => {
+                if (res.data.length === 0) {
+                    return res;
+                }
 
                 comments.setAttribute('data-loading', 'false');
-                comments.innerHTML = res.data.map((comment) => card.renderContent(comment)).join('');
+                comments.innerHTML = res.data.map((c) => card.renderContent(c)).join('');
                 res.data.forEach(card.fetchTracker);
             });
     };

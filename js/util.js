@@ -32,16 +32,29 @@ export const util = (() => {
     const disableButton = (button, message = 'Loading..') => {
 
         button.disabled = true;
-        let tmp = button.innerHTML;
-        button.innerHTML = message;
-
-        const restore = () => {
-            button.innerHTML = tmp;
-            button.disabled = false;
-        };
+        const tmp = button.innerHTML;
+        button.innerHTML = `<div class="spinner-border spinner-border-sm my-0 ms-0 me-1 p-0" style="height: 0.8rem; width: 0.8rem"></div>${message}`;
 
         return {
-            restore,
+            restore: () => {
+                button.innerHTML = tmp;
+                button.disabled = false;
+            },
+        };
+    };
+
+    const addLoadingCheckbox = (checkbox) => {
+        checkbox.disabled = true;
+
+        const label = document.querySelector(`label[for="${checkbox.id}"]`);
+        const tmp = label.innerHTML;
+        label.innerHTML = `<div class="spinner-border spinner-border-sm my-0 ms-0 me-1 p-0" style="height: 0.8rem; width: 0.8rem"></div>${tmp}`;
+
+        return {
+            restore: () => {
+                label.innerHTML = tmp;
+                checkbox.disabled = false;
+            },
         };
     };
 
@@ -83,28 +96,6 @@ export const util = (() => {
         storage('information').set('info', true);
     };
 
-    const extractUUIDs = (data) => {
-        let uuids = [];
-
-        const traverseComments = (comments) => {
-            comments.forEach((comment) => {
-                uuids.push(comment.uuid);
-                if (comment.comments && comment.comments.length > 0) {
-                    traverseComments(comment.comments);
-                }
-            });
-        };
-
-        data.forEach((item) => {
-            uuids.push(item.uuid);
-            if (item.comments && item.comments.length > 0) {
-                traverseComments(item.comments);
-            }
-        });
-
-        return uuids;
-    };
-
     return {
         open,
         copy,
@@ -113,7 +104,7 @@ export const util = (() => {
         opacity,
         animate,
         escapeHtml,
-        extractUUIDs,
         disableButton,
+        addLoadingCheckbox,
     }
 })();

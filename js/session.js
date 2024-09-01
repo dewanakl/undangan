@@ -14,7 +14,7 @@ export const session = (() => {
 
     const login = async (button) => {
 
-        const btn = util.disableButton(button, '<div class="spinner-border spinner-border-sm me-1" role="status"></div>Loading..');
+        const btn = util.disableButton(button);
         const formEmail = document.getElementById('loginEmail');
         const formPassword = document.getElementById('loginPassword');
 
@@ -74,12 +74,8 @@ export const session = (() => {
                     config.set(key, value);
                 }
 
-                try {
-                    await comment.comment();
-                } catch (error) {
-                    throw error;
-                }
-                
+                await comment.comment();
+
                 progress.complete('request');
             }).catch(() => {
                 progress.invalid('request')
