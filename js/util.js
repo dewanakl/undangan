@@ -1,14 +1,13 @@
-import { AOS } from './aos.js';
-import { audio } from './audio.js';
-import { theme } from './theme.js';
-import { comment } from './comment.js';
-import { storage } from './storage.js';
-import { confetti } from './confetti.js';
-import { bootstrap } from './bootstrap.js';
-import { request, HTTP_GET } from './request.js';
+import { AOS } from "./aos.js";
+import { audio } from "./audio.js";
+import { theme } from "./theme.js";
+import { comment } from "./comment.js";
+import { storage } from "./storage.js";
+import { confetti } from "./confetti.js";
+import { bootstrap } from "./bootstrap.js";
+import { request, HTTP_GET } from "./request.js";
 
 export const util = (() => {
-
     const opacity = (id, speed = 0.01) => {
         const element = document.getElementById(id);
         let op = parseInt(element.style.opacity);
@@ -28,15 +27,14 @@ export const util = (() => {
 
     const escapeHtml = (unsafe) => {
         return unsafe
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     };
 
-    const disableButton = (button, message = 'Loading..') => {
-
+    const disableButton = (button, message = "Loading..") => {
         button.disabled = true;
         let tmp = button.innerHTML;
         button.innerHTML = message;
@@ -58,52 +56,61 @@ export const util = (() => {
     };
 
     const guest = () => {
-        const name = (new URLSearchParams(window.location.search)).get('to');
-        const guest = document.getElementById('guest-name');
+        const name = new URLSearchParams(window.location.search).get("to");
+        const guest = document.getElementById("guest-name");
 
         if (!name) {
             guest.remove();
             return;
         }
 
-        const div = document.createElement('div');
-        div.classList.add('m-2');
-        div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0 text-light">${guest.getAttribute('data-message')}</p><h2 class="text-light">${escapeHtml(name)}</h2>`;
+        const div = document.createElement("div");
+        div.classList.add("m-2");
+        div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0 text-light">${guest.getAttribute(
+            "data-message"
+        )}</p><h2 class="text-light">${escapeHtml(name)}</h2>`;
 
-        document.getElementById('form-name').value = name;
+        document.getElementById("form-name").value = name;
         guest.appendChild(div);
     };
 
-    const show = () => {
-        guest();
-        opacity('loading', 0.025);
-        window.scrollTo(0, 0);
-    };
-
     const modal = (img) => {
-        document.getElementById('show-modal-image').src = img.src;
-        (new bootstrap.Modal('#modal-image')).show();
+        document.getElementById("show-modal-image").src = img.src;
+        new bootstrap.Modal("#modal-image").show();
     };
 
     const countDownDate = () => {
-        const until = document.getElementById('count-down').getAttribute('data-time').replace(' ', 'T');
-        const count = (new Date(until)).getTime();
+        const until = document
+            .getElementById("count-down")
+            .getAttribute("data-time")
+            .replace(" ", "T");
+        const count = new Date(until).getTime();
 
         setInterval(() => {
-            const distance = Math.abs(count - (new Date()).getTime());
+            const distance = Math.abs(count - new Date().getTime());
 
-            document.getElementById('day').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-            document.getElementById('hour').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById('minute').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById('second').innerText = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("day").innerText = Math.floor(
+                distance / (1000 * 60 * 60 * 24)
+            );
+            document.getElementById("hour").innerText = Math.floor(
+                (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            );
+            document.getElementById("minute").innerText = Math.floor(
+                (distance % (1000 * 60 * 60)) / (1000 * 60)
+            );
+            document.getElementById("second").innerText = Math.floor(
+                (distance % (1000 * 60)) / 1000
+            );
         }, 1000);
     };
 
     const copy = async (button, message, timeout = 1500) => {
         try {
-            await navigator.clipboard.writeText(button.getAttribute('data-copy'));
+            await navigator.clipboard.writeText(
+                button.getAttribute("data-copy")
+            );
         } catch {
-            alert('Failed to copy');
+            alert("Failed to copy");
             return;
         }
 
@@ -132,8 +139,11 @@ export const util = (() => {
         };
 
         const heart = confetti.shapeFromPath({
-            path: 'M167 72c19,-38 37,-56 75,-56 42,0 76,33 76,75 0,76 -76,151 -151,227 -76,-76 -151,-151 -151,-227 0,-42 33,-75 75,-75 38,0 57,18 76,56z',
-            matrix: [0.03333333333333333, 0, 0, 0.03333333333333333, -5.566666666666666, -5.533333333333333]
+            path: "M167 72c19,-38 37,-56 75,-56 42,0 76,33 76,75 0,76 -76,151 -151,227 -76,-76 -151,-151 -151,-227 0,-42 33,-75 75,-75 38,0 57,18 76,56z",
+            matrix: [
+                0.03333333333333333, 0, 0, 0.03333333333333333,
+                -5.566666666666666, -5.533333333333333,
+            ],
         });
 
         (function frame() {
@@ -146,7 +156,7 @@ export const util = (() => {
                     ticks: Math.max(50, 75 * (timeLeft / duration)),
                     origin: {
                         x: Math.random(),
-                        y: Math.abs(Math.random() - (timeLeft / duration)),
+                        y: Math.abs(Math.random() - timeLeft / duration),
                     },
                     zIndex: 1057,
                     colors: [color],
@@ -164,10 +174,10 @@ export const util = (() => {
     };
 
     const storeConfig = async (token) => {
-        storage('session').set('token', token);
+        storage("session").set("token", token);
 
-        const config = storage('config');
-        return await request(HTTP_GET, '/api/config')
+        const config = storage("config");
+        return await request(HTTP_GET, "/api/config")
             .token(token)
             .then((res) => {
                 for (let [key, value] of Object.entries(res.data)) {
@@ -182,30 +192,33 @@ export const util = (() => {
         button.disabled = true;
         confetti({
             origin: { y: 1 },
-            zIndex: 1057
+            zIndex: 1057,
         });
 
-        document.querySelector('body').style.overflowY = 'scroll';
-        if (storage('information').get('info')) {
-            document.getElementById('information')?.remove();
+        document.querySelector("body").style.overflowY = "scroll";
+        if (storage("information").get("info")) {
+            document.getElementById("information")?.remove();
         }
 
-        const token = document.querySelector('body').getAttribute('data-key');
+        const token = document.querySelector("body").getAttribute("data-key");
         if (!token || token.length === 0) {
-            document.getElementById('ucapan')?.remove();
-            document.querySelector('a.nav-link[href="#ucapan"]')?.closest('li.nav-item')?.remove();
+            document.getElementById("ucapan")?.remove();
+            document
+                .querySelector('a.nav-link[href="#ucapan"]')
+                ?.closest("li.nav-item")
+                ?.remove();
         }
 
         AOS.init();
 
         countDownDate();
-        opacity('welcome', 0.025);
+        opacity("loading", 0.025);
 
-        audio.play();
+        //TODO: Revert to play audio
+        // audio.play();
         audio.showButton();
 
         theme.check();
-        theme.showButtonChangeTheme();
 
         if (!token || token.length === 0) {
             return;
@@ -219,7 +232,7 @@ export const util = (() => {
     };
 
     const close = () => {
-        storage('information').set('info', true);
+        storage("information").set("info", true);
     };
 
     const extractUUIDs = (data) => {
@@ -247,7 +260,6 @@ export const util = (() => {
     return {
         open,
         copy,
-        show,
         close,
         modal,
         opacity,
@@ -257,5 +269,5 @@ export const util = (() => {
         extractUUIDs,
         countDownDate,
         disableButton,
-    }
+    };
 })();
