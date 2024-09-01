@@ -45,7 +45,7 @@ export const comment = (() => {
 
             if (oldUuids.find((i) => i === id)) {
                 const uuids = oldUuids.filter((i) => i !== id).join(',');
-                
+
                 if (uuids.length === 0) {
                     n.remove();
                 } else {
@@ -80,7 +80,7 @@ export const comment = (() => {
         }
 
         const form = document.getElementById(`form-${id ? `inner-${id}` : 'comment'}`);
-        
+
         let isChecklist = false;
         const badge = document.getElementById(`badge-${id}`);
         if (badge) {
@@ -220,7 +220,7 @@ export const comment = (() => {
         if (!id) {
             const newPage = await pagination.reset();
             if (newPage) {
-                document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });
+                scroll();
                 return;
             }
 
@@ -228,7 +228,7 @@ export const comment = (() => {
 
             document.getElementById('comments').lastElementChild.remove();
             document.getElementById('comments').innerHTML = card.renderContent(response.data) + document.getElementById('comments').innerHTML;
-            document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });
+            scroll();
         }
 
         if (id) {
@@ -307,7 +307,7 @@ export const comment = (() => {
                 if (res.code !== 200) {
                     return;
                 }
-                
+
                 document.getElementById(`button-${id}`).insertAdjacentElement('afterend', card.renderEdit(id, res.data.presence));
                 document.getElementById(`form-inner-${id}`).value = res.data.comment;
                 document.getElementById(`form-inner-${id}`).setAttribute('data-original', res.data.comment);
@@ -317,7 +317,7 @@ export const comment = (() => {
         button.disabled = true;
     };
 
-    const comment = () => { 
+    const comment = () => {
         card.renderLoading();
         const comments = document.getElementById('comments');
         const onNullComment = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
@@ -366,6 +366,7 @@ export const comment = (() => {
                 comments.setAttribute('data-loading', 'false');
                 comments.innerHTML = res.data.map((c) => card.renderContent(c)).join('');
                 res.data.forEach(card.fetchTracker);
+                return res;
             });
     };
 
@@ -404,7 +405,10 @@ export const comment = (() => {
         }
     };
 
+    const scroll = () => document.getElementById('comments').scrollIntoView({ behavior: 'smooth' });
+
     return {
+        scroll,
         cancel,
         send,
         edit,
