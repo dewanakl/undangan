@@ -14,12 +14,28 @@ export const pagination = (() => {
         perPage = Number(num);
     };
 
+    const getPer = () => {
+        return perPage;
+    };
+
+    const getNext = () => {
+        return pageNow;
+    };
+
     const disabledPrevious = () => {
         buttonPrev.classList.add('disabled');
+    };
+    
+    const enablePrevious = () => {
+        buttonPrev.classList.remove('disabled');
     };
 
     const disabledNext = () => {
         buttonNext.classList.add('disabled');
+    };
+    
+    const enableNext = () => {
+        buttonNext.classList.remove('disabled');
     };
 
     const buttonAction = async (button, type) => {
@@ -34,14 +50,6 @@ export const pagination = (() => {
         button.innerHTML = tmp;
     };
 
-    const getPer = () => {
-        return perPage;
-    };
-
-    const getNext = () => {
-        return pageNow;
-    };
-
     const reset = async () => {
         if (pageNow == 0) {
             return false;
@@ -50,7 +58,7 @@ export const pagination = (() => {
         pageNow = 0;
         resultData = 0;
         page.innerText = 1;
-        buttonNext.classList.remove('disabled');
+        enableNext();
         await comment.comment();
         disabledPrevious();
 
@@ -71,9 +79,12 @@ export const pagination = (() => {
             pageNow -= perPage;
             disabledNext();
 
+            disabledPrevious();
             await buttonAction(button, 'Prev');
+            enablePrevious();
+
             page.innerText = parseInt(page.innerText) - 1;
-            buttonNext.classList.remove('disabled');
+            enableNext();
 
             if (pageNow <= 0) {
                 disabledPrevious();
@@ -88,9 +99,12 @@ export const pagination = (() => {
             pageNow += perPage;
             disabledPrevious();
 
+            disabledNext();
             await buttonAction(button, 'Next');
+            enableNext();
+
             page.innerText = parseInt(page.innerText) + 1;
-            buttonPrev.classList.remove('disabled');
+            enablePrevious();
         }
     };
 
