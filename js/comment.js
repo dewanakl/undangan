@@ -293,7 +293,11 @@ export const comment = (() => {
         button.innerText = tmp;
     };
 
-    const comment = async () => {
+    const comment = () => { 
+        card.renderLoading();
+        const comments = document.getElementById('comments');
+        const onNullComment = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
+
         if (!showHide.has('hidden')) {
             showHide.set('hidden', []);
         }
@@ -301,12 +305,8 @@ export const comment = (() => {
         if (!showHide.has('show')) {
             showHide.set('show', []);
         }
-        
-        card.renderLoading();
-        const comments = document.getElementById('comments');
-        const onNullComment = `<div class="h6 text-center fw-bold p-4 my-3 bg-theme-${theme.isDarkMode('dark', 'light')} rounded-4 shadow">Yuk bagikan undangan ini biar banyak komentarnya</div>`;
 
-        return await request(HTTP_GET, `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
+        return request(HTTP_GET, `/api/comment?per=${pagination.getPer()}&next=${pagination.getNext()}`)
             .token(session.getToken())
             .send()
             .then((res) => {

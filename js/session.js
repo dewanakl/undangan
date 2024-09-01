@@ -74,7 +74,12 @@ export const session = (() => {
                     config.set(key, value);
                 }
 
-                await comment.comment();
+                try {
+                    await comment.comment();
+                } catch (error) {
+                    throw error;
+                }
+                
                 progress.complete('request');
             }).catch(() => {
                 progress.invalid('request')
