@@ -225,8 +225,13 @@ export const comment = (() => {
             }
 
             response.data.is_admin = session.isAdmin();
+            const length = document.getElementById('comments').childNodes.length;
+            pagination.setResultData(length);
 
-            document.getElementById('comments').lastElementChild.remove();
+            if (length == pagination.getPer()) {
+                document.getElementById('comments').lastElementChild.remove();
+            }
+
             document.getElementById('comments').innerHTML = card.renderContent(response.data) + document.getElementById('comments').innerHTML;
             scroll();
         }
