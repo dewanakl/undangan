@@ -225,7 +225,7 @@ export const comment = (() => {
             }
 
             response.data.is_admin = session.isAdmin();
-            const length = document.getElementById('comments').childNodes.length;
+            const length = document.getElementById('comments').children.length;
             pagination.setResultData(length);
 
             if (length == pagination.getPer()) {
