@@ -88,10 +88,6 @@ export const comment = (() => {
         }
 
         if (id && form.value === form.getAttribute('data-original') && isChecklist === isPresent) {
-            if (presence) {
-                presence.disabled = false;
-            }
-
             changeButton(id, false);
             document.getElementById(`inner-${id}`).remove();
             return;
