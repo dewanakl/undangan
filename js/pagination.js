@@ -48,6 +48,7 @@ export const pagination = (() => {
         resultData = 0;
         page.innerText = 1;
 
+        disabledNext();
         disabledPrevious();
         await comment.comment();
 
