@@ -18,13 +18,13 @@ export const pagination = (() => {
 
     const getNext = () => pageNow;
 
-    const disabledPrevious = () => liPrev.classList.add('disabled');
+    const disabledPrevious = () => !liPrev.classList.contains('disabled') ? liPrev.classList.add('disabled') : null;
 
-    const enablePrevious = () => liPrev.classList.remove('disabled');
+    const enablePrevious = () => liPrev.classList.contains('disabled') ? liPrev.classList.remove('disabled') : null;
 
-    const disabledNext = () => liNext.classList.add('disabled');
+    const disabledNext = () => !liNext.classList.contains('disabled') ? liNext.classList.add('disabled') : null;
 
-    const enableNext = () => liNext.classList.remove('disabled');
+    const enableNext = () => liNext.classList.contains('disabled') ? liNext.classList.remove('disabled') : null;
 
     const buttonAction = async (button, type) => {
         button.disabled = true;

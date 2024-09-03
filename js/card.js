@@ -45,8 +45,8 @@ export const card = (() => {
         ];
 
         lists.forEach((data) => {
-            const v = data[1];
             const k = data[0];
+            const v = data[1];
 
             input = input.replace(new RegExp(`\\${k}(?=\\S)(.*?)(?<!\\s)\\${k}`, 'gs'), v);
         });
@@ -212,14 +212,17 @@ export const card = (() => {
         fetch(`https://freeipapi.com/api/json/${comment.ip}`)
             .then((res) => res.json())
             .then((res) => {
-                const result = res.cityName + ' - ' + res.regionName;
+                let result = res.cityName + ' - ' + res.regionName;
+
+                if (res.cityName == '-' && res.regionName == '-') {
+                    result = 'localhost';
+                }
 
                 tracker.set(comment.ip, result);
                 document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${result}</strong>`;
             })
             .catch((err) => {
-                const result = util.escapeHtml(err.message);
-                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${result}</strong>`;
+                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${util.escapeHtml(err.message)}</strong>`;
             });
     };
 
