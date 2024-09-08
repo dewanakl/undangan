@@ -1,6 +1,7 @@
 * {
     scrollbar-width: none;
     -ms-overflow-style: none;
+    transition: background-color 350ms ease, color 50ms ease;
 }
 
 *::-webkit-scrollbar {
@@ -14,6 +15,14 @@ html {
 body {
     font-family: 'Josefin Sans', sans-serif !important;
     padding: 0 !important;
+}
+
+svg {
+    transition: background-color 350ms ease;
+}
+
+svg>path {
+    transition: color 350ms ease;
 }
 
 .font-esthetic {

@@ -1,4 +1,5 @@
 import { like } from './like.js';
+import { util } from './util.js';
 import { admin } from './admin.js';
 import { theme } from './theme.js';
 import { navbar } from './navbar.js';
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pagination.init();
 
     window.like = like;
+    window.util = util;
     window.admin = admin;
     window.theme = theme;
     window.navbar = navbar;

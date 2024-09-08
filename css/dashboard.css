@@ -1,3 +1,7 @@
+* {
+    transition: background-color 350ms ease, color 50ms ease;
+}
+
 ::-webkit-scrollbar {
     width: 1rem;
 }
@@ -28,7 +32,7 @@ body {
     overflow-x: hidden;
 }
 
-@media screen and (width <= 767px) {
+@media screen and (width <=767px) {
     html {
         scrollbar-width: none !important;
         width: 100%;

@@ -62,6 +62,25 @@ export const guest = (() => {
         })();
     };
 
+    const name = () => {
+        const name = (new URLSearchParams(window.location.search)).get('to');
+        const guest = document.getElementById('guest-name');
+
+        if (!name || !guest) {
+            guest.remove();
+        } else {
+            const div = document.createElement('div');
+            div.classList.add('m-2');
+            div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0">${guest.getAttribute('data-message')}</p><h2>${util.escapeHtml(name)}</h2>`;
+            guest.appendChild(div);
+        }
+
+        const form = document.getElementById('form-name');
+        if (form) {
+            form.value = name;
+        }
+    };
+
     const open = (button) => {
         button.disabled = true;
         confetti({
@@ -90,7 +109,7 @@ export const guest = (() => {
             storage('comment').clear();
             storage('tracker').clear();
         }
-        
+
         const info = document.getElementById('information');
         if (info && storage('information').get('info')) {
             info.remove();
@@ -109,10 +128,10 @@ export const guest = (() => {
                     item.remove();
                 }
             }
-           
+
             return;
         }
-        
+
         countDownDate();
         session.guest();
     };
@@ -120,5 +139,6 @@ export const guest = (() => {
     return {
         init,
         open,
+        name,
     };
 })();

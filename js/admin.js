@@ -19,6 +19,7 @@ export const admin = (() => {
             document.getElementById('dashboard-name').innerHTML = `${util.escapeHtml(res.data.name)}<i class="fa-solid fa-hands text-warning ms-2"></i>`;
             document.getElementById('dashboard-email').innerHTML = res.data.email;
             document.getElementById('dashboard-accesskey').value = res.data.access_key;
+            document.getElementById('button-copy-accesskey').setAttribute('data-copy', res.data.access_key);
 
             document.getElementById('form-name').value = util.escapeHtml(res.data.name);
             document.getElementById('filterBadWord').checked = Boolean(res.data.is_filter);
@@ -222,29 +223,6 @@ export const admin = (() => {
         }
     };
 
-    const copyAccessKey = async (button) => {
-        try {
-            await navigator.clipboard.writeText(user.get('access_key'));
-        } catch {
-            alert('Failed to copy access key');
-            return;
-        }
-
-        button.disabled = true;
-        let tmp = button.innerHTML;
-        button.innerHTML = '<i class="fa-solid fa-check"></i>';
-
-        let clear = null;
-        clear = setTimeout(() => {
-            button.disabled = false;
-            button.innerHTML = tmp;
-
-            clearTimeout(clear);
-            clear = null;
-            return;
-        }, 1500);
-    };
-
     const init = () => {
         if (!session.isAdmin()) {
             storage('owns').clear();
@@ -278,7 +256,6 @@ export const admin = (() => {
         download,
         changeName,
         enableButtonName,
-        enableButtonPassword,
-        copyAccessKey
+        enableButtonPassword
     };
 })();

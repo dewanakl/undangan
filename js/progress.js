@@ -1,4 +1,5 @@
 import { util } from './util.js';
+import { guest } from './guest.js';
 
 export const progress = (() => {
 
@@ -11,23 +12,7 @@ export const progress = (() => {
     let push = true;
 
     const onComplete = () => {
-        const name = (new URLSearchParams(window.location.search)).get('to');
-        const guest = document.getElementById('guest-name');
-
-        if (!name || !guest) {
-            guest.remove();
-        } else {
-            const div = document.createElement('div');
-            div.classList.add('m-2');
-            div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0">${guest.getAttribute('data-message')}</p><h2>${util.escapeHtml(name)}</h2>`;
-            guest.appendChild(div);
-        }
-
-        const form = document.getElementById('form-name');
-        if (form) {
-           form.value = name;
-        }
-        
+        guest.name();
         util.opacity('loading', 0.025);
     };
 
@@ -82,7 +67,7 @@ export const progress = (() => {
         info = document.getElementById('progress-info');
         bar = document.getElementById('progress-bar');
         info.style.display = 'block';
-        
+
         push = false;
         run();
     };
