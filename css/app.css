@@ -160,10 +160,12 @@ footer {
     color: black;
 }
 
-.bg-cover-black {
-    background: linear-gradient(to bottom, rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 0.8), rgba(var(--bs-dark-rgb), 1));
-}
-
-.bg-cover-white {
-    background: linear-gradient(to bottom, rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 0.8), rgba(var(--bs-light-rgb), 1));
+.bg-cover-home {
+    position: absolute;
+    opacity: 0.2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    mask-image: linear-gradient(to bottom, black, black, black, black, black, transparent);
 }
