@@ -1,0 +1,26 @@
+* {
+    transition: background-color 350ms ease, color 50ms ease;
+}
+
+html {
+    scroll-behavior: smooth !important;
+    width: 100vw;
+}
+
+body {
+    font-family: 'Josefin Sans', sans-serif !important;
+    padding: 0 !important;
+    overflow-x: hidden;
+}
+
+.bg-theme-light {
+    background-color: var(--bs-gray-100);
+}
+
+.bg-theme-dark {
+    background-color: var(--bs-gray-800);
+}
+
+.card-body {
+    overflow-wrap: break-word !important;
+}

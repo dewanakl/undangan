@@ -1,6 +1,4 @@
-* {
-    transition: background-color 350ms ease, color 50ms ease;
-}
+@import url("common.css");
 
 ::-webkit-scrollbar {
     width: 1rem;
@@ -19,17 +17,6 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background-color: #a8bbbf;
-}
-
-html {
-    scroll-behavior: smooth !important;
-    width: 100vw;
-}
-
-body {
-    font-family: 'Josefin Sans', sans-serif !important;
-    padding: 0 !important;
-    overflow-x: hidden;
 }
 
 @media screen and (width <=767px) {
@@ -70,16 +57,4 @@ body {
 .logout:hover {
     color: var(--bs-light) !important;
     background-color: var(--bs-danger) !important;
-}
-
-.bg-theme-light {
-    background-color: var(--bs-gray-100);
-}
-
-.bg-theme-dark {
-    background-color: var(--bs-gray-800);
-}
-
-.card-body {
-    overflow-wrap: break-word !important;
 }
