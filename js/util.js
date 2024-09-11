@@ -218,7 +218,10 @@ export const util = (() => {
         // audio.play();
         audio.showButton();
 
-        theme.check();
+        // theme.check();
+
+        document.body.style.overflowY = "scroll";
+        document.body.scrollIntoView({ behavior: "instant" });
 
         if (!token || token.length === 0) {
             return;
