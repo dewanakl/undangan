@@ -1,3 +1,4 @@
+import { dto } from './dto.js';
 import { util } from './util.js';
 import { storage } from './storage.js';
 import { session } from './session.js';
@@ -99,7 +100,7 @@ export const admin = (() => {
 
         await request(HTTP_PUT, '/api/key').
             token(session.getToken()).
-            send().
+            send(dto.statusResponse).
             then((res) => {
                 if (res.data.status) {
                     getUserDetail();
@@ -129,7 +130,7 @@ export const admin = (() => {
                 old_password: old.value,
                 new_password: newest.value,
             }).
-            send().
+            send(dto.statusResponse).
             then((res) => res.data.status, () => false);
 
         btn.restore();
@@ -162,7 +163,7 @@ export const admin = (() => {
             body({
                 name: name.value,
             }).
-            send().
+            send(dto.statusResponse).
             then((res) => res.data.status, () => false);
 
         name.disabled = false;

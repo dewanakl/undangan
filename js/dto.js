@@ -40,6 +40,12 @@ export const dto = (() => {
         };
     });
 
+    const statusResponse = (({ status }) => {
+        return {
+            status,
+        };
+    });
+
     const commentShowMore = ((uuid, show = false) => {
         return {
             uuid,
@@ -58,6 +64,7 @@ export const dto = (() => {
 
     return {
         baseResponse,
+        statusResponse,
         likeCommentResponse,
         postCommentResponse,
         commentShowMore,

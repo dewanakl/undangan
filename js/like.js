@@ -1,3 +1,4 @@
+import { dto } from './dto.js';
 import { storage } from './storage.js';
 import { session } from './session.js';
 import { confetti } from './confetti.js';
@@ -18,7 +19,7 @@ export const like = (() => {
         if (likes.has(id)) {
             await request(HTTP_PATCH, '/api/comment/' + likes.get(id))
                 .token(session.getToken())
-                .send()
+                .send(dto.statusResponse)
                 .then((res) => {
                     if (res.data.status) {
                         likes.unset(id);
