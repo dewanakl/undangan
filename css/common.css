@@ -1,5 +1,5 @@
 * {
-    transition: background-color 350ms ease, color 50ms ease;
+    transition: background-color 300ms ease, color 50ms ease;
 }
 
 html {
@@ -11,6 +11,14 @@ body {
     font-family: 'Josefin Sans', sans-serif !important;
     padding: 0 !important;
     overflow-x: hidden;
+}
+
+svg {
+    transition: background-color 300ms ease;
+}
+
+svg>path {
+    transition: color 300ms ease;
 }
 
 .bg-theme-light {

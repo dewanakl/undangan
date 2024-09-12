@@ -1,6 +1,12 @@
-name: Code Analysis
+name: Code Analysis and Deploy
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - '3.x'
+  pull_request:
+    branches:
+      - '3.x'
 
 jobs:
   analyze-code:
@@ -19,10 +25,18 @@ jobs:
       run: npm install
 
     - name: Run ESLint (JavaScript)
-      run: npx eslint js
+      run: npx eslint "js/**/*.js"
 
     - name: Run stylelint (CSS)
-      run: npx stylelint css
+      run: npx stylelint "css/**/*.css"
 
     - name: Run HTMLHint (HTML)
       run: npx htmlhint "**/*.html"
+
+  deploy:
+    needs: analyze-code
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Netlify Build Hook
+      run: curl -X POST ${{ secrets.NETLIFY_BUILD_HOOK_URL }}

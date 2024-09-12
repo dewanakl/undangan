@@ -10,14 +10,6 @@
     display: none;
 }
 
-svg {
-    transition: background-color 350ms ease;
-}
-
-svg>path {
-    transition: color 350ms ease;
-}
-
 .font-esthetic {
     font-family: Sacramento, cursive !important;
 }

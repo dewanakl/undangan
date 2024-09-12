@@ -2,7 +2,7 @@
 
 ![Thumbnail](/assets/images/banner.png)
 ![Thumbnail2](/assets/images/banner2.png)
-[![pages-build-deployment](https://github.com/dewanakl/undangan/actions/workflows/pages/pages-build-deployment/badge.svg?branch=3.x)](https://github.com/dewanakl/undangan/actions/workflows/pages/pages-build-deployment)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/cef32dbf-f26f-4865-84a9-b85a439c9994/deploy-status)](https://app.netlify.com/sites/ulems/deploys)
 ![Hits](https://dikit.my.id/0b3y8q)
 
 ## Demo
