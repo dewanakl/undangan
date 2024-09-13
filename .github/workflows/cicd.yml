@@ -36,8 +36,14 @@ jobs:
   deploy:
     needs: analyze-code
     runs-on: ubuntu-latest
-    if: ${{ secrets.NETLIFY_BUILD_HOOK_URL != '' }}
 
     steps:
+    - name: Check if NETLIFY_BUILD_HOOK_URL is set
+      run: |
+        if [ -z "${{ secrets.NETLIFY_BUILD_HOOK_URL }}" ]; then
+          echo "NETLIFY_BUILD_HOOK_URL is not set. Skipping deployment."
+          exit 0
+        fi
+
     - name: Netlify Build Hook
       run: curl -X POST ${{ secrets.NETLIFY_BUILD_HOOK_URL }}
