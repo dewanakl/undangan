@@ -36,6 +36,7 @@ jobs:
   deploy:
     needs: analyze-code
     runs-on: ubuntu-latest
+    if: ${{ secrets.NETLIFY_BUILD_HOOK_URL != '' }}
 
     steps:
     - name: Netlify Build Hook
