@@ -1,5 +1,5 @@
 * {
-    transition: background-color 300ms ease, color 50ms ease;
+    transition: background-color 350ms ease, color 50ms ease;
 }
 
 html {
@@ -14,11 +14,11 @@ body {
 }
 
 svg {
-    transition: background-color 300ms ease;
+    transition: background-color 350ms ease;
 }
 
 svg>path {
-    transition: color 300ms ease;
+    transition: color 350ms ease;
 }
 
 .bg-theme-light {
