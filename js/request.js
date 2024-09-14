@@ -50,11 +50,37 @@ export const request = (method, path) => {
         download() {
             return fetch(url + path, req)
                 .then((res) => {
-                    if (res.status === 200) {
-                        return res;
+                    if (res.status !== 200) {
+                        return null;
                     }
 
-                    return null;
+                    const existingLink = document.querySelector('a[download]');
+                    if (existingLink) {
+                        document.body.removeChild(existingLink);
+                    }
+
+                    const filename = res.headers.get('content-disposition')?.match(/filename="(.+)"/)?.[1] || 'download.csv';
+                    return res.blob().then((blob) => ({ blob, filename }));
+                })
+                .then((res) => {
+                    if (!res) {
+                        return null;
+                    }
+
+                    const { blob, filename } = res;
+
+                    const link = document.createElement('a');
+                    const href = window.URL.createObjectURL(blob);
+
+                    link.href = href;
+                    link.download = filename;
+                    document.body.appendChild(link);
+
+                    link.click();
+
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(href);
+
                 })
                 .catch((err) => {
                     alert(err);

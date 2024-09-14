@@ -180,31 +180,8 @@ export const admin = (() => {
     const download = async (button) => {
         const btn = util.disableButton(button);
 
-        const res = await request(HTTP_GET, '/api/download').token(session.getToken()).download();
-        if (!res) {
-            btn.restore();
-            return;
-        }
+        await request(HTTP_GET, '/api/download').token(session.getToken()).download();
 
-        const data = await res.blob();
-        if (!data) {
-            btn.restore();
-            return;
-        }
-
-        const filename = res.headers.get('content-disposition') ?? 'download.csv';
-
-        const link = document.createElement('a');
-        const href = window.URL.createObjectURL(data);
-
-        link.href = href;
-        link.download = (filename.match(/(?<=")(?:\\.|[^"\\])*(?=")/) ?? ['download.csv'])[0];
-
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        window.URL.revokeObjectURL(href);
         btn.restore();
     };
 

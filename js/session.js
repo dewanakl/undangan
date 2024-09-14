@@ -1,3 +1,4 @@
+import { dto } from './dto.js';
 import { util } from './util.js';
 import { admin } from './admin.js';
 import { storage } from './storage.js';
@@ -22,11 +23,8 @@ export const session = (() => {
         formPassword.disabled = true;
 
         const res = await request(HTTP_POST, '/api/session')
-            .body({
-                email: formEmail.value,
-                password: formPassword.value
-            })
-            .send()
+            .body(dto.postSessionRequest(formEmail.value, formPassword.value))
+            .send(dto.tokenResponse)
             .then((res) => {
                 if (res.code === 200) {
                     session.set('token', res.data.token);

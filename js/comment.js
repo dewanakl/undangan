@@ -31,7 +31,7 @@ export const comment = (() => {
 
         const status = await request(HTTP_DELETE, '/api/comment/' + owns.get(id))
             .token(session.getToken())
-            .send()
+            .send(dto.statusResponse)
             .then((res) => res.data.status, () => false);
 
         if (!status) {
@@ -104,11 +104,8 @@ export const comment = (() => {
 
         const status = await request(HTTP_PUT, '/api/comment/' + owns.get(id))
             .token(session.getToken())
-            .body({
-                presence: presence ? isPresent : null,
-                comment: form.value
-            })
-            .send()
+            .body(dto.updateCommentRequest(presence ? isPresent : null, form.value))
+            .send(dto.statusResponse)
             .then((res) => res.data.status, () => false);
 
         form.disabled = false;
@@ -303,7 +300,7 @@ export const comment = (() => {
 
         await request(HTTP_GET, '/api/comment/' + id)
             .token(session.getToken())
-            .send()
+            .send(dto.commentResponse)
             .then((res) => {
                 if (res.code !== 200) {
                     return;

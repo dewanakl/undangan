@@ -39,7 +39,7 @@ export const like = (() => {
 
         await request(HTTP_POST, '/api/comment/' + id)
             .token(session.getToken())
-            .send()
+            .send(dto.uuidResponse)
             .then((res) => {
                 if (res.code == 201) {
                     likes.set(id, res.data.uuid);

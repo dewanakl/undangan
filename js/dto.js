@@ -46,6 +46,28 @@ export const dto = (() => {
         };
     });
 
+    const tokenResponse = (({ token }) => {
+        return {
+            token,
+        };
+    });
+
+    const uuidResponse = (({ uuid }) => {
+        return {
+            uuid,
+        };
+    });
+
+    const commentResponse = (({ name, presence, comment, is_admin, created_at }) => {
+        return {
+            name,
+            presence,
+            comment,
+            is_admin,
+            created_at,
+        };
+    });
+
     const commentShowMore = ((uuid, show = false) => {
         return {
             uuid,
@@ -62,12 +84,31 @@ export const dto = (() => {
         };
     });
 
+    const postSessionRequest = ((email, password) => {
+        return {
+            email: email,
+            password: password,
+        };
+    });
+
+    const updateCommentRequest = ((presence, comment) => {
+        return {
+            presence: presence,
+            comment: comment
+        };
+    });
+
     return {
+        uuidResponse,
         baseResponse,
+        tokenResponse,
         statusResponse,
+        commentResponse,
         likeCommentResponse,
         postCommentResponse,
         commentShowMore,
         postCommentRequest,
+        postSessionRequest,
+        updateCommentRequest,
     };
 })();
