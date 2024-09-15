@@ -202,9 +202,9 @@ export const util = (() => {
 
         const token = document.querySelector("body").getAttribute("data-key");
         if (!token || token.length === 0) {
-            document.getElementById("ucapan")?.remove();
+            document.getElementById("rsvp")?.remove();
             document
-                .querySelector('a.nav-link[href="#ucapan"]')
+                .querySelector('a.nav-link[href="#rsvp"]')
                 ?.closest("li.nav-item")
                 ?.remove();
         }
@@ -215,10 +215,10 @@ export const util = (() => {
         opacity("loading", 0.025);
 
         //TODO: Revert to play audio
-        // audio.play();
         audio.showButton();
 
-        theme.check();
+        document.body.style.overflowY = "scroll";
+        document.body.scrollIntoView({ behavior: "instant" });
 
         if (!token || token.length === 0) {
             return;
@@ -229,6 +229,15 @@ export const util = (() => {
             animation();
             await comment.comment();
         }
+    };
+
+    const scrollToRsvp = () => {
+        const element = document.getElementById("rsvp");
+        element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest",
+        });
     };
 
     const close = () => {
@@ -257,9 +266,33 @@ export const util = (() => {
         return uuids;
     };
 
+    const name = () => {
+        const name = new URLSearchParams(window.location.search).get("to");
+        const guest = document.getElementById("guest-name");
+
+        console.log("nama undangan: " + name.toString);
+
+        if (!name || !guest) {
+            guest.remove();
+        } else {
+            const div = document.createElement("div");
+            div.classList.add("m-2");
+            div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0">${guest.getAttribute(
+                "data-message"
+            )}</p><h2>${util.escapeHtml(name)}</h2>`;
+            guest.appendChild(div);
+        }
+
+        const form = document.getElementById("form-name");
+        if (form) {
+            form.value = name;
+        }
+    };
+
     return {
         open,
         copy,
+        scrollToRsvp,
         close,
         modal,
         opacity,
@@ -269,5 +302,6 @@ export const util = (() => {
         extractUUIDs,
         countDownDate,
         disableButton,
+        name,
     };
 })();
