@@ -14,9 +14,14 @@ html {
 }
 
 body {
-    font-family: "Josefin Sans", sans-serif !important;
+    font-family: "Open Sans", system-ui !important;
     padding: 0 !important;
     overflow-x: hidden;
+    overflow-y: hidden;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #704a31;
 }
 
 .bg-main {
@@ -70,12 +75,39 @@ h2 {
     font-style: normal;
 }
 
+.caption-regular {
+    font-family: "Open Sans", system-ui;
+    font-optical-sizing: auto;
+    font-variation-settings: "wdth" 100;
+    font-size: 16px;
+}
+
+.caption-bold {
+    font-family: "Open Sans", system-ui;
+    font-optical-sizing: auto;
+    font-variation-settings: "wdth" 100;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.line {
+    border-top: 1px solid #d3895b;
+    opacity: 1 !important;
+}
+
 .img-crop {
     width: 15rem;
     height: 15rem;
     position: relative;
     overflow: hidden;
     border-radius: 50%;
+}
+
+.wedding-gift-card {
+    border: 1px solid #d3895b;
+    border-radius: 20px;
+    padding: 20px;
 }
 
 .img-crop > img {
@@ -104,6 +136,34 @@ h2 {
     color: #d3895b;
 }
 
+.btn-primary {
+    background-color: #d3895b;
+    color: #fff5ec;
+    border: none;
+    border-radius: 40px;
+}
+
+.btn-sm {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 16px 4px 16px;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+    background-color: #d3895b;
+    color: #fff5ec;
+    border: none;
+}
+
+div.rounded-pill {
+    background-color: #d3895b;
+    border-color: #d3895b !important;
+}
+
 .loading-page {
     position: fixed;
     inset: 0 !important;
@@ -124,6 +184,10 @@ h2 {
     color: #ffffff;
     transform: translateY(-70%);
     top: 40%;
+}
+
+.form {
+    padding: 12px !important;
 }
 
 .mouse-animation {

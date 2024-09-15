@@ -202,9 +202,9 @@ export const util = (() => {
 
         const token = document.querySelector("body").getAttribute("data-key");
         if (!token || token.length === 0) {
-            document.getElementById("ucapan")?.remove();
+            document.getElementById("rsvp")?.remove();
             document
-                .querySelector('a.nav-link[href="#ucapan"]')
+                .querySelector('a.nav-link[href="#rsvp"]')
                 ?.closest("li.nav-item")
                 ?.remove();
         }
@@ -215,10 +215,7 @@ export const util = (() => {
         opacity("loading", 0.025);
 
         //TODO: Revert to play audio
-        // audio.play();
         audio.showButton();
-
-        // theme.check();
 
         document.body.style.overflowY = "scroll";
         document.body.scrollIntoView({ behavior: "instant" });
@@ -232,6 +229,15 @@ export const util = (() => {
             animation();
             await comment.comment();
         }
+    };
+
+    const scrollToRsvp = () => {
+        const element = document.getElementById("rsvp");
+        element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest",
+        });
     };
 
     const close = () => {
@@ -263,6 +269,7 @@ export const util = (() => {
     return {
         open,
         copy,
+        scrollToRsvp,
         close,
         modal,
         opacity,
