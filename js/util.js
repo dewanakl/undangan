@@ -266,6 +266,29 @@ export const util = (() => {
         return uuids;
     };
 
+    const name = () => {
+        const name = new URLSearchParams(window.location.search).get("to");
+        const guest = document.getElementById("guest-name");
+
+        console.log("nama undangan: " + name.toString);
+
+        if (!name || !guest) {
+            guest.remove();
+        } else {
+            const div = document.createElement("div");
+            div.classList.add("m-2");
+            div.innerHTML = `<p class="mt-0 mb-1 mx-0 p-0">${guest.getAttribute(
+                "data-message"
+            )}</p><h2>${util.escapeHtml(name)}</h2>`;
+            guest.appendChild(div);
+        }
+
+        const form = document.getElementById("form-name");
+        if (form) {
+            form.value = name;
+        }
+    };
+
     return {
         open,
         copy,
@@ -279,5 +302,6 @@ export const util = (() => {
         extractUUIDs,
         countDownDate,
         disableButton,
+        name,
     };
 })();

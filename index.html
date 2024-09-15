@@ -153,9 +153,9 @@
     </head>
 
     <body
-        data-key="bfb9cfea33ab7ae21a315fbd6f065a815d3e20ff2f007aa2ca"
-        data-url="https://api.ulems.my.id/"
-        class="shadow"
+        data-key="9f02ddea6847b47efe25e56cca6ecf9ed4059447efe25cffa6"
+        data-url="https://backend-undangan-aplx.vercel.app/"
+        class="shadow bg-dark"
     >
         <!-- If not using comments, you can remove the data-key and data-url attributes -->
 
@@ -1436,34 +1436,138 @@
         </button>
 
         <!-- Loading page -->
-        <div class="loading-page bg-main" id="loading" style="opacity: 1">
-            <div class="container" style="height: 100vh !important">
-                <div class="row h-100 align-items-start">
-                    <div class="col-10 mt-auto ms-auto me-auto">
-                        <h5 class="mt-1">Kepada</h5>
-                        <h1 class="mt-1 font-serif-bold">Yth.</h1>
-                        <h1 class="mt-1 font-serif-bold">Nama Undangan</h1>
-                        <noscript>
-                            <small class="mt-1 text-danger"
-                                >Sorry, this invitation requires javascript to
-                                work</small
+        <div class="loading-page bg-dark" id="loading" style="opacity: 1">
+            <div
+                class="container bg-main overflow-hidden"
+                style="
+                    height: 100vh !important;
+                    max-width: 640px;
+                    position: relative;
+                "
+            >
+                <div
+                    class="container m-0"
+                    style="position: relative; top: 30vh; z-index: 3"
+                >
+                    <div
+                        class="row h-100 align-items-center justify-content-center"
+                    >
+                        <div class="col-10 ms-auto me-auto">
+                            <p
+                                class="font-body-regular m-0"
+                                style="font-size: 20px; margin-bottom: 8px"
                             >
-                        </noscript>
-                    </div>
-                    <div class="col-10 mb-auto ms-auto me-auto">
-                        <h5 class="mt-1" id="progress-info">0%</h5>
-                        <button
-                            type="button"
-                            class="btn btn-outlined-light rounded-4 mt-4"
-                            id="btn-envelope"
-                            style="display: none"
-                            onclick="util.open(this)"
+                                Kepada
+                            </p>
+                            <h1 class="mt-2 font-serif-regular">Yth.</h1>
+                            <h1 class="mb-2 font-serif-regular">
+                                Nama Undangan
+                            </h1>
+                            <noscript>
+                                <small class="mt-1 text-danger"
+                                    >Sorry, this invitation requires javascript
+                                    to work</small
+                                >
+                            </noscript>
+                            <p
+                                class="font-body-regular m-0"
+                                style="font-size: 20px; margin-top: 8px"
+                            >
+                                Kami mengundang anda
+                            </p>
+                        </div>
+                        <div
+                            class="col-10 mb-auto ms-auto me-auto"
+                            style="margin-top: 20px"
                         >
-                            <i class="fa-solid fa-envelope-open me-2"></i>Open
-                            Invitation
-                        </button>
+                            <h5 class="mt-1" id="progress-info">0%</h5>
+                            <button
+                                type="button"
+                                class="btn btn-outlined-light"
+                                id="btn-envelope"
+                                style="
+                                    display: none;
+                                    padding: 16px 24px 16px 24px;
+                                "
+                                onclick="util.open(this)"
+                            >
+                                <p class="caption-bold m-0">Buka Undangan</p>
+                            </button>
+                        </div>
                     </div>
                 </div>
+                <img
+                    src="assets/images/flower_3.png"
+                    style="
+                        width: 350px;
+                        height: auto;
+                        position: absolute;
+                        left: 0%;
+                        bottom: 0%;
+                        opacity: 100%;
+                        transform: translate(-60px, 60px);
+                    "
+                />
+                <img
+                    src="assets/images/flower_26.png"
+                    style="
+                        width: 70%;
+                        height: auto;
+                        position: absolute;
+                        left: 0%;
+                        bottom: 0%;
+                        opacity: 100%;
+                        transform: translate(-60px, 60px);
+                    "
+                />
+                <img
+                    src="assets/images/flower_4.png"
+                    style="
+                        width: 350px;
+                        height: auto;
+                        position: absolute;
+                        right: 50%;
+                        bottom: 0%;
+                        opacity: 100%;
+                        transform: translate(172px, 60px);
+                    "
+                />
+                <img
+                    src="assets/images/flower_22.png"
+                    style="
+                        width: 350px;
+                        height: auto;
+                        position: absolute;
+                        right: 0%;
+                        bottom: 0%;
+                        opacity: 100%;
+                        transform: translate(72px, 30px);
+                    "
+                />
+                <img
+                    src="assets/images/flower_5.png"
+                    style="
+                        width: 65%;
+                        height: auto;
+                        position: absolute;
+                        right: 0%;
+                        bottom: 20%;
+                        opacity: 100%;
+                        transform: translateX(112px);
+                    "
+                />
+                <img
+                    src="assets/images/flower_16.png"
+                    style="
+                        width: 65%;
+                        height: auto;
+                        position: absolute;
+                        right: 0%;
+                        bottom: 0%;
+                        opacity: 100%;
+                        transform: translateX(112px);
+                    "
+                />
             </div>
         </div>
 

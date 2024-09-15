@@ -21,19 +21,10 @@ body {
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
-    background-color: #704a31;
 }
 
 .bg-main {
     background-color: #fff5ec;
-}
-
-.font-esthetic {
-    font-family: Sacramento, cursive !important;
-}
-
-.font-arabic {
-    font-family: "Noto Naskh Arabic", serif !important;
 }
 
 .font-mistrully {
@@ -42,20 +33,20 @@ body {
 
 .font-serif-regular {
     font-family: "Gentium Book Plus", system-ui;
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
 }
 
 .font-serif-bold {
     font-family: "Gentium Book Plus", system-ui;
-    font-weight: 700;
+    font-weight: 600;
     font-style: normal;
 }
 
 .font-body-regular {
     font-family: "Open Sans", system-ui;
     font-optical-sizing: auto;
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
     font-variation-settings: "wdth" 100;
 }
@@ -87,7 +78,7 @@ h2 {
     font-optical-sizing: auto;
     font-variation-settings: "wdth" 100;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 16px;
 }
 
@@ -115,6 +106,10 @@ h2 {
     margin: 0 auto;
     height: auto;
     width: 100%;
+}
+
+.btn {
+    border-radius: 40px;
 }
 
 .btn-music {
