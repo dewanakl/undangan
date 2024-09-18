@@ -142,7 +142,7 @@ export const card = (() => {
 
         return `
         <div class="d-flex flex-wrap justify-content-between align-items-center">
-            <p class="text-${text} text-truncate m-0 p-0" style="font-size: 0.95rem;">${renderTitle(comment, is_parent)}</p>
+            <p class="text-${text} text-truncate m-0 p-0">${renderTitle(comment, is_parent)}</p>
             <small class="text-${text} m-0 p-0" style="font-size: 0.75rem;">${comment.created_at}</small>
         </div>
         <hr class="text-${text} my-1">

@@ -49,3 +49,11 @@
 .animate-love {
     animation: love 5s ease-in-out infinite;
 }
+
+.mouse-animation {
+    padding: 0.25rem 0.625rem;
+    height: 2rem;
+    border-radius: 1.4rem;
+    opacity: 0.75;
+    box-sizing: content-box;
+}

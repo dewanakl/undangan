@@ -44,18 +44,18 @@
 <body data-url="https://api.ulems.my.id/">
 
     <!-- Nav bottom -->
-    <nav class="navbar bg-light navbar-expand fixed-bottom rounded-top-4 border-top d-md-none d-lg-none d-xl-none m-0 p-0">
-        <ul class="navbar-nav nav-justified w-100 align-items-center m-0 p-0">
+    <nav class="navbar bg-light navbar-expand fixed-bottom rounded-top-4 d-md-none d-lg-none d-xl-none p-0">
+        <ul class="navbar-nav nav-justified w-100 align-items-center">
             <li class="nav-item">
-                <button class="nav-link pb-2 w-100 text-center active" onclick="navbar.buttonNavHome(this)" id="button-mobile-home">
+                <button class="nav-link text-center active" onclick="navbar.buttonNavHome(this)" id="button-mobile-home">
                     <i class="fa-solid fa-house"></i>
-                    <span class="d-block" style="font-size: 0.8rem;">Home</span>
+                    <span class="d-block" style="font-size: 0.7rem;">Home</span>
                 </button>
             </li>
             <li class="nav-item">
-                <button class="nav-link pb-2 w-100 text-center" onclick="navbar.buttonNavSetting(this)" id="button-mobile-setting">
+                <button class="nav-link text-center" onclick="navbar.buttonNavSetting(this)" id="button-mobile-setting">
                     <i class="fa-solid fa-gear"></i>
-                    <span class="d-block" style="font-size: 0.8rem;">Setting</span>
+                    <span class="d-block" style="font-size: 0.7rem;">Setting</span>
                 </button>
             </li>
         </ul>
@@ -69,7 +69,7 @@
             <h3 class="m-0 p-0 flex-grow-1 fw-bold">Undangan<i class="fa-solid fa-fire text-danger ms-2"></i></h3>
             <h4 class="m-0 p-0 flex-grow-1 text-end" id="dashboard-name">
                 <div class="placeholder-wave">
-                    <span class="placeholder col-8 rounded-3"></span>
+                    <span class="placeholder col-6 rounded-4"></span>
                 </div>
             </h4>
         </div>
@@ -115,8 +115,7 @@
                             <div class="d-flex justify-content-between">
                                 <p class="fw-semibold m-1" style="color: var(--bs-gray-900);"><i class="fa-solid fa-home mx-2"></i>Home</p>
                                 <button class="btn btn-success rounded-3 btn-sm m-0 pb-0" onclick="admin.download(this)">
-                                    <i class="fa-solid fa-download"></i>
-                                    <span class="d-none d-sm-inline ms-1">Download</span>
+                                    <i class="fa-solid fa-download"></i><span class="d-none d-sm-inline ms-2">Download</span>
                                 </button>
                             </div>
                         </div>
@@ -316,10 +315,10 @@
 
                         <!-- Change Password -->
                         <div class="p-3 bg-theme-light mb-3 rounded-4 shadow">
-                            <p class="mx-0 mt-0 mb-3 p-0 fw-bold"><i class="fa-solid fa-lock me-1"></i>Change Password</p>
+                            <p class="mx-0 mt-0 mb-1 p-0 fw-bold"><i class="fa-solid fa-lock me-1"></i>Change Password</p>
                             <form>
                                 <input hidden type="text" name="username" autocomplete="username" value="...">
-                                <div class="mb-2">
+                                <div class="my-2">
                                     <input type="password" class="form-control form-control-sm rounded-4" id="old_password" name="old_password" placeholder="Old Password" autocomplete="current-password">
                                 </div>
                                 <div class="mb-3">

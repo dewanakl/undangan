@@ -55,22 +55,9 @@
     z-index: 1056 !important;
 }
 
-.mouse-animation {
-    padding: 0.25rem 0.625rem;
-    height: 2rem;
-    border-radius: 1.4rem;
-    opacity: 0.75;
-    box-sizing: content-box;
-}
-
 .dark-section {
     margin-top: -0.5rem;
     margin-bottom: -0.5rem;
-}
-
-footer {
-    margin-top: -0.5rem;
-    padding-bottom: 4rem;
 }
 
 .color-theme-white {
