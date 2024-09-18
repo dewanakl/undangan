@@ -23,8 +23,8 @@ export const card = (() => {
         comments.innerHTML = `
         <div class="card-body bg-theme-${theme.isDarkMode('dark', 'light')} shadow p-3 mx-0 mt-0 mb-3 rounded-4">
             <div class="d-flex flex-wrap justify-content-between align-items-center placeholder-wave">
-                <span class="placeholder bg-secondary col-4 rounded-3 my-1"></span>
-                <span class="placeholder bg-secondary col-2 rounded-3 my-1"></span>
+                <span class="placeholder bg-secondary col-5 rounded-3 my-1"></span>
+                <span class="placeholder bg-secondary col-3 rounded-3 my-1"></span>
             </div>
             <hr class="text-${theme.isDarkMode('light', 'dark')} my-1">
             <p class="card-text placeholder-wave">
@@ -146,7 +146,7 @@ export const card = (() => {
             <small class="text-${text} m-0 p-0" style="font-size: 0.75rem;">${comment.created_at}</small>
         </div>
         <hr class="text-${text} my-1">
-        <p class="text-${text} mt-0 mb-1 mx-0 p-0" style="white-space: pre-wrap !important" id="content-${comment.uuid}">${convertMarkdownToHTML(util.escapeHtml(comment.comment))}</p>`;
+        <p class="text-${text} mt-0 mb-1 mx-0 p-0" style="white-space: pre-wrap !important; font-size: 0.95rem;" id="content-${comment.uuid}">${convertMarkdownToHTML(util.escapeHtml(comment.comment))}</p>`;
     };
 
     const renderContent = (comment, is_parent) => {

@@ -44,7 +44,7 @@
 <body data-url="https://api.ulems.my.id/">
 
     <!-- Nav bottom -->
-    <nav class="navbar bg-light navbar-expand fixed-bottom rounded-top-4 d-md-none d-lg-none d-xl-none p-0">
+    <nav class="navbar bg-light navbar-expand fixed-bottom rounded-top-4 border-top d-md-none d-lg-none d-xl-none p-0">
         <ul class="navbar-nav nav-justified w-100 align-items-center">
             <li class="nav-item">
                 <button class="nav-link text-center active" onclick="navbar.buttonNavHome(this)" id="button-mobile-home">
@@ -62,11 +62,11 @@
     </nav>
 
     <!-- Main -->
-    <main class="container mt-3 mb-5">
+    <main class="container mt-4 mb-5">
 
         <!-- Header -->
-        <div class="d-none d-sm-flex justify-content-between align-items-center mt-4 mb-5">
-            <h3 class="m-0 p-0 flex-grow-1 fw-bold">Undangan<i class="fa-solid fa-fire text-danger ms-2"></i></h3>
+        <div class="d-none d-sm-flex justify-content-between align-items-center mt-4 mb-5 pt-1">
+            <h4 class="m-0 p-0 flex-grow-1 fw-bold">Undangan<i class="fa-solid fa-fire text-danger ms-2"></i></h4>
             <h4 class="m-0 p-0 flex-grow-1 text-end" id="dashboard-name">
                 <div class="placeholder-wave">
                     <span class="placeholder col-6 rounded-4"></span>
@@ -127,11 +127,11 @@
                                     <div class="row align-items-center" style="color: var(--bs-gray-100);">
                                         <div class="col-9">
                                             <p class="fw-bold m-0 p-0">Comments</p>
-                                            <div class="fw-bold m-0 p-0" id="count-comment">
+                                            <h6 class="fw-bold m-0 p-0" id="count-comment">
                                                 <div class="placeholder-wave">
                                                     <span class="placeholder col-8 rounded-3"></span>
                                                 </div>
-                                            </div>
+                                            </h6>
                                         </div>
                                         <div class="col-3 p-0">
                                             <div class="d-md-none d-lg-none d-xl-none">
@@ -149,11 +149,11 @@
                                     <div class="row align-items-center" style="color: var(--bs-gray-100);">
                                         <div class="col-9">
                                             <p class="fw-bold m-0 p-0">Present</p>
-                                            <div class="fw-bold m-0 p-0" id="count-present">
+                                            <h6 class="fw-bold m-0 p-0" id="count-present">
                                                 <div class="placeholder-wave">
                                                     <span class="placeholder col-8 rounded-3"></span>
                                                 </div>
-                                            </div>
+                                            </h6>
                                         </div>
                                         <div class="col-3 p-0">
                                             <div class="d-md-none d-lg-none d-xl-none">
@@ -171,11 +171,11 @@
                                     <div class="row align-items-center" style="color: var(--bs-gray-100);">
                                         <div class="col-9">
                                             <p class="fw-bold m-0 p-0">Absent</p>
-                                            <div class="fw-bold m-0 p-0" id="count-absent">
+                                            <h6 class="fw-bold m-0 p-0" id="count-absent">
                                                 <div class="placeholder-wave">
                                                     <span class="placeholder col-8 rounded-3"></span>
                                                 </div>
-                                            </div>
+                                            </h6>
                                         </div>
                                         <div class="col-3 p-0">
                                             <div class="d-md-none d-lg-none d-xl-none">
@@ -193,11 +193,11 @@
                                     <div class="row align-items-center" style="color: var(--bs-gray-100);">
                                         <div class="col-9">
                                             <p class="fw-bold m-0 p-0">Likes</p>
-                                            <div class="fw-bold m-0 p-0" id="count-like">
+                                            <h6 class="fw-bold m-0 p-0" id="count-like">
                                                 <div class="placeholder-wave">
                                                     <span class="placeholder col-8 rounded-3"></span>
                                                 </div>
-                                            </div>
+                                            </h6>
                                         </div>
                                         <div class="col-3 p-0">
                                             <div class="d-md-none d-lg-none d-xl-none">
@@ -213,7 +213,7 @@
                         </div>
 
                         <!-- Form -->
-                        <div class="bg-theme-light p-3 my-2 rounded-4 shadow">
+                        <div class="bg-theme-light p-3 mt-2 rounded-4 shadow">
                             <label for="form-comment" class="form-label fw-bold"><i class="fa-solid fa-comment me-1"></i>Comment</label>
                             <textarea class="form-control shadow-sm mb-3 rounded-4" id="form-comment" name="form-comment" placeholder="Type to comment"></textarea>
 
@@ -223,7 +223,7 @@
                         </div>
 
                         <!-- Comments -->
-                        <div class="my-3 pt-3" id="comments" data-loading="false"></div>
+                        <div class="my-2 pt-3" id="comments" data-loading="false"></div>
 
                         <!-- Pagination -->
                         <nav class="d-flex justify-content-center py-3 mb-4">
