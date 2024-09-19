@@ -143,25 +143,25 @@ export const comment = (() => {
         const id = button.getAttribute('data-uuid');
 
         const name = document.getElementById('form-name');
-        let nameValue = name.value;
+        let nameValue = storage('information').get('name') ?? name.value;
 
         if (session.isAdmin()) {
             nameValue = user.get('name');
         }
 
         if (nameValue.length == 0) {
-            alert('Please fill name');
+            alert('Silakan masukkan nama Anda.');
+            return;
+        }
+
+        const presence = document.getElementById('form-presence');
+        if (!id && presence && presence.value == "0") {
+            alert('Silakan pilih status kehadiran Anda.');
             return;
         }
 
         if (!id && name && !session.isAdmin()) {
             name.disabled = true;
-        }
-
-        const presence = document.getElementById('form-presence');
-        if (!id && presence && presence.value == "0") {
-            alert('Please select presence');
-            return;
         }
 
         if (presence && presence.value != "0") {
@@ -177,6 +177,7 @@ export const comment = (() => {
         }
 
         const btn = util.disableButton(button);
+        storage('information').set('name', nameValue);
 
         const response = await request(HTTP_POST, '/api/comment')
             .token(session.getToken())

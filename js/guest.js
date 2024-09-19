@@ -77,7 +77,7 @@ export const guest = (() => {
 
         const form = document.getElementById('form-name');
         if (form) {
-            form.value = name;
+            form.value = storage('information').get('name') ?? name;
         }
     };
 
