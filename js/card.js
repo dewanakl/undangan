@@ -170,7 +170,7 @@ export const card = (() => {
         inner.classList.add('my-2');
         inner.id = `inner-${id}`;
         inner.innerHTML = `
-        <label for="form-inner-${id}" class="form-label"><i class="fa-solid fa-reply me-1"></i>Reply</label>
+        <label for="form-inner-${id}" class="form-label" style="font-size: 0.95rem;"><i class="fa-solid fa-reply me-1"></i>Reply</label>
         <textarea class="form-control shadow-sm rounded-4 mb-2" id="form-inner-${id}" placeholder="Type reply comment"></textarea>
         <div class="d-flex flex-wrap justify-content-end align-items-center mb-0">
             <button style="font-size: 0.8rem;" onclick="comment.cancel('${id}')" class="btn btn-sm btn-outline-${theme.isDarkMode('light', 'dark')} rounded-4 py-0 me-1">Cancel</button>
@@ -185,7 +185,7 @@ export const card = (() => {
         inner.classList.add('my-2');
         inner.id = `inner-${id}`;
         inner.innerHTML = `
-        <label for="form-inner-${id}" class="form-label"><i class="fa-solid fa-pen me-1"></i>Edit</label>
+        <label for="form-inner-${id}" class="form-label" style="font-size: 0.95rem;"><i class="fa-solid fa-pen me-1"></i>Edit</label>
         ${document.getElementById(id).getAttribute('data-parent') === 'true' && !session.isAdmin() ? `
         <select class="form-select shadow-sm mb-2 rounded-4" id="form-inner-presence-${id}">
             <option value="1" ${presence ? 'selected' : ''}>Datang</option>
