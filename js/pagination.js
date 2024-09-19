@@ -26,17 +26,36 @@ export const pagination = (() => {
 
     const enableNext = () => liNext.classList.contains('disabled') ? liNext.classList.remove('disabled') : null;
 
-    const buttonAction = async (button, type) => {
+    const buttonAction = (button) => {
         button.disabled = true;
         const tmp = button.innerHTML;
+        button.innerHTML = `<div class="spinner-border spinner-border-sm my-0 mx-1 p-0" style="height: 0.8rem; width: 0.8rem;"></div>`;
 
-        button.innerHTML = `${type == 'Next' ? type : ''}<div class="spinner-border spinner-border-sm my-0 mx-1 p-0" style="height: 0.8rem; width: 0.8rem;"></div>${type == 'Prev' ? type : ''}`;
-        await comment.comment();
+        const process = async () => {
+            await comment.comment();
 
-        button.disabled = false;
-        button.innerHTML = tmp;
+            button.disabled = false;
+            button.innerHTML = tmp;
 
-        comment.scroll();
+            comment.scroll();
+        };
+
+        const next = async () => {
+            button.innerHTML = 'Next' + button.innerHTML;
+            await process();
+            page.innerText = parseInt(page.innerText) + 1;
+        };
+
+        const prev = async () => {
+            button.innerHTML = button.innerHTML + 'Prev';
+            await process();
+            page.innerText = parseInt(page.innerText) - 1;
+        };
+
+        return {
+            next,
+            prev,
+        };
     };
 
     const reset = async () => {
@@ -68,31 +87,32 @@ export const pagination = (() => {
     const previous = async (button) => {
         disabledPrevious();
 
-        if (pageNow >= 0) {
-            pageNow -= perPage;
+        if (pageNow < 0) {
+            return;
+        }
 
-            disabledNext();
-            await buttonAction(button, 'Prev');
-            page.innerText = parseInt(page.innerText) - 1;
+        pageNow -= perPage;
 
-            if (pageNow > 0) {
-                enablePrevious();
-            }
+        disabledNext();
+        await buttonAction(button).prev();
+
+        if (pageNow > 0) {
+            enablePrevious();
         }
     };
 
     const next = async (button) => {
         disabledNext();
 
-        if (resultData >= perPage) {
-            pageNow += perPage;
-
-            disabledPrevious();
-            await buttonAction(button, 'Next');
-            page.innerText = parseInt(page.innerText) + 1;
-
-            enablePrevious();
+        if (resultData < perPage) {
+            return;
         }
+
+        pageNow += perPage;
+
+        disabledPrevious();
+        await buttonAction(button).next();
+        enablePrevious();
     };
 
     const init = () => {
