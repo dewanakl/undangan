@@ -143,7 +143,7 @@ export const comment = (() => {
         const id = button.getAttribute('data-uuid');
 
         const name = document.getElementById('form-name');
-        let nameValue = storage('information').get('name') ?? name.value;
+        let nameValue = name.value;
 
         if (session.isAdmin()) {
             nameValue = user.get('name');
@@ -177,7 +177,10 @@ export const comment = (() => {
         }
 
         const btn = util.disableButton(button);
-        storage('information').set('name', nameValue);
+
+        if (!session.isAdmin()) {
+            storage('information').set('name', nameValue);
+        }
 
         const response = await request(HTTP_POST, '/api/comment')
             .token(session.getToken())
