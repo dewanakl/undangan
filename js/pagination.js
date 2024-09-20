@@ -41,12 +41,16 @@ export const pagination = (() => {
         };
 
         const next = async () => {
+            pageNow += perPage;
+
             button.innerHTML = 'Next' + button.innerHTML;
             await process();
             page.innerText = parseInt(page.innerText) + 1;
         };
 
         const prev = async () => {
+            pageNow -= perPage;
+
             button.innerHTML = button.innerHTML + 'Prev';
             await process();
             page.innerText = parseInt(page.innerText) - 1;
@@ -76,6 +80,11 @@ export const pagination = (() => {
 
     const setResultData = (len) => {
         resultData = len;
+
+        if (pageNow > 0) {
+            enablePrevious();
+        }
+
         if (resultData < perPage) {
             disabledNext();
             return;
@@ -91,14 +100,8 @@ export const pagination = (() => {
             return;
         }
 
-        pageNow -= perPage;
-
         disabledNext();
         await buttonAction(button).prev();
-
-        if (pageNow > 0) {
-            enablePrevious();
-        }
     };
 
     const next = async (button) => {
@@ -108,11 +111,8 @@ export const pagination = (() => {
             return;
         }
 
-        pageNow += perPage;
-
         disabledPrevious();
         await buttonAction(button).next();
-        enablePrevious();
     };
 
     const init = () => {

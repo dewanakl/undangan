@@ -229,7 +229,7 @@ export const comment = (() => {
                 document.getElementById('comments').lastElementChild.remove();
             }
 
-            document.getElementById('comments').innerHTML = card.renderContent(response.data) + document.getElementById('comments').innerHTML;
+            document.getElementById('comments').insertAdjacentHTML('afterbegin', card.renderContent(response.data));
             scroll();
         }
 
@@ -365,9 +365,17 @@ export const comment = (() => {
                     return res;
                 }
 
+                const observer = new MutationObserver((mutationsList) => {
+                    for (const mutation of mutationsList) {
+                        if (mutation.type === 'childList' && session.isAdmin()) {
+                            res.data.forEach(card.fetchTracker);
+                        }
+                    }
+                });
+
+                observer.observe(comments, { childList: true });
                 comments.setAttribute('data-loading', 'false');
                 comments.innerHTML = res.data.map((c) => card.renderContent(c)).join('');
-                res.data.forEach(card.fetchTracker);
                 return res;
             });
     };
