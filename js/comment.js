@@ -229,7 +229,7 @@ export const comment = (() => {
                 document.getElementById('comments').lastElementChild.remove();
             }
 
-            document.getElementById('comments').insertAdjacentHTML('afterbegin', card.renderContent(response.data));
+            document.getElementById('comments').innerHTML = card.renderContent(response.data) + document.getElementById('comments').innerHTML;
             scroll();
         }
 
