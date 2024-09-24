@@ -39,6 +39,8 @@ export const session = (() => {
             admin.getUserDetail();
             admin.getStatUser();
             comment.comment();
+            formEmail.value = null;
+            formPassword.value = null;
         }
 
         btn.restore();
