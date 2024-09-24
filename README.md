@@ -3,12 +3,9 @@
 ![Thumbnail](/assets/images/banner.png)
 ![Thumbnail2](/assets/images/banner2.png)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/cef32dbf-f26f-4865-84a9-b85a439c9994/deploy-status)](https://app.netlify.com/sites/ulems/deploys)
-![Hits](https://dikit.biz.id/0b3y8q)
-![GitHub repo size](https://img.shields.io/github/repo-size/dewanakl/undangan?color=brightgreen)
-![GitHub Release](https://img.shields.io/github/v/release/dewanakl/undangan?color=brightgreen)
-![GitHub last commit](https://img.shields.io/github/last-commit/dewanakl/undangan?color=brightgreen)
-![GitHub License](https://img.shields.io/github/license/dewanakl/undangan?color=brightgreen)
-
+[![Hits](https://dikit.biz.id/0b3y8q)](https://badge.dikit.biz.id)
+[![GitHub repo size](https://img.shields.io/github/repo-size/dewanakl/undangan?color=brightgreen)](https://shields.io)
+[![GitHub License](https://img.shields.io/github/license/dewanakl/undangan?color=brightgreen)](https://shields.io)
 
 ## Demo
 
