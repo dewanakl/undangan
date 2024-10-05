@@ -200,36 +200,9 @@ export const card = (() => {
         return inner;
     };
 
-    const fetchTracker = (comment) => {
-        comment.comments.forEach((c) => {
-            fetchTracker(c);
-        });
-
-        if (comment.ip === undefined || comment.user_agent === undefined || comment.is_admin || tracker.has(comment.ip)) {
-            return;
-        }
-
-        fetch(`https://freeipapi.com/api/json/${comment.ip}`)
-            .then((res) => res.json())
-            .then((res) => {
-                let result = res.cityName + ' - ' + res.regionName;
-
-                if (res.cityName == '-' && res.regionName == '-') {
-                    result = 'localhost';
-                }
-
-                tracker.set(comment.ip, result);
-                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${result}</strong>`;
-            })
-            .catch((err) => {
-                document.getElementById(`ip-${comment.uuid}`).innerHTML = `<i class="fa-solid fa-location-dot me-1"></i>${util.escapeHtml(comment.ip)} <strong>${util.escapeHtml(err.message)}</strong>`;
-            });
-    };
-
     return {
         renderEdit,
         renderReply,
-        fetchTracker,
         renderLoading,
         renderReadMore,
         renderInnerContent,
