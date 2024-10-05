@@ -208,6 +208,7 @@ export const admin = (() => {
             storage('config').clear();
             storage('comment').clear();
             storage('session').clear();
+            storage('information').clear();
         }
 
         if (!session.isAdmin() || (JSON.parse(atob((session.getToken() ?? '.').split('.')[1])).exp ?? 0) < ((new Date()).getTime() / 1000)) {

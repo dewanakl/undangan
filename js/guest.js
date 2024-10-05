@@ -7,6 +7,8 @@ import { confetti } from './confetti.js';
 
 export const guest = (() => {
 
+    const information = storage('information');
+
     const countDownDate = () => {
         const until = document.getElementById('count-down')?.getAttribute('data-time')?.replace(' ', 'T');
         if (!until) {
@@ -81,7 +83,7 @@ export const guest = (() => {
 
         const form = document.getElementById('form-name');
         if (form) {
-            form.value = storage('information').get('name') ?? name;
+            form.value = information.get('name') ?? name;
         }
 
         util.opacity('loading', 0.025);
@@ -118,8 +120,13 @@ export const guest = (() => {
             storage('tracker').clear();
         }
 
+        const presence = document.getElementById('form-presence');
+        if (presence && information.get('presence') !== undefined) {
+            presence.value = information.get('presence') ? "1" : "2";
+        }
+
         const info = document.getElementById('information');
-        if (info && storage('information').get('info')) {
+        if (info && information.get('info')) {
             info.remove();
         }
 

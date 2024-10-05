@@ -177,14 +177,19 @@ export const comment = (() => {
         }
 
         const btn = util.disableButton(button);
+        const isPresence = presence ? presence.value === "1" : true;
 
         if (!session.isAdmin()) {
             storage('information').set('name', nameValue);
+
+            if (!id) {
+                storage('information').set('presence', isPresence);
+            }
         }
 
         const response = await request(HTTP_POST, '/api/comment')
             .token(session.getToken())
-            .body(dto.postCommentRequest(id, nameValue, presence ? presence.value === "1" : true, form.value))
+            .body(dto.postCommentRequest(id, nameValue, isPresence, form.value))
             .send(dto.postCommentResponse)
             .then((res) => res, () => null);
 
@@ -209,10 +214,6 @@ export const comment = (() => {
 
         owns.set(response.data.uuid, response.data.own);
         form.value = null;
-
-        if (presence) {
-            presence.value = "0";
-        }
 
         if (!id) {
             const newPage = await pagination.reset();

@@ -63,7 +63,7 @@ export const pagination = (() => {
     };
 
     const reset = async () => {
-        if (pageNow == 0) {
+        if (pageNow === 0) {
             return false;
         }
 

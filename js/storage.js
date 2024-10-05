@@ -11,6 +11,8 @@ export const storage = (table) => {
         localStorage.setItem(table, JSON.stringify(storage));
     };
 
+    const has = (key) => Object.keys(get()).includes(String(key));
+
     const unset = (key) => {
         if (!has(key)) {
             return;
@@ -20,8 +22,6 @@ export const storage = (table) => {
         delete storage[String(key)];
         localStorage.setItem(table, JSON.stringify(storage));
     };
-
-    const has = (key) => Object.keys(get()).includes(String(key));
 
     const clear = () => localStorage.setItem(table, JSON.stringify({}));
 

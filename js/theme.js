@@ -129,10 +129,12 @@ export const theme = (() => {
             }
         }
 
+        const toggle = document.getElementById('darkMode');
+
         if (isDarkMode()) {
             onDark();
             document.documentElement.setAttribute(THEME_BS_DATA, THEME_DARK);
-            const toggle = document.getElementById('darkMode');
+            theme.set('active', THEME_DARK);
             if (toggle) {
                 toggle.checked = true;
             }
@@ -140,7 +142,6 @@ export const theme = (() => {
             onLight();
             document.documentElement.setAttribute(THEME_BS_DATA, THEME_LIGHT);
             theme.set('active', THEME_LIGHT);
-            const toggle = document.getElementById('darkMode');
             if (toggle) {
                 toggle.checked = false;
             }
