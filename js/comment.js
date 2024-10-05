@@ -11,6 +11,7 @@ export const comment = (() => {
 
     const owns = storage('owns');
     const user = storage('user');
+    const tracker = storage('tracker');
     const showHide = storage('comment');
 
     const remove = async (button) => {
@@ -423,9 +424,9 @@ export const comment = (() => {
     };
 
     const fetchTracker = (comment) => {
-        comment.comments.forEach((c) => {
-            fetchTracker(c);
-        });
+        if (comment.comments) {
+            comment.comments.forEach(fetchTracker);
+        }
 
         if (comment.ip === undefined || comment.user_agent === undefined || comment.is_admin || tracker.has(comment.ip)) {
             return;
