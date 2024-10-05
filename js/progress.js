@@ -1,4 +1,3 @@
-import { util } from './util.js';
 import { guest } from './guest.js';
 
 export const progress = (() => {
@@ -13,7 +12,14 @@ export const progress = (() => {
 
     const onComplete = () => {
         guest.name();
-        util.opacity('loading', 0.025);
+    };
+
+    const add = () => {
+        if (!push) {
+            return;
+        }
+
+        total += 1;
     };
 
     const complete = (type) => {
@@ -28,14 +34,6 @@ export const progress = (() => {
         if (loaded === total) {
             onComplete();
         }
-    };
-
-    const add = () => {
-        if (!push) {
-            return;
-        }
-
-        total += 1;
     };
 
     const invalid = (type) => {

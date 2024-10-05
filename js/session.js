@@ -35,10 +35,10 @@ export const session = (() => {
             .then((res) => res.code === 200, () => false);
 
         if (res) {
-            bootstrap.Modal.getOrCreateInstance('#loginModal').hide();
             admin.getUserDetail();
             admin.getStatUser();
             comment.comment();
+            bootstrap.Modal.getOrCreateInstance('#loginModal').hide();
             formEmail.value = null;
             formPassword.value = null;
         }
@@ -67,18 +67,22 @@ export const session = (() => {
             .token(document.body.getAttribute('data-key'))
             .send()
             .then(async (res) => {
-                session.set('token', document.body.getAttribute('data-key'));
+                if (res.code !== 200) {
+                    progress.invalid('request');
+                    return;
+                }
 
                 const config = storage('config');
                 for (let [key, value] of Object.entries(res.data)) {
                     config.set(key, value);
                 }
 
+                session.set('token', document.body.getAttribute('data-key'));
                 await comment.comment();
 
                 progress.complete('request');
             }).catch(() => {
-                progress.invalid('request')
+                progress.invalid('request');
             });
     };
 

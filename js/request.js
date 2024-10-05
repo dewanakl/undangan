@@ -18,7 +18,7 @@ export const request = (method, path) => {
         })
     };
 
-    if (url.slice(-1) == '/') {
+    if (url.slice(-1) === '/') {
         url = url.slice(0, -1);
     }
 
@@ -30,12 +30,20 @@ export const request = (method, path) => {
          */
         send(transform = null) {
             return fetch(url + path, req)
-                .then((res) => res.json())
                 .then((res) => {
-                    if (res.error) {
-                        throw res.error[0];
-                    }
+                    return res.json().then((json) => {
+                        if (res.status >= 500 && (json.message || json[0])) {
+                            throw json.message || json[0];
+                        }
 
+                        if (json.error) {
+                            throw json.error[0];
+                        }
+
+                        return json;
+                    });
+                })
+                .then((res) => {
                     if (transform) {
                         res.data = transform(res.data);
                     }

@@ -8,16 +8,16 @@ export const storage = (table) => {
     const set = (key, value) => {
         let storage = get();
         storage[String(key)] = value;
-
-        localStorage.removeItem(table);
         localStorage.setItem(table, JSON.stringify(storage));
     };
 
     const unset = (key) => {
+        if (!has(key)) {
+            return;
+        }
+
         let storage = get();
         delete storage[String(key)];
-
-        localStorage.removeItem(table);
         localStorage.setItem(table, JSON.stringify(storage));
     };
 

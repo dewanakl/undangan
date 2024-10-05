@@ -23,8 +23,8 @@ export const audio = (() => {
             await audio.play();
             isPlay = true;
         } catch (err) {
-            alert(err);
             isPlay = false;
+            alert(err);
         }
         music.disabled = false;
     };

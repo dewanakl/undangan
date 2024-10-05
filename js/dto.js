@@ -23,7 +23,7 @@ export const dto = (() => {
     });
 
     const postCommentResponse = (({ uuid, own, name, presence, comment, created_at }) => {
-        let is_admin;
+        let is_admin = false;
         let comments = [];
         let like = likeCommentResponse();
 
@@ -72,7 +72,7 @@ export const dto = (() => {
         return {
             uuid,
             show,
-        }
+        };
     });
 
     const postCommentRequest = ((id, name, presence, comment) => {

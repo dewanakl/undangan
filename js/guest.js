@@ -8,7 +8,11 @@ import { confetti } from './confetti.js';
 export const guest = (() => {
 
     const countDownDate = () => {
-        const until = document.getElementById('count-down').getAttribute('data-time').replace(' ', 'T');
+        const until = document.getElementById('count-down')?.getAttribute('data-time')?.replace(' ', 'T');
+        if (!until) {
+            return;
+        }
+
         const count = (new Date(until)).getTime();
 
         setInterval(() => {
@@ -67,7 +71,7 @@ export const guest = (() => {
         const guest = document.getElementById('guest-name');
 
         if (!name || !guest) {
-            guest.remove();
+            guest?.remove();
         } else {
             const div = document.createElement('div');
             div.classList.add('m-2');
@@ -79,17 +83,20 @@ export const guest = (() => {
         if (form) {
             form.value = storage('information').get('name') ?? name;
         }
+
+        util.opacity('loading', 0.025);
     };
 
     const open = (button) => {
         button.disabled = true;
+        document.body.style.overflowY = 'scroll';
+        document.body.scrollIntoView({ behavior: 'instant' });
+
         confetti({
             origin: { y: 1 },
             zIndex: 1057
         });
 
-        document.body.style.overflowY = 'scroll';
-        document.body.scrollIntoView({ behavior: 'instant' });
         util.opacity('welcome', 0.025);
 
         audio.play();
