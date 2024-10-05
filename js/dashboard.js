@@ -9,8 +9,7 @@ import { pagination } from './pagination.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     admin.init();
-
-    theme.check();
+    theme.init();
     pagination.init();
 
     window.like = like;

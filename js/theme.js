@@ -1,14 +1,16 @@
 import { storage } from './storage.js';
 
-export const THEME_DARK = 'dark';
-export const THEME_LIGHT = 'light';
-export const THEME_BS_DATA = 'data-bs-theme';
-
 export const theme = (() => {
+
+    const THEME_DARK = 'dark';
+    const THEME_LIGHT = 'light';
 
     const theme = storage('theme');
 
     const onLight = () => {
+        theme.set('active', THEME_LIGHT);
+        document.documentElement.setAttribute('data-bs-theme', THEME_LIGHT);
+
         const elements = document.querySelectorAll('.text-light, .btn-theme-light, .bg-dark, .bg-black, .bg-theme-dark, .color-theme-black, .btn-outline-light, .bg-cover-black');
         elements.forEach((element) => {
             if (element.classList.contains('text-light')) {
@@ -54,6 +56,9 @@ export const theme = (() => {
     };
 
     const onDark = () => {
+        theme.set('active', THEME_DARK);
+        document.documentElement.setAttribute('data-bs-theme', THEME_DARK);
+
         const elements = document.querySelectorAll('.text-dark, .btn-theme-dark, .bg-light, .bg-white, .bg-theme-light, .color-theme-white, .btn-outline-dark, .bg-cover-white');
         elements.forEach((element) => {
             if (element.classList.contains('text-dark')) {
@@ -111,16 +116,16 @@ export const theme = (() => {
     const change = () => {
         if (isDarkMode()) {
             onLight();
-            document.documentElement.setAttribute(THEME_BS_DATA, THEME_LIGHT);
-            theme.set('active', THEME_LIGHT);
         } else {
             onDark();
-            document.documentElement.setAttribute(THEME_BS_DATA, THEME_DARK);
-            theme.set('active', THEME_DARK);
         }
     };
 
-    const check = () => {
+    const showButtonChangeTheme = () => {
+        document.getElementById('button-theme').style.display = 'block';
+    };
+
+    const init = () => {
         if (!theme.has('active')) {
             theme.set('active', THEME_LIGHT);
 
@@ -129,32 +134,21 @@ export const theme = (() => {
             }
         }
 
-        const toggle = document.getElementById('darkMode');
-
         if (isDarkMode()) {
             onDark();
-            document.documentElement.setAttribute(THEME_BS_DATA, THEME_DARK);
-            theme.set('active', THEME_DARK);
-            if (toggle) {
-                toggle.checked = true;
-            }
         } else {
             onLight();
-            document.documentElement.setAttribute(THEME_BS_DATA, THEME_LIGHT);
-            theme.set('active', THEME_LIGHT);
-            if (toggle) {
-                toggle.checked = false;
-            }
         }
-    };
 
-    const showButtonChangeTheme = () => {
-        document.getElementById('button-theme').style.display = 'block';
+        const toggle = document.getElementById('darkMode');
+        if (toggle) {
+            toggle.checked = isDarkMode();
+        }
     };
 
     return {
         change,
-        check,
+        init,
         isDarkMode,
         showButtonChangeTheme
     };
