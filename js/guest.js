@@ -109,7 +109,6 @@ export const guest = (() => {
     };
 
     const init = () => {
-
         if (session.isAdmin()) {
             storage('user').clear();
             storage('owns').clear();

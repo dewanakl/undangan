@@ -124,6 +124,12 @@ export const comment = (() => {
             document.getElementById(`inner-${id}`).remove();
             document.getElementById(`content-${id}`).innerHTML = card.convertMarkdownToHTML(util.escapeHtml(form.value));
 
+            const formPresence = document.getElementById('form-presence');
+            if (presence) {
+                formPresence.value = isPresent ? "1" : "2";
+                storage('information').set('presence', isPresent);
+            }
+
             if (!presence || !badge) {
                 return;
             }
@@ -428,6 +434,5 @@ export const comment = (() => {
         update,
         comment,
         showOrHide,
-        renderLoading: card.renderLoading,
     }
 })();

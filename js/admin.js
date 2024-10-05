@@ -212,7 +212,6 @@ export const admin = (() => {
         }
 
         if (!session.isAdmin() || (JSON.parse(atob((session.getToken() ?? '.').split('.')[1])).exp ?? 0) < ((new Date()).getTime() / 1000)) {
-            comment.renderLoading();
             (new bootstrap.Modal('#loginModal')).show();
             return;
         }
