@@ -10,8 +10,6 @@ export const theme = (() => {
     const onLight = () => {
         theme.set('active', THEME_LIGHT);
         document.documentElement.setAttribute('data-bs-theme', THEME_LIGHT);
-        // --bs-gray-100
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f8f9fa');
 
         const elements = document.querySelectorAll('.text-light, .btn-theme-light, .bg-dark, .bg-black, .bg-theme-dark, .color-theme-black, .btn-outline-light, .bg-cover-black');
         elements.forEach((element) => {
@@ -55,13 +53,14 @@ export const theme = (() => {
                 element.classList.add('bg-cover-white');
             }
         });
+
+        // --bs-body-bg
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#212529');
     };
 
     const onDark = () => {
         theme.set('active', THEME_DARK);
         document.documentElement.setAttribute('data-bs-theme', THEME_DARK);
-        // --bs-gray-800
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#343a40');
 
         const elements = document.querySelectorAll('.text-dark, .btn-theme-dark, .bg-light, .bg-white, .bg-theme-light, .color-theme-white, .btn-outline-dark, .bg-cover-white');
         elements.forEach((element) => {
@@ -105,6 +104,9 @@ export const theme = (() => {
                 element.classList.add('bg-cover-black');
             }
         });
+
+        // --bs-body-bg
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff');
     };
 
     const isDarkMode = (onDark = null, onLight = null) => {
