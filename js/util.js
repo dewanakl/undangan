@@ -115,5 +115,5 @@ export const util = (() => {
         escapeHtml,
         disableButton,
         addLoadingCheckbox,
-    }
+    };
 })();

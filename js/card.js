@@ -208,5 +208,5 @@ export const card = (() => {
         renderInnerContent,
         renderContent: (comment) => renderContent(comment, true),
         convertMarkdownToHTML
-    }
+    };
 })();

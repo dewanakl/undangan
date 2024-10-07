@@ -14,6 +14,17 @@ export const comment = (() => {
     const tracker = storage('tracker');
     const showHide = storage('comment');
 
+    const changeButton = (id, disabled) => {
+        const buttonMethod = ['reply', 'edit', 'remove'];
+
+        buttonMethod.forEach((v) => {
+            const status = document.querySelector(`[onclick="comment.${v}(this)"][data-uuid="${id}"]`);
+            if (status) {
+                status.disabled = disabled;
+            }
+        });
+    };
+
     const remove = async (button) => {
         if (!confirm('Are you sure?')) {
             return;
@@ -57,17 +68,6 @@ export const comment = (() => {
 
         owns.unset(id);
         document.getElementById(id).remove();
-    };
-
-    const changeButton = (id, disabled) => {
-        const buttonMethod = ['reply', 'edit', 'remove'];
-
-        buttonMethod.forEach((v) => {
-            const status = document.querySelector(`[onclick="comment.${v}(this)"][data-uuid="${id}"]`);
-            if (status) {
-                status.disabled = disabled;
-            }
-        });
     };
 
     const update = async (button) => {
@@ -461,5 +461,5 @@ export const comment = (() => {
         update,
         comment,
         showOrHide,
-    }
+    };
 })();
