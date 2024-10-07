@@ -10,10 +10,8 @@ export const theme = (() => {
     const onLight = () => {
         theme.set('active', THEME_LIGHT);
         document.documentElement.setAttribute('data-bs-theme', THEME_LIGHT);
-
         // --bs-gray-100
         document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f8f9fa');
-        document.querySelector('meta[name="color-scheme"]').setAttribute('content', THEME_LIGHT);
 
         const elements = document.querySelectorAll('.text-light, .btn-theme-light, .bg-dark, .bg-black, .bg-theme-dark, .color-theme-black, .btn-outline-light, .bg-cover-black');
         elements.forEach((element) => {
@@ -62,10 +60,8 @@ export const theme = (() => {
     const onDark = () => {
         theme.set('active', THEME_DARK);
         document.documentElement.setAttribute('data-bs-theme', THEME_DARK);
-
         // --bs-gray-800
         document.querySelector('meta[name="theme-color"]').setAttribute('content', '#343a40');
-        document.querySelector('meta[name="color-scheme"]').setAttribute('content', THEME_DARK);
 
         const elements = document.querySelectorAll('.text-dark, .btn-theme-dark, .bg-light, .bg-white, .bg-theme-light, .color-theme-white, .btn-outline-dark, .bg-cover-white');
         elements.forEach((element) => {
