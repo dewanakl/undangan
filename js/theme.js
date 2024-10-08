@@ -57,7 +57,7 @@ export const theme = (() => {
         });
 
         // --bs-body-bg
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#212529');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff');
     };
 
     const onDark = () => {
@@ -110,7 +110,7 @@ export const theme = (() => {
         });
 
         // --bs-body-bg
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff');
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#212529');
     };
 
     const isDarkMode = (onDark = null, onLight = null) => {
