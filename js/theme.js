@@ -5,6 +5,7 @@ export const theme = (() => {
     const THEME_DARK = 'dark';
     const THEME_LIGHT = 'light';
 
+    let isAuto = false;
     const theme = storage('theme');
 
     const onLight = () => {
@@ -132,6 +133,10 @@ export const theme = (() => {
     };
 
     const showButtonChangeTheme = () => {
+        if (!isAuto) {
+            return;
+        }
+
         document.getElementById('button-theme').style.display = 'block';
     };
 
@@ -144,6 +149,18 @@ export const theme = (() => {
             }
         }
 
+        switch (document.body.getAttribute('data-theme')) {
+            case 'dark':
+                theme.set('active', THEME_DARK);
+                break;
+            case 'light':
+                theme.set('active', THEME_LIGHT);
+                break;
+            default:
+                isAuto = true;
+                break;
+        }
+
         if (isDarkMode()) {
             onDark();
         } else {
@@ -153,6 +170,10 @@ export const theme = (() => {
         const toggle = document.getElementById('darkMode');
         if (toggle) {
             toggle.checked = isDarkMode();
+
+            if (!isAuto) {
+                toggle.parentElement.remove();
+            }
         }
     };
 
