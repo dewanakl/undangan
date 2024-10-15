@@ -109,6 +109,8 @@ export const guest = (() => {
     };
 
     const init = () => {
+        countDownDate();
+
         if (session.isAdmin()) {
             storage('user').clear();
             storage('owns').clear();
@@ -146,7 +148,6 @@ export const guest = (() => {
         }
 
         session.guest();
-        countDownDate();
     };
 
     return {
