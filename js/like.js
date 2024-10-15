@@ -105,6 +105,9 @@ export const like = (() => {
         const uuid = div.id.replace('body-content-', '');
 
         if (tapLength < 300 && tapLength > 0 && !likes.has(uuid) && div.getAttribute('data-liked') !== 'true') {
+            if (navigator.vibrate) {
+                navigator.vibrate(100);
+            }
             animation(div);
             div.setAttribute('data-liked', 'true');
             await like(document.querySelector(`[onclick="like.like(this)"][data-uuid="${uuid}"]`));
